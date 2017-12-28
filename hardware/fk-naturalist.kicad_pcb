@@ -2,8 +2,8 @@
 
   (general
     (links 203)
-    (no_connects 42)
-    (area 125.718499 67.742999 154.578121 155.274081)
+    (no_connects 0)
+    (area 106.352905 47.75 165.914286 159.377948)
     (thickness 1.6)
     (drawings 33)
     (tracks 812)
@@ -44,7 +44,7 @@
   )
 
   (setup
-    (last_trace_width 0.381)
+    (last_trace_width 0.254)
     (user_trace_width 0.2032)
     (user_trace_width 0.254)
     (user_trace_width 0.381)
@@ -3936,7 +3936,7 @@
   (gr_arc (start 126.56312 154.43708) (end 126.52756 155.19908) (angle 87.32813541) (layer Edge.Cuts) (width 0.15) (tstamp 5A1E03C4))
   (gr_arc (start 126.5555 68.58) (end 125.7935 68.58) (angle 90.9612166) (layer Edge.Cuts) (width 0.15) (tstamp 5A1E03B4))
   (gr_arc (start 153.7335 68.58) (end 153.7335 67.818) (angle 90) (layer Edge.Cuts) (width 0.15))
-  (gr_text D13 (at 128.778 104.0892 360) (layer F.SilkS) (tstamp 59FBB4B5)
+  (gr_text D13 (at 128.778 104.0892) (layer F.SilkS) (tstamp 59FBB4B5)
     (effects (font (size 0.6 0.6) (thickness 0.11)))
   )
   (gr_text SDA2 (at 142.1384 122.7836) (layer F.SilkS) (tstamp 59FBAF7D)
