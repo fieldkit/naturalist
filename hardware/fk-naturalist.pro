@@ -40,7 +40,7 @@ ERC_TestSimilarLabels=1
 version=1
 LibDir=
 [eeschema/libraries]
-LibName1=fk-weather-rescue
+LibName1=fk-naturalist-rescue
 LibName2=conn
 LibName3=/home/jlewallen/conservify/kicad/conservify
 LibName4=/home/jlewallen/oss/RocketScreamKicadLibrary/RocketScreamKicadLibrary

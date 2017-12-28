@@ -11,4 +11,4 @@ set(LIBRARIES
 
 include_directories(./)
 
-arduino(fk-weather-test "${SOURCE_FILES}" "${LIBRARIES}")
+arduino(fk-naturalist-test "${SOURCE_FILES}" "${LIBRARIES}")

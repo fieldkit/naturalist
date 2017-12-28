@@ -1,9 +1,9 @@
 EESchema Schematic File Version 2
-LIBS:fk-weather-rescue
+LIBS:fk-naturalist-rescue
 LIBS:conn
 LIBS:conservify
 LIBS:RocketScreamKicadLibrary
-LIBS:fk-weather-cache
+LIBS:fk-naturalist-cache
 EELAYER 25 0
 EELAYER END
 $Descr A3 16535 11693
@@ -666,7 +666,7 @@ F 3 "" H 15350 1450 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L BNO055-RESCUE-fk-weather U103
+L BNO055-RESCUE-fk-naturalist U103
 U 1 1 59784302
 P 9850 4700
 F 0 "U103" H 9850 4700 60  0000 C CNN

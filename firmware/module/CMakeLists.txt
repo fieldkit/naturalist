@@ -8,4 +8,4 @@ set(LIBRARIES
   SPI
 )
 
-arduino(fk-weather-module "${SOURCE_FILES}" "${LIBRARIES}")
+arduino(fk-naturalist-module "${SOURCE_FILES}" "${LIBRARIES}")
