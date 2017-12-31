@@ -18,8 +18,7 @@ void WeatherReadings::setup() {
 
     if (!sht31Sensor.begin()) {
         debugfln("SHT31 FAILED");
-    }
-
+    } 
     if (!mpl3115a2Sensor.begin()) {
         debugfln("MPL3115A2 FAILED");
     }
@@ -57,7 +56,8 @@ TaskEval WeatherReadings::task() {
     sensors_event_t event;
     bnoSensor.getEvent(&event);
 
-    if (readings != nullptr) {
+    if (pending != nullptr) {
+        auto readings = pending->readings;
         readings[ 0].value = shtTemperature;
         readings[ 1].value = shtHumidity;
         readings[ 2].value = mplTempCelsius;
@@ -70,6 +70,8 @@ TaskEval WeatherReadings::task() {
         readings[ 9].value = event.orientation.x;
         readings[10].value = event.orientation.y;
         readings[11].value = event.orientation.z;
+
+        pending->elapsed -= millis();
 
         for (auto i = 0; i < 12; ++i) {
             readings[i].status = SensorReadingStatus::Done;

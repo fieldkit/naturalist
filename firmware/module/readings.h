@@ -19,9 +19,7 @@ private:
     Adafruit_MPL3115A2 mpl3115a2Sensor;
     Adafruit_TSL2591 tsl2591Sensor{ 2591 };
     Adafruit_BNO055 bnoSensor{ 55, BNO055_ADDRESS_A, &bno055Wire };
-
-private:
-    SensorReading *readings;
+    PendingSensorReading *pending;
 
 public:
     WeatherReadings();
@@ -31,8 +29,9 @@ public:
 
 public:
     void setup();
-    void begin(SensorReading *r) {
-        readings = r;
+    void begin(PendingSensorReading &p) {
+        pending = &p;
+        pending->elapsed = millis();
     }
 
 };

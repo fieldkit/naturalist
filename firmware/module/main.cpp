@@ -27,7 +27,7 @@ WeatherModule::WeatherModule(ModuleInfo &info, WeatherReadings &weatherReadings)
 }
 
 ModuleReadingStatus WeatherModule::beginReading(PendingSensorReading &pending) {
-    weatherReadings->begin(pending.readings);
+    weatherReadings->begin(pending);
     push(delay); // This is to give us time to reply with the backoff. Should be avoidable?
     push(*weatherReadings);
 
