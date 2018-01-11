@@ -9,6 +9,7 @@ namespace fk {
 
 class WeatherModule : public Module {
 private:
+    TwoWireBus bus{ Wire };
     Delay delay{ 500 };
     WeatherReadings *weatherReadings;
 
@@ -23,7 +24,7 @@ public:
 };
 
 WeatherModule::WeatherModule(ModuleInfo &info, WeatherReadings &weatherReadings) :
-    Module(info), weatherReadings(&weatherReadings) {
+    Module(bus, info), weatherReadings(&weatherReadings) {
 }
 
 ModuleReadingStatus WeatherModule::beginReading(PendingSensorReading &pending) {
