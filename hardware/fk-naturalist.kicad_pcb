@@ -1774,11 +1774,6 @@
       (net 1 GND))
     (pad 9 thru_hole oval (at 0 20.32 270) (size 1.7 1.7) (drill 1) (layers *.Cu *.Mask)
       (net 2 3V3))
-    (model ${KISYS3DMOD}/Socket_Strips.3dshapes/Socket_Strip_Straight_1x09_Pitch2.54mm.wrl
-      (at (xyz 0 -0.4 0))
-      (scale (xyz 1 1 1))
-      (rotate (xyz 0 0 270))
-    )
   )
 
   (module RocketScreamKicadLibrary:MICRO-USB (layer F.Cu) (tedit 55C99B6C) (tstamp 5A591D78)
@@ -3722,11 +3717,6 @@
       (net 12 /SDA) (solder_mask_margin 0.1) (clearance 0.1))
     (pad 8 smd rect (at 0.9245 -1.865 270) (size 0.5 1.1) (layers F.Cu F.Paste F.Mask)
       (net 11 /SCL) (solder_mask_margin 0.1) (clearance 0.1))
-    (model ${KISYS3DMOD}/Housings_DFN_QFN.3dshapes/DFN-8-1EP_6x5mm_Pitch1.27mm.wrl
-      (at (xyz 0 0 0))
-      (scale (xyz 1 1 1))
-      (rotate (xyz 0 0 0))
-    )
   )
 
   (module conservify:BNO055 (layer F.Cu) (tedit 56AC3471) (tstamp 5A591FFC)
