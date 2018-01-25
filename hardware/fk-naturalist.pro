@@ -1,4 +1,4 @@
-update=Mon 27 Nov 2017 01:49:04 PM PST
+update=Thu 25 Jan 2018 03:19:05 PM PST
 version=1
 last_client=kicad
 [cvpcb]
@@ -25,6 +25,14 @@ SolderMaskMinWidth=0
 DrawSegmentWidth=0.2
 BoardOutlineThickness=0.15
 ModuleOutlineThickness=0.15
+[eeschema]
+version=1
+LibDir=
+[eeschema/libraries]
+LibName1=fk-naturalist-rescue
+LibName2=conn
+LibName3=/home/jlewallen/conservify/kicad/conservify
+LibName4=/home/jlewallen/oss/RocketScreamKicadLibrary/RocketScreamKicadLibrary
 [schematic_editor]
 version=1
 PageLayoutDescrFile=SchematicLayout.kicad_wks
@@ -35,12 +43,3 @@ NetFmtName=Pcbnew
 SpiceForceRefPrefix=0
 SpiceUseNetNumbers=0
 LabSize=60
-ERC_TestSimilarLabels=1
-[eeschema]
-version=1
-LibDir=
-[eeschema/libraries]
-LibName1=fk-naturalist-rescue
-LibName2=conn
-LibName3=/home/jlewallen/conservify/kicad/conservify
-LibName4=/home/jlewallen/oss/RocketScreamKicadLibrary/RocketScreamKicadLibrary
