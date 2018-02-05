@@ -80,7 +80,7 @@ TaskEval WeatherReadings::task() {
     }
 
     log("Sensors: %fC %f%%, %fC %fpa %f\"/Hg %fm", shtTemperature, shtHumidity, mplTempCelsius, pressurePascals, pressureInchesMercury, altitudeMeters);
-    log("Sensors: ir(%d) full(%d) visible(%d) lux(%d)", ir, full, full - ir, lux);
+    log("Sensors: ir(%lu) full(%lu) visible(%lu) lux(%f)", ir, full, full - ir, lux);
     log("Sensors: cal(%d, %d, %d, %d) xyz(%f, %f, %f)", system, gyro, accel, mag, event.orientation.x, event.orientation.y, event.orientation.z);
 
     return TaskEval::done();
