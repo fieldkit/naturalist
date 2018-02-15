@@ -13,8 +13,6 @@ void WeatherReadings::setup() {
 
     bno055Wire.begin();
 
-    pinPeripheral(11, PIO_SERCOM);
-    pinPeripheral(13, PIO_SERCOM);
 
     if (!sht31Sensor.begin()) {
         debugfln("SHT31 FAILED");
