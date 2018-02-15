@@ -1,7 +1,7 @@
 (export (version D)
   (design
     (source /home/jlewallen/fieldkit/naturalist/hardware/fk-naturalist.sch)
-    (date "Tue 16 Jan 2018 09:25:12 AM PST")
+    (date "Thu 15 Feb 2018 03:06:28 PM PST")
     (tool "Eeschema 4.0.7-e2-6376~58~ubuntu16.04.1")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
@@ -57,7 +57,7 @@
       (tstamp 5977D697))
     (comp (ref U101)
       (value TSL2591)
-      (footprint Housings_DFN_QFN:DFN-6-1EP_2x2mm_Pitch0.65mm)
+      (footprint conservify:TSL2591)
       (fields
         (field (name price) 0)
         (field (name spn1) 985-TSL25911FN)
@@ -1171,6 +1171,9 @@
     (comp (ref U7)
       (value PCF8523)
       (footprint RocketScreamKicadLibrary:SOIC-8-N)
+      (fields
+        (field (name spn1) 771-PCF8523T/1118)
+        (field (name supplier1) mouser))
       (libsource (lib conservify) (part PCF8523))
       (sheetpath (names /) (tstamps /))
       (tstamp 5A5E1669))
@@ -1207,6 +1210,9 @@
     (comp (ref BT1)
       (value Battery_Cell)
       (footprint conservify:BAT_CR1210)
+      (fields
+        (field (name spn1) 855-S8411-45R)
+        (field (name supplier1) mouser))
       (libsource (lib device) (part Battery_Cell))
       (sheetpath (names /) (tstamps /))
       (tstamp 5A5E75DB))
@@ -1919,16 +1925,16 @@
         (pin (num 5) (name VDD) (type input))
         (pin (num 6) (name SDA) (type input)))))
   (libraries
-    (library (logical fk-naturalist-rescue)
-      (uri /home/jlewallen/fieldkit/naturalist/hardware/fk-naturalist-rescue.lib))
-    (library (logical conn)
-      (uri /usr/share/kicad/library/conn.lib))
     (library (logical RocketScreamKicadLibrary)
       (uri /home/jlewallen/oss/RocketScreamKicadLibrary/RocketScreamKicadLibrary.lib))
+    (library (logical device)
+      (uri /usr/share/kicad/library/device.lib))
+    (library (logical fk-naturalist-rescue)
+      (uri /home/jlewallen/fieldkit/naturalist/hardware/fk-naturalist-rescue.lib))
     (library (logical conservify)
       (uri /home/jlewallen/conservify/kicad/conservify.lib))
-    (library (logical device)
-      (uri /usr/share/kicad/library/device.lib)))
+    (library (logical conn)
+      (uri /usr/share/kicad/library/conn.lib)))
   (nets
     (net (code 1) (name "Net-(R34-Pad1)")
       (node (ref R34) (pin 1))
