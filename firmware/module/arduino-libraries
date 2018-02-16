@@ -8,13 +8,13 @@ https://github.com/arduino-libraries/RTCZero.git
 https://github.com/adafruit/RTClib.git
 https://github.com/Conservify/WiFi101.git
 https://github.com/adafruit/Adafruit_ASFcore.git
-https://github.com/Conservify/Adafruit_BNO055.git
-https://github.com/adafruit/Adafruit_Sensor.git
-https://github.com/adafruit/Adafruit_TSL2561.git
-https://github.com/adafruit/Adafruit_MPL3115A2_Library.git
-https://github.com/adafruit/Adafruit_TSL2591_Library.git
-https://github.com/adafruit/Adafruit_SHT31.git
-https://github.com/PaulStoffregen/SerialFlash.git
+https://github.com/Conservify/Adafruit_BNO055.git ed1744e1f3f2730e41b202bb6b09906e6df1db30
+https://github.com/adafruit/Adafruit_Sensor.git e985f2253a687ef377cde3dcfb1f788830d1bc09
+https://github.com/adafruit/Adafruit_TSL2561.git c913785d70a63774f7881bb1cbd072cb191eb94f
+https://github.com/adafruit/Adafruit_MPL3115A2_Library.git cc2ad8ef2f932e13c79a75f85c6bb8233a74d543
+https://github.com/adafruit/Adafruit_TSL2591_Library.git 608b3a2460f8f0c6e2c206f2116303c0568214f6
+https://github.com/adafruit/Adafruit_SHT31.git 5576352d93fe5728a3f0bd861bbbb2d0bc2fccba
+https://github.com/PaulStoffregen/SerialFlash.git 754e1d025c08d98a2dc744547885b3c5db2a914b
 https://github.com/Conservify/AtSamd.git
 https://github.com/Conservify/FuelGauge.git
 https://github.com/mikalhart/TinyGPS.git
