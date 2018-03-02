@@ -59,7 +59,7 @@ void setup() {
     fk::ModuleInfo info = {
         8,
         12,
-        "Weather",
+        "FkNat",
         {
             {"Temp #1", "°C",},
             {"Humidity", "%",},
