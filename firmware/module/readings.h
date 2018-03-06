@@ -12,7 +12,7 @@
 
 namespace fk {
 
-class WeatherReadings : public Task {
+class NaturalistReadings : public Task {
 private:
     TwoWireBus bno055Wire{ Wire };
     Adafruit_SHT31 sht31Sensor;
@@ -22,7 +22,7 @@ private:
     PendingSensorReading *pending;
 
 public:
-    WeatherReadings();
+    NaturalistReadings();
 
 public:
     TaskEval task() override;

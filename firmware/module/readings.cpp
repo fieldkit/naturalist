@@ -5,10 +5,10 @@
 
 namespace fk {
 
-WeatherReadings::WeatherReadings() : Task("Weather") {
+NaturalistReadings::NaturalistReadings() : Task("Naturalist") {
 }
 
-void WeatherReadings::setup() {
+void NaturalistReadings::setup() {
     Wire.begin();
 
     bno055Wire.begin();
@@ -31,7 +31,7 @@ void WeatherReadings::setup() {
     }
 }
 
-TaskEval WeatherReadings::task() {
+TaskEval NaturalistReadings::task() {
     Wire.begin();
 
     auto shtTemperature = sht31Sensor.readTemperature();

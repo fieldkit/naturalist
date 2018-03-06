@@ -11,10 +11,10 @@ class WeatherModule : public Module {
 private:
     TwoWireBus bus{ Wire };
     Delay delay{ 500 };
-    WeatherReadings *weatherReadings;
+    NaturalistReadings *readings;
 
 public:
-    WeatherModule(ModuleInfo &info, WeatherReadings &weatherReadings);
+    WeatherModule(ModuleInfo &info, NaturalistReadings &readings);
 
 public:
     ModuleReadingStatus beginReading(PendingSensorReading &pending) override;
@@ -23,14 +23,14 @@ public:
 
 };
 
-WeatherModule::WeatherModule(ModuleInfo &info, WeatherReadings &weatherReadings) :
-    Module(bus, info), weatherReadings(&weatherReadings) {
+WeatherModule::WeatherModule(ModuleInfo &info, NaturalistReadings &readings) :
+    Module(bus, info), readings(&readings) {
 }
 
 ModuleReadingStatus WeatherModule::beginReading(PendingSensorReading &pending) {
-    weatherReadings->begin(pending);
+    readings->begin(pending);
     push(delay); // This is to give us time to reply with the backoff. Should be avoidable?
-    push(*weatherReadings);
+    push(*readings);
 
     return ModuleReadingStatus{ 5000 };
 }
@@ -79,11 +79,11 @@ void setup() {
         },
     };
 
-    fk::WeatherReadings weatherReadings;
-    fk::WeatherModule module(info, weatherReadings);
+    fk::NaturalistReadings readings;
+    fk::WeatherModule module(info, readings);
     uint32_t idleStart = 0;
 
-    weatherReadings.setup();
+    readings.setup();
 
     module.begin();
 
