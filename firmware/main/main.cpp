@@ -183,6 +183,9 @@ void NaturalistCoreModule::begin() {
 
     clock.begin();
 
+    FormattedTime nowFormatted{ clock.now() };
+    debugfpln("Core", "Now: %s", nowFormatted.toString());
+
     state.started();
     readings.setup();
 
