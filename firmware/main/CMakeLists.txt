@@ -9,6 +9,8 @@ set(LIBRARIES
 
 include_directories(./)
 
+set(ARDUINO_BOOTLOADER "${CMAKE_CURRENT_SOURCE_DIR}/flash_with_bootloader_and_noinit.ld")
+
 add_definitions(-DFK_NATURALIST)
 
 target_compile_definitions(arduino_zero_firmware-common_src PUBLIC -DFK_NATURALIST)
