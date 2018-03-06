@@ -287,21 +287,6 @@ public:
         if (!flashMemory()) {
             failures = true;
         }
-        if (!mpl3115a2()) {
-            failures = true;
-        }
-        if (!tsl2591()) {
-            failures = true;
-        }
-        if (!sht31()) {
-            failures = true;
-        }
-        if (!wifi()) {
-            failures = true;
-        }
-        if (!sdCard()) {
-            failures = true;
-        }
         if (!macEeprom()) {
             failures = true;
         }
@@ -311,10 +296,27 @@ public:
         if (!fuelGauge()) {
             failures = true;
         }
+        if (!mpl3115a2()) {
+            failures = true;
+        }
+        if (!tsl2591()) {
+            failures = true;
+        }
+        if (!sht31()) {
+            failures = true;
+        }
+
+        if (!bno055()) {
+            failures = true;
+        }
+
         if (!gps()) {
             failures = true;
         }
-        if (!bno055()) {
+        if (!sdCard()) {
+            failures = true;
+        }
+        if (!wifi()) {
             failures = true;
         }
 
