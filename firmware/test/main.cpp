@@ -16,7 +16,6 @@
 #include <RTClib.h>
 
 #include "debug.h"
-#include "AnalogSampling.h"
 
 const uint8_t PIN_SD_CS = 12;
 const uint8_t PIN_WINC_CS = 7;
@@ -51,7 +50,6 @@ public:
     Adafruit_TSL2591 tsl2591Sensor{ 2591 };
     Adafruit_BNO055 bnoSensor{ 55, BNO055_ADDRESS_A, &bno055Wire };
     SerialFlashChip serialFlash;
-    AnalogSampler audioSampler;
 
 public:
     void setup() {
@@ -110,8 +108,6 @@ public:
         debugfln("sensors: %fC %f%%, %fC %fpa %f\"/Hg %fm", shtTemperature, shtHumidity, mplTempCelsius, pressurePascals, pressureInchesMercury, altitudeMeters);
         debugfln("sensors: ir(%d) full(%d) visible(%d) lux(%d)", ir, full, full - ir, lux);
         debugfln("sensors: cal(%d, %d, %d, %d) xyz(%f, %f, %f)", system, gyro, accel, mag, event.orientation.x, event.orientation.y, event.orientation.z);
-
-        hw->audioSampler.log();
     }
 };
 
