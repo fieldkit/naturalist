@@ -22,6 +22,7 @@ private:
     Adafruit_MPL3115A2 mpl3115a2Sensor;
     Adafruit_TSL2591 tsl2591Sensor{ 2591 };
     Adafruit_BNO055 bnoSensor{ 55, BNO055_ADDRESS_A, &Wire4and3 };
+    bool hasBno055{ false };
 
 public:
     NaturalistReadings(CoreState &state) : Task("Naturalist"), state(&state) {
@@ -53,6 +54,7 @@ void NaturalistReadings::setup() {
     if (!bnoSensor.begin()) {
         log("BNO055 FAILED");
     } else {
+        hasBno055 = true;
         bnoSensor.setExtCrystalUse(true);
     }
 }
@@ -77,10 +79,12 @@ TaskEval NaturalistReadings::task() {
     auto lux = tsl2591Sensor.calculateLux(full, ir);
 
     uint8_t system = 0, gyro = 0, accel = 0, mag = 0;
-    bnoSensor.getCalibration(&system, &gyro, &accel, &mag);
-
     sensors_event_t event;
-    bnoSensor.getEvent(&event);
+    memzero(&event, sizeof(sensors_event_t));
+    if (hasBno055) {
+        bnoSensor.getCalibration(&system, &gyro, &accel, &mag);
+        bnoSensor.getEvent(&event);
+    }
 
     float values[] = {
         shtTemperature,
