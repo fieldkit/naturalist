@@ -13,10 +13,9 @@ void WeatherReadings::setup() {
 
     bno055Wire.begin();
 
-
     if (!sht31Sensor.begin()) {
         debugfln("SHT31 FAILED");
-    } 
+    }
     if (!mpl3115a2Sensor.begin()) {
         debugfln("MPL3115A2 FAILED");
     }

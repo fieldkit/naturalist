@@ -14,11 +14,11 @@ namespace fk {
 
 class WeatherReadings : public Task {
 private:
-    TwoWireBus bno055Wire{ Wire11and13 };
+    TwoWireBus bno055Wire{ Wire };
     Adafruit_SHT31 sht31Sensor;
     Adafruit_MPL3115A2 mpl3115a2Sensor;
     Adafruit_TSL2591 tsl2591Sensor{ 2591 };
-    Adafruit_BNO055 bnoSensor{ 55, BNO055_ADDRESS_A, &Wire11and13 };
+    Adafruit_BNO055 bnoSensor{ 55, BNO055_ADDRESS_A, &Wire };
     PendingSensorReading *pending;
 
 public:

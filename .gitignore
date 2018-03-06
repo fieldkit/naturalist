@@ -8,3 +8,4 @@
 build
 gitdeps
 firmwaretool.properties
+config.h
