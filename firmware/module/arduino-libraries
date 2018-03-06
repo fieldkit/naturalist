@@ -5,8 +5,8 @@
 ../fkfs
 https://github.com/nanopb/nanopb.git
 https://github.com/arduino-libraries/RTCZero.git
-https://github.com/adafruit/RTClib.git
-https://github.com/Conservify/WiFi101.git
+https://github.com/adafruit/RTClib.git 82d00a1a15bcf738b001e42bf26a3d1f1a15be32
+https://github.com/Conservify/WiFi101.git a3c4ad31d2c95f4d4c6a5bcf73e2b344ba87e13e
 https://github.com/adafruit/Adafruit_ASFcore.git
 https://github.com/Conservify/Adafruit_BNO055.git ed1744e1f3f2730e41b202bb6b09906e6df1db30
 https://github.com/adafruit/Adafruit_Sensor.git e985f2253a687ef377cde3dcfb1f788830d1bc09

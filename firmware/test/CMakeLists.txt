@@ -5,8 +5,9 @@ set(SOURCE_FILES
 )
 
 set(LIBRARIES
-  SPI
   Wire
+  SPI
+  SD
 )
 
 include_directories(./)

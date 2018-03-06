@@ -2,6 +2,9 @@
 #include <SPI.h>
 #include <wiring_private.h>
 #include <cstdarg>
+#include <FuelGauge.h>
+#include <WiFi101.h>
+#include <SD.h>
 
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BNO055.h>
@@ -10,17 +13,39 @@
 #include <Adafruit_TSL2591.h>
 #include <Adafruit_SHT31.h>
 #include <SerialFlash.h>
+#include <RTClib.h>
 
 #include "debug.h"
 #include "AnalogSampling.h"
 
+const uint8_t PIN_SD_CS = 12;
+const uint8_t PIN_WINC_CS = 7;
+const uint8_t PIN_WINC_IRQ = 16;
+const uint8_t PIN_WINC_RST = 15;
+const uint8_t PIN_WINC_EN = 38;
+const uint8_t PIN_WINC_WAKE = 8;
+
+Uart Serial2(&sercom1, 11, 10, SERCOM_RX_PAD_0, UART_TX_PAD_2);
+
+void SERCOM1_Handler()
+{
+    Serial2.IrqHandler();
+}
+
+void platformSerial2Begin(int32_t baud) {
+    Serial2.begin(baud);
+
+    // Order is very important here. This has to happen after the call to begin.
+    pinPeripheral(10, PIO_SERCOM);
+    pinPeripheral(11, PIO_SERCOM);
+}
+
 class ModuleHardware {
 public:
     static constexpr uint8_t PIN_FLASH_CS = 5;
-    static constexpr uint8_t PIN_MAX4466 = A1;
 
 public:
-    TwoWire bno055Wire{ &sercom1, 11, 13 };
+    TwoWire bno055Wire{ &sercom2, 4, 3 };
     Adafruit_SHT31 sht31Sensor;
     Adafruit_MPL3115A2 mpl3115a2Sensor;
     Adafruit_TSL2591 tsl2591Sensor{ 2591 };
@@ -35,16 +60,12 @@ public:
 
         bno055Wire.begin();
 
-        pinPeripheral(11, PIO_SERCOM);
-        pinPeripheral(13, PIO_SERCOM);
+        pinPeripheral(4, PIO_SERCOM_ALT);
+        pinPeripheral(3, PIO_SERCOM_ALT);
 
         pinMode(A3, OUTPUT);
         pinMode(A4, OUTPUT);
         pinMode(A5, OUTPUT);
-
-        pinMode(PIN_MAX4466, INPUT);
-
-        audioSampler.setup();
     }
 
     void leds(bool on) {
@@ -94,6 +115,30 @@ public:
     }
 };
 
+class MacEeprom {
+private:
+    uint8_t address;
+
+public:
+    MacEeprom() : address(0x50) {
+    }
+
+public:
+    bool read128bMac(uint8_t *id) {
+        Wire.beginTransmission(address);
+        Wire.write(0xf8);
+        Wire.endTransmission();
+        Wire.requestFrom(address, 8);
+
+        uint8_t index = 0;
+        while (Wire.available()){
+            id[index++] = Wire.read();
+        }
+
+        return true;
+    }
+};
+
 class Check {
 private:
     ModuleHardware *hw;
@@ -134,6 +179,8 @@ public:
     }
 
     bool bno055() {
+        debugfln("test: BNO055 Checking...");
+
         if (!hw->bnoSensor.begin()) {
             debugfln("test: BNO055 FAILED");
             return false;
@@ -143,9 +190,6 @@ public:
 
         debugfln("test: BNO055 PASSED");
         return true;
-    }
-
-    void max4466() {
     }
 
     bool flashMemory() {
@@ -173,12 +217,78 @@ public:
         return true;
     }
 
+    bool sdCard() {
+        debugfln("test: Checking SD...");
+
+        if (!SD.begin(PIN_SD_CS)) {
+            debugfln("test: SD FAILED");
+            return false;
+        }
+
+        digitalWrite(PIN_SD_CS, HIGH);
+        debugfln("test: SD PASSED");
+
+        return true;
+    }
+
+    bool gps() {
+        debugfln("test: Checking gps...");
+
+        platformSerial2Begin(9600);
+
+        uint32_t charactersRead = 0;
+        uint32_t start = millis();
+        while (millis() - start < 5 * 1000 && charactersRead < 100)  {
+            while (Serial2.available()) {
+                Serial.print((char)Serial2.read());
+                charactersRead++;
+            }
+        }
+
+        debugfln("");
+
+        if (charactersRead < 100) {
+            debugfln("test: GPS FAILED");
+            return false;
+        }
+
+        debugfln("test: GPS PASSED");
+        return true;
+    }
+
+
+    bool wifi() {
+        debugfln("test: Checking wifi...");
+
+        delay(500);
+
+        digitalWrite(PIN_WINC_RST, HIGH);
+
+        WiFi.setPins(PIN_WINC_CS, PIN_WINC_IRQ, PIN_WINC_RST);
+
+        digitalWrite(PIN_WINC_EN, LOW);
+        delay(50);
+
+        digitalWrite(PIN_WINC_EN, HIGH);
+
+        delay(50);
+
+        if (WiFi.status() == WL_NO_SHIELD) {
+            debugfln("test: Wifi FAILED");
+            return false;
+        }
+
+        debugfln("test: Wifi firmware version: ");
+        auto fv = WiFi.firmwareVersion();
+        debugfln("test: Wifi version: %s", fv);
+        debugfln("test: Wifi PASSED");
+
+        return true;
+    }
+
     bool check() {
         auto failures = false;
         if (!flashMemory()) {
-            failures = true;
-        }
-        if (!bno055()) {
             failures = true;
         }
         if (!mpl3115a2()) {
@@ -190,9 +300,74 @@ public:
         if (!sht31()) {
             failures = true;
         }
+        if (!wifi()) {
+            failures = true;
+        }
+        if (!sdCard()) {
+            failures = true;
+        }
+        if (!macEeprom()) {
+            failures = true;
+        }
+        if (!rtc()) {
+            failures = true;
+        }
+        if (!fuelGauge()) {
+            failures = true;
+        }
+        if (!gps()) {
+            failures = true;
+        }
+        if (!bno055()) {
+            failures = true;
+        }
+
+        hw->leds(true);
 
         return !failures;
     }
+
+    bool fuelGauge() {
+        FuelGauge gauge;
+
+        gauge.powerOn();
+
+        if (gauge.version() != 3) {
+            debugfln("test: Gauge FAILED");
+            return true;
+        }
+
+        debugfln("test: Gauge PASSED");
+        return true;
+    }
+
+    bool rtc() {
+        RTC_PCF8523 rtc;
+        if (!rtc.begin()) {
+            debugfln("test: RTC FAILED");
+            return false;
+        }
+        debugfln("test: RTC PASSED");
+        return true;
+    }
+
+    bool macEeprom() {
+        MacEeprom macEeprom;
+        uint8_t id[8] = { 0 };
+
+        auto success = macEeprom.read128bMac(id);
+        if (!success) {
+            debugfln("test: 128bMAC FAILED");
+            return false;
+        }
+
+        debugfln("test: 128bMAC: %02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x", id[0], id[1], id[2], id[3], id[4], id[5], id[6], id[7]);
+
+        debugfln("test: 128bMAC PASSED");
+
+        return success;
+    }
+
 
     void failed() {
         while (true) {
