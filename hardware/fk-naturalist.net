@@ -1,7 +1,7 @@
 (export (version D)
   (design
     (source /home/jlewallen/fieldkit/naturalist/hardware/fk-naturalist.sch)
-    (date "Thu 15 Feb 2018 03:06:28 PM PST")
+    (date "Tue 06 Mar 2018 10:12:50 AM PST")
     (tool "Eeschema 4.0.7-e2-6376~58~ubuntu16.04.1")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
@@ -326,7 +326,7 @@
       (sheetpath (names /) (tstamps /))
       (tstamp 5A5961E2))
     (comp (ref C6)
-      (value "1uF 10V X5R")
+      (value 1uF)
       (footprint RocketScreamKicadLibrary:CAP-0603)
       (fields
         (field (name price) 0.1)
@@ -436,7 +436,7 @@
       (sheetpath (names /) (tstamps /))
       (tstamp 5A5961FB))
     (comp (ref C12)
-      (value "1uF 50V X5R")
+      (value 1uF)
       (footprint RocketScreamKicadLibrary:CAP-0603)
       (fields
         (field (name price) 0.32)
@@ -456,7 +456,7 @@
       (sheetpath (names /) (tstamps /))
       (tstamp 5A596200))
     (comp (ref C19)
-      (value "4.7uF 10V X5R")
+      (value 4.7uF)
       (footprint RocketScreamKicadLibrary:CAP-0603)
       (fields
         (field (name price) 0.71)
@@ -466,7 +466,7 @@
       (sheetpath (names /) (tstamps /))
       (tstamp 5A596202))
     (comp (ref C20)
-      (value "4.7uF 10V X5R")
+      (value 4.7uF)
       (footprint RocketScreamKicadLibrary:CAP-0603)
       (fields
         (field (name price) 0.71)
@@ -476,7 +476,7 @@
       (sheetpath (names /) (tstamps /))
       (tstamp 5A596204))
     (comp (ref C21)
-      (value "1uF 10V X5R")
+      (value 1uF)
       (footprint RocketScreamKicadLibrary:CAP-0603)
       (fields
         (field (name price) 0.1)
@@ -486,7 +486,7 @@
       (sheetpath (names /) (tstamps /))
       (tstamp 5A596209))
     (comp (ref C23)
-      (value "1uF 10V X5R")
+      (value 1uF)
       (footprint RocketScreamKicadLibrary:CAP-0603)
       (fields
         (field (name price) 0.1)
@@ -546,7 +546,7 @@
       (sheetpath (names /) (tstamps /))
       (tstamp 5A596216))
     (comp (ref C14)
-      (value "4.7nF 25V X7R")
+      (value 4.7nF)
       (footprint RocketScreamKicadLibrary:CAP-0603)
       (fields
         (field (name price) 0.1)
@@ -630,7 +630,7 @@
       (sheetpath (names /) (tstamps /))
       (tstamp 5A59623B))
     (comp (ref C10)
-      (value "4.7uF 10V X5R")
+      (value 4.7uF)
       (footprint RocketScreamKicadLibrary:CAP-0603)
       (fields
         (field (name price) 0.71)
@@ -680,7 +680,7 @@
       (sheetpath (names /) (tstamps /))
       (tstamp 5A596246))
     (comp (ref C27)
-      (value "1uF 10V X5R")
+      (value 1uF)
       (footprint RocketScreamKicadLibrary:CAP-0603)
       (fields
         (field (name price) 0.1)
@@ -1047,7 +1047,7 @@
       (sheetpath (names /) (tstamps /))
       (tstamp 5A59628B))
     (comp (ref C25)
-      (value "4.7uF 10V X5R")
+      (value 4.7uF)
       (footprint RocketScreamKicadLibrary:CAP-0603)
       (fields
         (field (name price) 0.71)
@@ -1067,7 +1067,7 @@
       (sheetpath (names /) (tstamps /))
       (tstamp 5A59628D))
     (comp (ref C29)
-      (value "1uF 10V X5R")
+      (value 1uF)
       (footprint RocketScreamKicadLibrary:CAP-0603)
       (fields
         (field (name price) 0.1)
@@ -1925,16 +1925,16 @@
         (pin (num 5) (name VDD) (type input))
         (pin (num 6) (name SDA) (type input)))))
   (libraries
-    (library (logical RocketScreamKicadLibrary)
-      (uri /home/jlewallen/oss/RocketScreamKicadLibrary/RocketScreamKicadLibrary.lib))
-    (library (logical device)
-      (uri /usr/share/kicad/library/device.lib))
     (library (logical fk-naturalist-rescue)
       (uri /home/jlewallen/fieldkit/naturalist/hardware/fk-naturalist-rescue.lib))
-    (library (logical conservify)
-      (uri /home/jlewallen/conservify/kicad/conservify.lib))
     (library (logical conn)
-      (uri /usr/share/kicad/library/conn.lib)))
+      (uri /usr/share/kicad/library/conn.lib))
+    (library (logical device)
+      (uri /usr/share/kicad/library/device.lib))
+    (library (logical RocketScreamKicadLibrary)
+      (uri /home/jlewallen/oss/RocketScreamKicadLibrary/RocketScreamKicadLibrary.lib))
+    (library (logical conservify)
+      (uri /home/jlewallen/conservify/kicad/conservify.lib)))
   (nets
     (net (code 1) (name "Net-(R34-Pad1)")
       (node (ref R34) (pin 1))
