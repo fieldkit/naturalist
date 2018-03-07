@@ -10,6 +10,7 @@
 
 #include "config.h"
 #include "restart_wizard.h"
+#include "hardware.h"
 #include "two_wire.h"
 
 namespace fk {
@@ -130,7 +131,8 @@ private:
     CoreState state{fileSystem.getData()};
     Leds leds;
     NaturalistReadings readings{ state };
-    ReadGPS readGps{state, Hardware::gpsUart};
+    SerialPort gpsPort{ Serial2 };
+    ReadGps readGps{ state, gpsPort };
     PeriodicTask periodics[2] {
         fk::PeriodicTask{ 20 * 1000, readGps },
         fk::PeriodicTask{ 30 * 1000, readings },
