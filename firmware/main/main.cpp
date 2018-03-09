@@ -193,7 +193,6 @@ void NaturalistCoreModule::begin() {
     debugfpln("Core", "Now: %s", nowFormatted.toString());
 
     state.started();
-    readings.setup();
 
     state.attachedModules()[0] = ModuleInfo{
         8,
@@ -219,6 +218,10 @@ void NaturalistCoreModule::begin() {
             {}, {}, {}, {},
         }
     };
+
+    state.doneScanning();
+
+    readings.setup();
 }
 
 void NaturalistCoreModule::run() {
