@@ -1,9 +1,20 @@
 #ifndef FK_CONFIG_H_INCLUDED
 #define FK_CONFIG_H_INCLUDED
 
+#ifndef FK_CONFIG_WIFI_1_SSID
 #define FK_CONFIG_WIFI_1_SSID      ""
+#endif
+
+#ifndef FK_CONFIG_WIFI_1_PASSWORD
 #define FK_CONFIG_WIFI_1_PASSWORD  ""
+#endif
+
+#ifndef FK_CONFIG_WIFI_2_SSID
 #define FK_CONFIG_WIFI_2_SSID      ""
+#endif
+
+#ifndef FK_CONFIG_WIFI_2_PASSWORD
 #define FK_CONFIG_WIFI_2_PASSWORD  ""
+#endif
 
 #endif
