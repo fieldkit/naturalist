@@ -1,7 +1,7 @@
 (export (version D)
   (design
     (source /home/jlewallen/fieldkit/naturalist/hardware/fk-naturalist.sch)
-    (date "Tue 06 Mar 2018 10:12:50 AM PST")
+    (date "Wed 21 Mar 2018 10:20:16 AM PDT")
     (tool "Eeschema 4.0.7-e2-6376~58~ubuntu16.04.1")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
@@ -217,7 +217,7 @@
       (tstamp 5A5961D3))
     (comp (ref J9)
       (value MICRO-USB)
-      (footprint RocketScreamKicadLibrary:MICRO-USB)
+      (footprint conservify:MICRO-USB)
       (fields
         (field (name price) 0.7)
         (field (name spn1) 798-ZX62D-B-5PA830)
@@ -1925,16 +1925,16 @@
         (pin (num 5) (name VDD) (type input))
         (pin (num 6) (name SDA) (type input)))))
   (libraries
+    (library (logical RocketScreamKicadLibrary)
+      (uri /home/jlewallen/oss/RocketScreamKicadLibrary/RocketScreamKicadLibrary.lib))
     (library (logical fk-naturalist-rescue)
       (uri /home/jlewallen/fieldkit/naturalist/hardware/fk-naturalist-rescue.lib))
     (library (logical conn)
       (uri /usr/share/kicad/library/conn.lib))
-    (library (logical device)
-      (uri /usr/share/kicad/library/device.lib))
-    (library (logical RocketScreamKicadLibrary)
-      (uri /home/jlewallen/oss/RocketScreamKicadLibrary/RocketScreamKicadLibrary.lib))
     (library (logical conservify)
-      (uri /home/jlewallen/conservify/kicad/conservify.lib)))
+      (uri /home/jlewallen/conservify/kicad/conservify.lib))
+    (library (logical device)
+      (uri /usr/share/kicad/library/device.lib)))
   (nets
     (net (code 1) (name "Net-(R34-Pad1)")
       (node (ref R34) (pin 1))
