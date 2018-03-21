@@ -6822,7 +6822,7 @@
   (gr_text FIX (at 124.6124 111.2488 270) (layer F.SilkS) (tstamp 5A5D1729)
     (effects (font (size 1 1) (thickness 0.2)))
   )
-  (gr_text v0.7 (at 82.6008 110.6932 180) (layer F.SilkS)
+  (gr_text v0.8 (at 82.6008 110.6932 180) (layer F.SilkS)
     (effects (font (size 1 1) (thickness 0.2)))
   )
   (gr_text CHG (at 95.9104 114.8048 270) (layer F.SilkS) (tstamp 5A5CDB2E)
