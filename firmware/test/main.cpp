@@ -41,7 +41,7 @@ void platformSerial2Begin(int32_t baud) {
 
 class ModuleHardware {
 public:
-    static constexpr uint8_t PIN_FLASH_CS = PIN_LED_TXL;
+    static constexpr uint8_t PIN_FLASH_CS = (26u); // PIN_LED_TXL;
 
 public:
     TwoWire bno055Wire{ &sercom2, 4, 3 };
@@ -189,6 +189,12 @@ public:
     }
 
     bool flashMemory() {
+        #ifdef PIN_LED_TXL
+        debugfln("test: Please undefine PIN_LED_TXL in variant.h, otherwise SerialFlash and other SPI devices may work incorrectly.");
+        #else
+        debugfln("test: PIN_LED_TXL is undefined. Good!");
+        #endif
+
         debugfln("test: Checking flash memory (%d)...", ModuleHardware::PIN_FLASH_CS);
 
         if (!hw->serialFlash.begin(ModuleHardware::PIN_FLASH_CS)) {
@@ -243,7 +249,7 @@ public:
         debugfln("test: Checking SD...");
 
         if (!SD.begin(PIN_SD_CS)) {
-            debugfln("test: SD FAILED");
+            debugfln("test: SD FAILED (Try non-fkfs card?)");
             return false;
         }
 

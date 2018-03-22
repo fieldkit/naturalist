@@ -186,6 +186,8 @@ void NaturalistCoreModule::begin() {
     fk_assert(storage.setup());
 
     delay(100);
+    #else
+    debugfpln("Core", "Serial flash is disabled.");
     #endif
 
     fk_assert(fileSystem.setup());
