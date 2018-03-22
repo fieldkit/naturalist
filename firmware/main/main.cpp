@@ -128,7 +128,9 @@ private:
     FileSystem fileSystem{ bus, dataPool };
     Watchdog watchdog{ leds };
     Power power{ state };
-    CoreState state{fileSystem.getData()};
+    SerialFlashChip serialFlash;
+    FlashStorage storage{ serialFlash };
+    CoreState state{ storage, fileSystem.getData() };
     Leds leds;
     NaturalistReadings readings{ state };
     SerialPort gpsPort{ Serial2 };
@@ -178,6 +180,13 @@ void NaturalistCoreModule::begin() {
     debugfpln("Core", "Hash(%s)", firmware_version_get());
 
     delay(10);
+
+    #ifndef FK_DISABLE_FLASH
+    fk_assert(serialFlash.begin(Hardware::FLASH_PIN_CS));
+    fk_assert(storage.setup());
+
+    delay(100);
+    #endif
 
     fk_assert(fileSystem.setup());
 
