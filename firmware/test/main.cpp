@@ -41,7 +41,7 @@ void platformSerial2Begin(int32_t baud) {
 
 class ModuleHardware {
 public:
-    static constexpr uint8_t PIN_FLASH_CS = 5;
+    static constexpr uint8_t PIN_FLASH_CS = PIN_LED_TXL;
 
 public:
     TwoWire bno055Wire{ &sercom2, 4, 3 };
@@ -189,14 +189,14 @@ public:
     }
 
     bool flashMemory() {
-        debugfln("test: Checking flash memory...");
+        debugfln("test: Checking flash memory (%d)...", ModuleHardware::PIN_FLASH_CS);
 
         if (!hw->serialFlash.begin(ModuleHardware::PIN_FLASH_CS)) {
             debugfln("test: Flash memory FAILED");
             return false;
         }
 
-        uint8_t buffer[256];
+        uint8_t buffer[256] = { 0 };
         hw->serialFlash.readID(buffer);
         if (buffer[0] == 0) {
             debugfln("test: Flash memory FAILED");
@@ -207,6 +207,32 @@ public:
         if (chipSize == 0) {
             debugfln("test: Flash memory FAILED");
             return false;
+        }
+
+        if (chipSize > 0) {
+            debugfln("test: Erasing ALL Flash Memory (%lu)", chipSize);
+
+            hw->serialFlash.eraseAll();
+
+            delay(1000);
+
+            uint32_t dotMillis = millis();
+            uint32_t periods = 0;
+            while (hw->serialFlash.ready() == false) {
+                if (millis() - dotMillis > 1000) {
+                    dotMillis = dotMillis + 1000;
+                    debugf(".");
+                    periods++;
+                    if (periods >= 60) {
+                        debugfln("");
+                        periods = 0;
+                    }
+                }
+            }
+            if (periods > 0) {
+                debugfln("");
+            }
+            debugfln("test: Erase completed");
         }
 
         debugfln("test: Flash memory PASSED");
