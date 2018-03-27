@@ -124,6 +124,8 @@ private:
     StaticPool<384> modulesPool{"ModulesPool"};
     StaticPool<128> dataPool{"DataPool"};
 
+    Supervisor<5> supervisor;
+
     TwoWireBus bus{ Wire };
     FileSystem fileSystem{ bus, dataPool };
     Watchdog watchdog{ leds };
@@ -139,10 +141,11 @@ private:
         fk::PeriodicTask{ 20 * 1000, readGps },
         fk::PeriodicTask{ 30 * 1000, readings },
     };
-    Scheduler scheduler{state, clock, periodics};
+    Scheduler scheduler{state, clock, supervisor, periodics};
     LiveData liveData{bus, state, leds, modulesPool};
-    AppServicer appServicer{bus, liveData, state, scheduler, fileSystem.getReplies(), appPool};
-    Wifi wifi{state, appServicer};
+    WifiConnection connection;
+    AppServicer appServicer{bus, liveData, state, scheduler, fileSystem.getReplies(), connection, appPool};
+    Wifi wifi{state, connection, appServicer, supervisor};
     Discovery discovery{ bus, wifi };
 
 public:
@@ -241,19 +244,22 @@ void NaturalistCoreModule::run() {
 
     wifi.begin();
 
-    scheduler.push(ntp);
+    auto tasks = to_parallel_task_collection(
+        &status,
+        &leds,
+        &power,
+        &watchdog,
+        &liveData,
+        &scheduler,
+        &wifi,
+        &discovery
+        );
+
+    supervisor.push(tasks);
+    supervisor.push(ntp);
 
     while (true) {
-        status.task();
-        leds.task();
-        power.task();
-        watchdog.task();
-        liveData.task();
-        if (liveData.isIdle()) {
-            scheduler.task();
-        }
-        wifi.task();
-        discovery.task();
+        supervisor.tick();
     }
 }
 
