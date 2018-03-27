@@ -142,7 +142,7 @@ private:
         fk::PeriodicTask{ 30 * 1000, readings },
     };
     Scheduler scheduler{state, clock, supervisor, periodics};
-    LiveData liveData{bus, state, leds, modulesPool};
+    LiveData liveData{readings, state};
     WifiConnection connection;
     AppServicer appServicer{bus, liveData, state, scheduler, fileSystem.getReplies(), connection, appPool};
     Wifi wifi{state, connection, appServicer, supervisor};
