@@ -14,18 +14,18 @@ void NaturalistReadings::setup() {
     bno055Wire.begin();
 
     if (!sht31Sensor.begin()) {
-        debugfln("SHT31 FAILED");
+        warn("SHT31 FAILED");
     }
     if (!mpl3115a2Sensor.begin()) {
-        debugfln("MPL3115A2 FAILED");
+        warn("MPL3115A2 FAILED");
     }
 
     if (!tsl2591Sensor.begin()) {
-        debugfln("TSL25911FN FAILED");
+        warn("TSL25911FN FAILED");
     }
 
     if (!bnoSensor.begin()) {
-        debugfln("BNO055 FAILED");
+        warn("BNO055 FAILED");
     } else {
         bnoSensor.setExtCrystalUse(true);
     }
