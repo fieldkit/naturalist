@@ -209,6 +209,7 @@ void NaturalistCoreModule::begin() {
     state.started();
 
     state.attachedModules()[0] = ModuleInfo{
+        fk_module_ModuleType_SENSOR,
         8,
         12,
         "FkNat",
