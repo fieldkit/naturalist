@@ -245,6 +245,8 @@ void NaturalistCoreModule::run() {
 
     wifi.begin();
 
+    supervisor.append(ntp);
+
     auto tasks = to_parallel_task_collection(
         &status,
         &leds,
@@ -253,14 +255,12 @@ void NaturalistCoreModule::run() {
         &liveData,
         &scheduler,
         &wifi,
-        &discovery
-        );
-
-    supervisor.push(tasks);
-    supervisor.push(ntp);
+        &discovery,
+        &supervisor
+    );
 
     while (true) {
-        supervisor.tick();
+        tasks.task();
     }
 }
 
