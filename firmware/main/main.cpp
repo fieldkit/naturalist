@@ -144,7 +144,8 @@ private:
     Scheduler scheduler{state, clock, supervisor, periodics};
     LiveData liveData{readings, state};
     WifiConnection connection;
-    AppServicer appServicer{bus, liveData, state, scheduler, fileSystem.getReplies(), connection, appPool};
+    ModuleCommunications moduleCommunications{ bus, supervisor, modulesPool };
+    AppServicer appServicer{bus, liveData, state, scheduler, fileSystem.getReplies(), connection, moduleCommunications, appPool};
     Wifi wifi{state, connection, appServicer, supervisor};
     Discovery discovery{ bus, wifi };
 
