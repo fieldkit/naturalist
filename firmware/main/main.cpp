@@ -12,6 +12,7 @@
 #include "restart_wizard.h"
 #include "hardware.h"
 #include "two_wire.h"
+#include "seed.h"
 
 namespace fk {
 
@@ -183,6 +184,7 @@ void NaturalistCoreModule::begin() {
     debugfpln("Core", "Serial(%s)", serialNumber.toString());
     debugfpln("Core", "DeviceId(%s)", deviceId.toString());
     debugfpln("Core", "Hash(%s)", firmware_version_get());
+    debugfpln("Core", "Build(%s)", firmware_build_get());
 
     delay(10);
 
@@ -286,6 +288,7 @@ void setup() {
     }
 
     firmware_version_set(FIRMWARE_GIT_HASH);
+    firmware_build_set(FIRMWARE_BUILD);
 
     debugfpln("Core", "Starting");
     debugfpln("Core", "Configured with UART fallback.");
