@@ -19,7 +19,6 @@ public:
 public:
     ModuleReadingStatus beginReading(PendingSensorReading &pending) override;
     ModuleReadingStatus readingStatus(PendingSensorReading &pending) override;
-    void done(Task &task) override;
 
 };
 
@@ -29,18 +28,14 @@ WeatherModule::WeatherModule(ModuleInfo &info, NaturalistReadings &readings) :
 
 ModuleReadingStatus WeatherModule::beginReading(PendingSensorReading &pending) {
     readings->begin(pending);
-    push(delay); // This is to give us time to reply with the backoff. Should be avoidable?
-    push(*readings);
+    taskQueue().append(delay); // This is to give us time to reply with the backoff. Should be avoidable?
+    taskQueue().append(*readings);
 
     return ModuleReadingStatus{ 5000 };
 }
 
 ModuleReadingStatus WeatherModule::readingStatus(PendingSensorReading &pending) {
     return ModuleReadingStatus{};
-}
-
-void WeatherModule::done(Task &task) {
-    resume();
 }
 
 }
