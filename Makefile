@@ -1,6 +1,5 @@
 BUILD=build
 SHELL := /bin/bash
-BUILD_TAG ?= $(shell hostname)
 
 default: all
 
@@ -14,13 +13,10 @@ all: $(BUILD) firmware/main/config.h gitdeps seed
 	cd $(BUILD) && cmake ../
 	cd $(BUILD) && make
 
-seed: GIT_HASH=$(shell git log -1 --pretty=format:"%H")
 seed:
 	echo "// Generated before compile time to seed the RNG." > firmware/main/seed.h
 	echo "" >> firmware/main/seed.h
 	echo "#define RANDOM_SEED $$RANDOM" >> firmware/main/seed.h
-	echo "#define FIRMWARE_GIT_HASH \"$(GIT_HASH)\"" >> firmware/main/seed.h
-	echo "#define FIRMWARE_BUILD \"$(BUILD_TAG)\"" >> firmware/main/seed.h
 
 gitdeps:
 	simple-deps --config firmware/test/arduino-libraries
