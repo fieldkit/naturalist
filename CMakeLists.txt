@@ -1,4 +1,4 @@
-project(WEATHER)
+project(naturalist)
 cmake_minimum_required(VERSION 2.6)
 
 set(ARDUINO_IDE "${CMAKE_CURRENT_SOURCE_DIR}/../arduino-1.8.3") 
