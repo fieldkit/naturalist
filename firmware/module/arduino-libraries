@@ -3,6 +3,7 @@
 ../app-protocol
 ../data-protocol
 ../fkfs
+../lwstreams
 https://github.com/nanopb/nanopb.git
 https://github.com/arduino-libraries/RTCZero.git
 https://github.com/adafruit/RTClib.git 82d00a1a15bcf738b001e42bf26a3d1f1a15be32
