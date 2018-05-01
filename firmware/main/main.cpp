@@ -181,10 +181,10 @@ void NaturalistCoreModule::begin() {
     fk_assert(deviceId.initialize(bus));
 
     SerialNumber serialNumber;
-    debugfpln("Core", "Serial(%s)", serialNumber.toString());
-    debugfpln("Core", "DeviceId(%s)", deviceId.toString());
-    debugfpln("Core", "Hash(%s)", firmware_version_get());
-    debugfpln("Core", "Build(%s)", firmware_build_get());
+    loginfof("Core", "Serial(%s)", serialNumber.toString());
+    loginfof("Core", "DeviceId(%s)", deviceId.toString());
+    loginfof("Core", "Hash(%s)", firmware_version_get());
+    loginfof("Core", "Build(%s)", firmware_build_get());
 
     delay(10);
 
@@ -194,7 +194,7 @@ void NaturalistCoreModule::begin() {
 
     delay(100);
     #else
-    debugfpln("Core", "Serial flash is disabled.");
+    loginfof("Core", "Serial flash is disabled.");
     #endif
 
     fk_assert(fileSystem.setup());
@@ -208,7 +208,7 @@ void NaturalistCoreModule::begin() {
     clock.begin();
 
     FormattedTime nowFormatted{ clock.now() };
-    debugfpln("Core", "Now: %s", nowFormatted.toString());
+    loginfof("Core", "Now: %s", nowFormatted.toString());
 
     state.started();
 
@@ -284,14 +284,14 @@ void setup() {
         // The call to end here seems to free up some memory.
         Serial.end();
         Serial5.begin(115200);
-        debug_uart_set(Serial5);
+        log_uart_set(Serial5);
     }
 
     firmware_version_set(FIRMWARE_GIT_HASH);
     firmware_build_set(FIRMWARE_BUILD);
 
-    debugfpln("Core", "Starting");
-    debugfpln("Core", "Configured with UART fallback.");
+    loginfof("Core", "Starting");
+    loginfof("Core", "Configured with UART fallback.");
 
     fk::restartWizard.startup();
 
