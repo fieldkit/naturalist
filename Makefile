@@ -9,9 +9,11 @@ $(BUILD):
 firmware/main/config.h:
 	cp firmware/main/config.h.template firmware/main/config.h
 
-all: $(BUILD) firmware/main/config.h gitdeps seed
-	cd $(BUILD) && cmake ../
+all: cmake firmware/main/config.h gitdeps seed
 	cd $(BUILD) && make
+
+cmake: $(BUILD)
+	cd $(BUILD) && cmake ../
 
 seed:
 	echo "// Generated before compile time to seed the RNG." > firmware/main/seed.h

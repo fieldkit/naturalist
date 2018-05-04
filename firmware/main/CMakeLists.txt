@@ -14,6 +14,13 @@ set(ARDUINO_BOOTLOADER "${CMAKE_CURRENT_SOURCE_DIR}/flash_with_bootloader_and_no
 add_definitions(-DFK_NATURALIST)
 add_definitions(-DFK_CORE)
 
+option(DISABLE_RADIO "Disable radio.")
+if(DISABLE_RADIO)
+else()
+  target_compile_definitions(arduino_zero_firmware-common_src PUBLIC -DFK_ENABLE_RADIO)
+  add_definitions(-DFK_ENABLE_RADIO)
+endif(DISABLE_RADIO)
+
 target_compile_definitions(arduino_zero_firmware-common_src PUBLIC -DFK_NATURALIST -DFK_CORE)
 
 # Get the current working branch

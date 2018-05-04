@@ -3,9 +3,9 @@
 ../app-protocol
 ../data-protocol
 ../fkfs
+../simple-lora-comms
 ../arduino-logging
 ../lwstreams
-../simple-lora-comms
 https://github.com/nanopb/nanopb.git 821747f0b5ef1034335410f5e3e82c87f7678c2a
 https://github.com/arduino-libraries/RTCZero.git 618d53117e94c85141b362c121497c0acf07ce29
 https://github.com/adafruit/RTClib.git 82d00a1a15bcf738b001e42bf26a3d1f1a15be32

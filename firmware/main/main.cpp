@@ -13,6 +13,7 @@
 #include "hardware.h"
 #include "two_wire.h"
 #include "seed.h"
+#include "radio_service.h"
 
 namespace fk {
 
@@ -139,9 +140,15 @@ private:
     NaturalistReadings readings{ state };
     SerialPort gpsPort{ Serial2 };
     ReadGps readGps{ state, gpsPort };
-    PeriodicTask periodics[2] {
+    NoopTask noop;
+    PeriodicTask periodics[3] {
         fk::PeriodicTask{ 20 * 1000, readGps },
         fk::PeriodicTask{ 30 * 1000, readings },
+        #ifdef FK_ENABLE_RADIO
+        fk::PeriodicTask{ 60 * 1000, sendDataToLoraGateway  },
+        #else
+        fk::PeriodicTask{ 60 * 1000, noop },
+        #endif
     };
     Scheduler scheduler{state, clock, background, periodics};
     LiveData liveData{readings, state};
@@ -150,6 +157,11 @@ private:
     AppServicer appServicer{bus, liveData, state, scheduler, fileSystem.getReplies(), connection, moduleCommunications, appPool};
     Wifi wifi{state, connection, appServicer, servicing};
     Discovery discovery{ bus, wifi };
+
+    #ifdef FK_ENABLE_RADIO
+    RadioService radioService;
+    SendDataToLoraGateway sendDataToLoraGateway{ radioService, fileSystem, 0 };
+    #endif
 
 public:
     void begin();
@@ -195,6 +207,15 @@ void NaturalistCoreModule::begin() {
     delay(100);
     #else
     loginfof("Core", "Serial flash is disabled.");
+    #endif
+
+    #ifdef FK_ENABLE_RADIO
+    if (!radioService.setup(deviceId)) {
+        loginfof("Core", "Radio service unavailable");
+    }
+    else {
+        loginfof("Core", "Radio service ready");
+    }
     #endif
 
     fk_assert(fileSystem.setup());
@@ -259,6 +280,9 @@ void NaturalistCoreModule::run() {
         &liveData,
         &scheduler,
         &wifi,
+        #ifdef FK_ENABLE_RADIO
+        &radioService,
+        #endif
         &discovery,
         &background,
         &servicing
