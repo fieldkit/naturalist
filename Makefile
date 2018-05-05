@@ -12,7 +12,7 @@ firmware/main/config.h:
 all: cmake firmware/main/config.h gitdeps seed
 	cd $(BUILD) && make
 
-cmake: $(BUILD)
+cmake: $(BUILD) gitdeps
 	cd $(BUILD) && cmake ../
 
 seed:
