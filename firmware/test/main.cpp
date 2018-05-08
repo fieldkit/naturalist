@@ -4,6 +4,7 @@
 #include <cstdarg>
 #include <FuelGauge.h>
 #include <WiFi101.h>
+#include <I2S.h>
 
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BNO055.h>
@@ -189,6 +190,18 @@ public:
         return true;
     }
 
+    bool sph0645() {
+        debugfln("test: SPH0645 Checking...");
+
+        if (!I2S.begin(I2S_PHILIPS_MODE, 16000, 32)) {
+            debugfln("test: SPH0645 FAILED");
+            return false;
+        }
+
+        debugfln("test: SPH0645 PASSED");
+        return true;
+    }
+
     bool flashMemory() {
         #ifdef PIN_LED_TXL
         debugfln("test: Please undefine PIN_LED_TXL in variant.h, otherwise SerialFlash and other SPI devices may work incorrectly.");
@@ -346,6 +359,9 @@ public:
             failures = true;
         }
         if (!sht31()) {
+            failures = true;
+        }
+        if (!sph0645()) {
             failures = true;
         }
 

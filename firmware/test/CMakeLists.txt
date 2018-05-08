@@ -7,6 +7,7 @@ set(LIBRARIES
   Wire
   SPI
   SD
+  I2S
 )
 
 include_directories(./)
