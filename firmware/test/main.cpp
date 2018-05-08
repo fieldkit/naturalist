@@ -4,7 +4,6 @@
 #include <cstdarg>
 #include <FuelGauge.h>
 #include <WiFi101.h>
-#include <SD.h>
 
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BNO055.h>
@@ -14,6 +13,8 @@
 #include <Adafruit_SHT31.h>
 #include <SerialFlash.h>
 #include <RTClib.h>
+
+#include <fkfs.h>
 
 #include "debug.h"
 
@@ -247,9 +248,19 @@ public:
 
     bool sdCard() {
         debugfln("test: Checking SD...");
+        digitalWrite(PIN_SD_CS, HIGH);
+        digitalWrite(PIN_WINC_CS, HIGH);
+        digitalWrite(ModuleHardware::PIN_FLASH_CS, HIGH);
 
-        if (!SD.begin(PIN_SD_CS)) {
-            debugfln("test: SD FAILED (Try non-fkfs card?)");
+        fkfs_t fs = { 0 };
+
+        if (!fkfs_create(&fs)) {
+            debugfln("test: SD FAILED");
+            return false;
+        }
+
+        if (!sd_raw_initialize(&fs.sd, PIN_SD_CS)) {
+            debugfln("test: SD FAILED");
             return false;
         }
 
