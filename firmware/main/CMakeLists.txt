@@ -1,6 +1,4 @@
-set(SOURCE_FILES
-  main.cpp
-)
+file(GLOB SOURCE_FILES *.cpp)
 
 set(LIBRARIES
   Wire
