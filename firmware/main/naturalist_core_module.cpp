@@ -70,7 +70,7 @@ void NaturalistCoreModule::begin() {
     state.attachedModules()[0] = ModuleInfo{
         fk_module_ModuleType_SENSOR,
         8,
-        16,
+        18,
         "FkNat",
         {
             {"temp_1", "°C",},
@@ -86,6 +86,8 @@ void NaturalistCoreModule::begin() {
             {"imu_orien_y", ""},
             {"imu_orien_z", ""},
             {"audio_rms_avg", ""},
+            {"audio_rms_min", ""},
+            {"audio_rms_max", ""},
             {"audio_dbfs_avg", ""},
             {"audio_dbfs_min", ""},
             {"audio_dbfs_max", ""},
@@ -94,7 +96,7 @@ void NaturalistCoreModule::begin() {
             {}, {}, {}, {},
             {}, {}, {}, {},
             {}, {}, {}, {},
-            {}, {}, {}, {}
+            {}, {}, {}, {}, {}, {}
         }
     };
 
