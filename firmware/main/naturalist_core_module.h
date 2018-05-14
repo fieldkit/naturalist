@@ -28,9 +28,16 @@ private:
     SerialPort gpsPort{ Serial2 };
     ReadGps readGps{ state, gpsPort };
     NoopTask noop;
-    PeriodicTask periodics[3] {
+
+    HttpTransmissionConfig transmissionConfig = {
+        .streamUrl = API_INGESTION_STREAM,
+    };
+    TransmitAllFilesTask transmitAllFilesTask{background, fileSystem, state, wifi, transmissionConfig};
+
+    PeriodicTask periodics[4] {
         fk::PeriodicTask{ 20 * 1000, readGps },
         fk::PeriodicTask{ 30 * 1000, readings },
+        fk::PeriodicTask{ 60 * 1000, transmitAllFilesTask },
         #ifdef FK_ENABLE_RADIO
         fk::PeriodicTask{ 60 * 1000, sendDataToLoraGateway  },
         #else
