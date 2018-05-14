@@ -3,6 +3,7 @@ file(GLOB SOURCE_FILES *.cpp)
 set(LIBRARIES
   Wire
   SPI
+  I2S
 )
 
 include(BuildInfo)

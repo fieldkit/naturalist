@@ -1,8 +1,18 @@
+#include <math.h>
+
 #include "readings.h"
 
 namespace fk {
 
 void NaturalistReadings::setup() {
+    if (!amplitudeAnalyzer.input(AudioInI2S)) {
+        log("Amplitude Analyzer failed");
+    }
+    else {
+        log("Amplitude Analyzer ready.");
+        hasAudioAnalyzer = true;
+    }
+
     Wire.begin();
 
     if (!sht31Sensor.begin()) {
@@ -16,13 +26,16 @@ void NaturalistReadings::setup() {
         log("TSL25911FN FAILED");
     }
 
-    bno055Wire.begin();
-
-    if (!bnoSensor.begin()) {
+    if (!bno055Wire.begin()) {
         log("BNO055 FAILED");
-    } else {
-        hasBno055 = true;
-        bnoSensor.setExtCrystalUse(true);
+    }
+    else {
+        if (!bnoSensor.begin()) {
+            log("BNO055 FAILED");
+        } else {
+            hasBno055 = true;
+            bnoSensor.setExtCrystalUse(true);
+        }
     }
 }
 
@@ -30,7 +43,41 @@ void NaturalistReadings::enqueued() {
 }
 
 TaskEval NaturalistReadings::task() {
-    log("Ready!");
+    constexpr uint32_t AudioSamplingDuration = 2000;
+
+    log("Ready, listening...");
+
+    auto numberOfSamples = 0;
+    auto total = 0.0f;
+    auto minimum = 0.0f;
+    auto maximum = 0.0f;
+    auto start = millis();
+    while (millis() - start < AudioSamplingDuration) {
+        if (amplitudeAnalyzer.available()) {
+            auto amplitude = amplitudeAnalyzer.read();
+            if (amplitude > 0) {
+                if (numberOfSamples == 0) {
+                    minimum = amplitude;
+                    maximum = amplitude;
+                }
+                else {
+                    if (maximum < amplitude) {
+                        maximum = amplitude;
+                    }
+                    if (minimum > amplitude) {
+                        minimum = amplitude;
+                    }
+                }
+                total += amplitude;
+                numberOfSamples++;
+            }
+        }
+    }
+
+    auto audioRmsAvg = total / numberOfSamples;
+    auto audioDbfsAvg = 20 * log10(audioRmsAvg);
+    auto audioDbfsMin = 20 * log10(minimum);
+    auto audioDbfsMax = 20 * log10(maximum);
 
     auto shtTemperature = sht31Sensor.readTemperature();
     auto shtHumidity = sht31Sensor.readHumidity();
@@ -66,6 +113,10 @@ TaskEval NaturalistReadings::task() {
         event.orientation.x,
         event.orientation.y,
         event.orientation.z,
+        audioRmsAvg,
+        audioDbfsAvg,
+        audioDbfsMin,
+        audioDbfsMax
     };
     auto time = clock.getTime();
     for (auto i = 0; i < sizeof(values) / sizeof(float); ++i) {
@@ -80,6 +131,8 @@ TaskEval NaturalistReadings::task() {
     log("Sensors: %fC %f%%, %fC %fpa %f\"/Hg %fm", shtTemperature, shtHumidity, mplTempCelsius, pressurePascals, pressureInchesMercury, altitudeMeters);
     log("Sensors: ir(%lu) full(%lu) visible(%lu) lux(%f)", ir, full, full - ir, lux);
     log("Sensors: cal(%d, %d, %d, %d) xyz(%f, %f, %f)", system, gyro, accel, mag, event.orientation.x, event.orientation.y, event.orientation.z);
+    log("Sensors: RMS: min=%f max=%f avg=%f range=%f (%d samples)", minimum, maximum, maximum - minimum, audioRmsAvg, numberOfSamples);
+    log("Sensors: dbfs: min=%f max=%f avg=%f", audioDbfsMin, audioDbfsMax, audioDbfsAvg);
 
     return TaskEval::done();
 }

@@ -20,7 +20,9 @@ void setup() {
         log_uart_set(Serial5);
     }
 
+    #ifdef RANDOM_SEED
     randomSeed(RANDOM_SEED);
+    #endif
     firmware_version_set(FIRMWARE_GIT_HASH);
     firmware_build_set(FIRMWARE_BUILD);
 

@@ -13,6 +13,12 @@ void NaturalistCoreModule::begin() {
     digitalWrite(Hardware::RFM95_PIN_CS, HIGH);
     digitalWrite(Hardware::FLASH_PIN_CS, HIGH);
 
+    // This only works if I do this before we initialize the WDT, for some
+    // reason. Not a huge priority to fix but I'd like to understand why
+    // eventually.
+    // 44100
+    fk_assert(AudioInI2S.begin(8000, 32));
+
     leds.setup();
     watchdog.setup();
     bus.begin();
@@ -64,7 +70,7 @@ void NaturalistCoreModule::begin() {
     state.attachedModules()[0] = ModuleInfo{
         fk_module_ModuleType_SENSOR,
         8,
-        12,
+        16,
         "FkNat",
         {
             {"temp_1", "°C",},
@@ -79,11 +85,16 @@ void NaturalistCoreModule::begin() {
             {"imu_orien_x", ""},
             {"imu_orien_y", ""},
             {"imu_orien_z", ""},
+            {"audio_rms_avg", ""},
+            {"audio_dbfs_avg", ""},
+            {"audio_dbfs_min", ""},
+            {"audio_dbfs_max", ""},
         },
         {
             {}, {}, {}, {},
             {}, {}, {}, {},
             {}, {}, {}, {},
+            {}, {}, {}, {}
         }
     };
 
