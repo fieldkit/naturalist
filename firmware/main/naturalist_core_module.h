@@ -37,7 +37,7 @@ private:
     PeriodicTask periodics[4] {
         fk::PeriodicTask{ 20 * 1000, readGps },
         fk::PeriodicTask{ 30 * 1000, readings },
-        fk::PeriodicTask{ 60 * 1000, transmitAllFilesTask },
+        fk::PeriodicTask{ 60 * 1000 * 5, transmitAllFilesTask },
         #ifdef FK_ENABLE_RADIO
         fk::PeriodicTask{ 60 * 1000, sendDataToLoraGateway  },
         #else
