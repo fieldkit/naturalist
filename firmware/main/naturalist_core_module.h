@@ -30,7 +30,7 @@ private:
     NoopTask noop;
 
     HttpTransmissionConfig transmissionConfig = {
-        .streamUrl = API_INGESTION_STREAM,
+        .streamUrl = WifiApiUrlIngestionStream,
     };
     TransmitAllFilesTask transmitAllFilesTask{background, fileSystem, state, wifi, transmissionConfig};
 
