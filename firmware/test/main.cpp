@@ -340,9 +340,6 @@ public:
 
     bool check() {
         auto failures = false;
-        if (!flashMemory()) {
-            failures = true;
-        }
         if (!macEeprom()) {
             failures = true;
         }
@@ -364,11 +361,12 @@ public:
         if (!sph0645()) {
             failures = true;
         }
-
         if (!bno055()) {
             failures = true;
         }
-
+        if (!flashMemory()) {
+            failures = true;
+        }
         if (!gps()) {
             failures = true;
         }
