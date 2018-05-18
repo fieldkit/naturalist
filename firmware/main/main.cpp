@@ -3,6 +3,7 @@
 #include "config.h"
 #include "restart_wizard.h"
 #include "naturalist_core_module.h"
+#include "hardware.h"
 
 extern "C" {
 
@@ -27,6 +28,12 @@ void setup() {
     firmware_build_set(FIRMWARE_BUILD);
 
     loginfof("Core", "Starting");
+
+    pinMode(fk::Hardware::PIN_PERIPH_ENABLE, OUTPUT);
+    digitalWrite(fk::Hardware::PIN_PERIPH_ENABLE, LOW);
+    delay(100);
+    digitalWrite(fk::Hardware::PIN_PERIPH_ENABLE, HIGH);
+
     loginfof("Core", "Configured with UART fallback.");
 
     fk::restartWizard.startup();

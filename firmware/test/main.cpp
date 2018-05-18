@@ -44,6 +44,7 @@ void platformSerial2Begin(int32_t baud) {
 class ModuleHardware {
 public:
     static constexpr uint8_t PIN_FLASH_CS = (26u); // PIN_LED_TXL;
+    static constexpr uint8_t PIN_PERIPH_ENABLE = (25u); // PIN_LED_RXL;
 
 public:
     TwoWire bno055Wire{ &sercom2, 4, 3 };
@@ -339,6 +340,15 @@ public:
     }
 
     bool check() {
+        #ifdef PIN_LED_RXL
+        debugfln("test: Please undefine PIN_LED_RXL in variant.h.");
+        #else
+        debugfln("test: PIN_LED_RXL is undefined. Good!");
+        #endif
+
+        pinMode(ModuleHardware::PIN_PERIPH_ENABLE, OUTPUT);
+        digitalWrite(ModuleHardware::PIN_PERIPH_ENABLE, HIGH);
+
         auto failures = false;
         if (!macEeprom()) {
             failures = true;
@@ -364,9 +374,6 @@ public:
         if (!bno055()) {
             failures = true;
         }
-        if (!flashMemory()) {
-            failures = true;
-        }
         if (!gps()) {
             failures = true;
         }
@@ -374,6 +381,9 @@ public:
             failures = true;
         }
         if (!wifi()) {
+            failures = true;
+        }
+        if (!flashMemory()) {
             failures = true;
         }
 
