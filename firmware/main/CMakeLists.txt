@@ -7,9 +7,10 @@ set(LIBRARIES
 )
 
 include(BuildInfo)
-include(RandomDefine)
+include(RandomSeed)
 
 include_directories(./)
+include_directories(${RANDOM_SEED_INCLUDE})
 
 set(ARDUINO_BOOTLOADER "${CMAKE_CURRENT_SOURCE_DIR}/flash_with_bootloader_and_noinit.ld")
 
