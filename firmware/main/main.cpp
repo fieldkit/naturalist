@@ -4,6 +4,7 @@
 #include "restart_wizard.h"
 #include "naturalist_core_module.h"
 #include "hardware.h"
+#include "seed.h"
 
 extern "C" {
 
