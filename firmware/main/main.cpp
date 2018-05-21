@@ -22,13 +22,14 @@ void setup() {
         log_uart_set(Serial5);
     }
 
+    loginfof("Core", "Starting");
+
     #ifdef RANDOM_SEED
     randomSeed(RANDOM_SEED);
+    loginfof("Core", "Seeded: %d", RANDOM_SEED);
     #endif
     firmware_version_set(FIRMWARE_GIT_HASH);
     firmware_build_set(FIRMWARE_BUILD);
-
-    loginfof("Core", "Starting");
 
     pinMode(fk::Hardware::PIN_PERIPH_ENABLE, OUTPUT);
     digitalWrite(fk::Hardware::PIN_PERIPH_ENABLE, LOW);
@@ -52,7 +53,8 @@ void setup() {
 
     fk::NaturalistCoreModule coreModule;
     coreModule.begin();
-    coreModule.getState().configure(fk::NetworkSettings{ false, networks });
+    auto startupConfig = fk::StartupConfigurer{ coreModule.getState() };
+    startupConfig.overrideEmptyNetworkConfigurations(fk::NetworkSettings{ false, networks });
     coreModule.run();
 }
 
