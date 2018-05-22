@@ -74,10 +74,10 @@ TaskEval NaturalistReadings::task() {
         }
     }
 
-    auto audioRmsAvg = total / numberOfSamples;
-    auto audioDbfsAvg = 20 * log10(audioRmsAvg);
-    auto audioDbfsMin = 20 * log10(audioRmsMin);
-    auto audioDbfsMax = 20 * log10(audioRmsMax);
+    auto audioRmsAvg = total / (float)numberOfSamples;
+    auto audioDbfsAvg = 20.0f * log10(audioRmsAvg);
+    auto audioDbfsMin = 20.0f * log10(audioRmsMin);
+    auto audioDbfsMax = 20.0f * log10(audioRmsMax);
 
     auto shtTemperature = sht31Sensor.readTemperature();
     auto shtHumidity = sht31Sensor.readHumidity();
@@ -116,12 +116,12 @@ TaskEval NaturalistReadings::task() {
         audioRmsAvg,
         audioRmsMin,
         audioRmsMax,
-        audioDbfsAvg,
-        audioDbfsMin,
-        audioDbfsMax
+        (float)audioDbfsAvg,
+        (float)audioDbfsMin,
+        (float)audioDbfsMax
     };
     auto time = clock.getTime();
-    for (auto i = 0; i < sizeof(values) / sizeof(float); ++i) {
+    for (size_t i = 0; i < sizeof(values) / sizeof(float); ++i) {
         IncomingSensorReading reading{
             (uint8_t)i,
             time,
