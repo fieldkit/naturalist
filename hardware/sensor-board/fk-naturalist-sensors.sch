@@ -31,7 +31,7 @@ LIBS:opto
 LIBS:atmel
 LIBS:contrib
 LIBS:valves
-LIBS:conservify
+LIBS:RocketScreamKicadLibrary
 LIBS:fk-naturalist-sensors-cache
 EELAYER 25 0
 EELAYER END
@@ -627,4 +627,37 @@ Wire Notes Line
 	8900 5100 6900 5100
 Wire Notes Line
 	6900 5100 6900 3400
+$Comp
+L FIDUCIAL M5
+U 1 1 5B243ED0
+P 7200 2350
+F 0 "M5" H 7200 2500 60  0000 C CNN
+F 1 "FIDUCIAL" H 7200 2125 60  0000 C CNN
+F 2 "Fiducials:Fiducial_0.75mm_Dia_1.5mm_Outer" H 7200 2050 60  0001 C CNN
+F 3 "" H 7200 2350 60  0000 C CNN
+	1    7200 2350
+	1    0    0    -1  
+$EndComp
+$Comp
+L FIDUCIAL M6
+U 1 1 5B243F25
+P 7700 2350
+F 0 "M6" H 7700 2500 60  0000 C CNN
+F 1 "FIDUCIAL" H 7700 2125 60  0000 C CNN
+F 2 "Fiducials:Fiducial_0.75mm_Dia_1.5mm_Outer" H 7700 2050 60  0001 C CNN
+F 3 "" H 7700 2350 60  0000 C CNN
+	1    7700 2350
+	1    0    0    -1  
+$EndComp
+$Comp
+L FIDUCIAL M7
+U 1 1 5B243F74
+P 8200 2350
+F 0 "M7" H 8200 2500 60  0000 C CNN
+F 1 "FIDUCIAL" H 8200 2125 60  0000 C CNN
+F 2 "Fiducials:Fiducial_0.75mm_Dia_1.5mm_Outer" H 8200 2050 60  0001 C CNN
+F 3 "" H 8200 2350 60  0000 C CNN
+	1    8200 2350
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC

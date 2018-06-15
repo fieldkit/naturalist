@@ -1,4 +1,4 @@
-update=Wed 13 Jun 2018 12:41:58 PM PDT
+update=Friday, June 15, 2018 'PMt' 02:11:06 PM
 version=1
 last_client=kicad
 [pcbnew]
@@ -62,3 +62,4 @@ LibName30=atmel
 LibName31=contrib
 LibName32=valves
 LibName33=/home/jlewallen/conservify/kicad/conservify
+LibName34=/Users/jlewallen/oss/RocketScreamKicadLibrary/RocketScreamKicadLibrary
