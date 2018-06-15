@@ -1,4 +1,4 @@
-update=Fri 12 Jan 2018 09:45:10 AM PST
+update=Friday, June 15, 2018 'PMt' 01:59:08 PM
 version=1
 last_client=kicad
 [cvpcb]
@@ -137,3 +137,5 @@ LibName94=Worldsemi
 LibName95=Xicor
 LibName96=xilinx
 LibName97=zetex
+LibName98=/Users/jlewallen/conservify/kicad/conservify
+LibName99=/Users/jlewallen/oss/RocketScreamKicadLibrary/RocketScreamKicadLibrary
