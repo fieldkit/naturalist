@@ -107,7 +107,7 @@ void NaturalistCoreModule::begin() {
 
 void NaturalistCoreModule::run() {
     SimpleNTP ntp(clock, wifi);
-    Status status{ state, bus };
+    Status status{ state, bus, leds };
 
     wifi.begin();
 
