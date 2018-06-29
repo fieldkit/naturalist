@@ -54,7 +54,7 @@ private:
 
     #ifdef FK_ENABLE_RADIO
     RadioService radioService;
-    SendDataToLoraGateway sendDataToLoraGateway{ radioService, fileSystem, 0 };
+    SendDataToLoraGateway sendDataToLoraGateway{ radioService, fileSystem, { FileNumber::Data } };
     #endif
 
 public:
