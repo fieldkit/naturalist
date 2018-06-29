@@ -94,7 +94,7 @@ TaskEval NaturalistReadings::task() {
 
     uint8_t system = 0, gyro = 0, accel = 0, mag = 0;
     sensors_event_t event;
-    memzero(&event, sizeof(sensors_event_t));
+    memset(&event, 0, sizeof(sensors_event_t));
     if (hasBno055) {
         bnoSensor.getCalibration(&system, &gyro, &accel, &mag);
         bnoSensor.getEvent(&event);
