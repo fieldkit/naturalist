@@ -35,9 +35,7 @@ void NaturalistCoreModule::begin() {
     delay(10);
 
     #ifndef FK_DISABLE_FLASH
-    fk_assert(serialFlash.begin(Hardware::FLASH_PIN_CS));
-    fk_assert(storage.setup());
-
+    fk_assert(flashStorage.initialize(Hardware::FLASH_PIN_CS));
     delay(100);
     #else
     loginfof("Core", "Serial flash is disabled.");

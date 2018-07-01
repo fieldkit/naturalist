@@ -20,9 +20,8 @@ private:
     FileSystem fileSystem{ bus, dataPool };
     Watchdog watchdog{ leds };
     Power power{ state };
-    SerialFlashChip serialFlash;
-    FlashStorage storage{ serialFlash };
-    CoreState state{ storage, fileSystem.getData() };
+    FlashStorage<PersistedState> flashStorage;
+    CoreState state{ flashStorage, fileSystem.getData() };
     Leds leds;
     NaturalistReadings readings{ state };
     SerialPort gpsPort{ Serial2 };
