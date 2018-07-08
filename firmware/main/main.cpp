@@ -1,6 +1,7 @@
 #include <Arduino.h>
 
 #include "config.h"
+#include "platform.h"
 #include "restart_wizard.h"
 #include "naturalist_core_module.h"
 #include "hardware.h"
@@ -11,7 +12,7 @@ extern "C" {
 void setup() {
     Serial.begin(115200);
 
-    while (!Serial && millis() < 2000) {
+    while (!Serial && fk::fk_uptime() < 2000) {
         delay(100);
     }
 

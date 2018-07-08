@@ -51,8 +51,8 @@ TaskEval NaturalistReadings::task() {
     auto audioRmsMin = 0.0f;
     auto audioRmsMax = 0.0f;
     auto total = 0.0f;
-    auto start = millis();
-    while (millis() - start < AudioSamplingDuration) {
+    auto start = fk_uptime();
+    while (fk_uptime() - start < AudioSamplingDuration) {
         if (amplitudeAnalyzer.available()) {
             auto amplitude = amplitudeAnalyzer.read();
             if (amplitude > 0) {
