@@ -3,6 +3,11 @@
 namespace fk {
 
 void NaturalistCoreModule::begin() {
+    MainServicesState::services(mainServices);
+    WifiServicesState::services(wifiServices);
+
+    fsm_list::start();
+
     pinMode(Hardware::SD_PIN_CS, OUTPUT);
     pinMode(Hardware::WIFI_PIN_CS, OUTPUT);
     pinMode(Hardware::RFM95_PIN_CS, OUTPUT);
@@ -17,12 +22,14 @@ void NaturalistCoreModule::begin() {
     // reason. Not a huge priority to fix but I'd like to understand why
     // eventually.
     // 44100
+    // NOTE: FkNaturalist Specific
     fk_assert(AudioInI2S.begin(8000, 32));
 
     leds.setup();
     watchdog.setup();
     bus.begin();
     power.setup();
+    button.enqueued();
 
     fk_assert(deviceId.initialize(bus));
 
@@ -34,11 +41,11 @@ void NaturalistCoreModule::begin() {
 
     delay(10);
 
-    #ifndef FK_DISABLE_FLASH
+    #ifdef FK_DISABLE_FLASH
+    loginfof("Core", "Flash memory disabled");
+    #else
     fk_assert(flashStorage.initialize(Hardware::FLASH_PIN_CS));
     delay(100);
-    #else
-    loginfof("Core", "Serial flash is disabled.");
     #endif
 
     #ifdef FK_ENABLE_RADIO
@@ -48,6 +55,8 @@ void NaturalistCoreModule::begin() {
     else {
         loginfof("Core", "Radio service ready");
     }
+    #else
+    loginfof("Core", "Radio service disabled");
     #endif
 
     fk_assert(fileSystem.setup());
@@ -62,8 +71,11 @@ void NaturalistCoreModule::begin() {
 
     FormattedTime nowFormatted{ clock.now() };
     loginfof("Core", "Now: %s", nowFormatted.toString());
+    loginfof("Core", "API: %s", WifiApiUrlIngestionStream);
 
     state.started();
+
+    // NOTE: FkNaturalist Specific:
 
     state.attachedModules()[0] = ModuleInfo{
         fk_module_ModuleType_SENSOR,
@@ -104,31 +116,8 @@ void NaturalistCoreModule::begin() {
 }
 
 void NaturalistCoreModule::run() {
-    SimpleNTP ntp(clock, wifi);
-    Status status{ state, bus, leds };
-
-    wifi.begin();
-
-    background.append(ntp);
-
-    auto tasks = to_parallel_task_collection(
-        &status,
-        &leds,
-        &power,
-        &watchdog,
-        &liveData,
-        &scheduler,
-        &wifi,
-        #ifdef FK_ENABLE_RADIO
-        &radioService,
-        #endif
-        &discovery,
-        &background,
-        &servicing
-    );
-
     while (true) {
-        tasks.task();
+        CoreDevice::current().task();
     }
 }
 
