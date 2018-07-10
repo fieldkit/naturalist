@@ -53,7 +53,7 @@ private:
     };
     WifiConnection connection;
     AppServicer appServicer{state, scheduler, fileSystem.getReplies(), connection, moduleCommunications, appPool};
-    Wifi wifi{connection, appServicer};
+    Wifi wifi{connection};
     Discovery discovery;
 
     // GPS stuff
