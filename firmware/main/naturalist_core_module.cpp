@@ -2,6 +2,10 @@
 
 namespace fk {
 
+constexpr const char LogName[] = "Core";
+
+using Logger = SimpleLog<LogName>;
+
 void NaturalistCoreModule::begin() {
     MainServicesState::services(mainServices);
     WifiServicesState::services(wifiServices);
@@ -34,29 +38,40 @@ void NaturalistCoreModule::begin() {
     fk_assert(deviceId.initialize(bus));
 
     SerialNumber serialNumber;
-    loginfof("Core", "Serial(%s)", serialNumber.toString());
-    loginfof("Core", "DeviceId(%s)", deviceId.toString());
-    loginfof("Core", "Hash(%s)", firmware_version_get());
-    loginfof("Core", "Build(%s)", firmware_build_get());
+    Logger::info("Serial(%s)", serialNumber.toString());
+    Logger::info("DeviceId(%s)", deviceId.toString());
+    Logger::info("Hash(%s)", firmware_version_get());
+    Logger::info("Build(%s)", firmware_build_get());
+    Logger::info("API(%s)", WifiApiUrlIngestionStream);
 
     delay(10);
 
-    #ifdef FK_DISABLE_FLASH
-    loginfof("Core", "Flash memory disabled");
+    #ifdef FK_CORE_GENERATION_2
+    Logger::info("Cycling peripherals.");
+    pinMode(Hardware::PIN_PERIPH_ENABLE, OUTPUT);
+    digitalWrite(Hardware::PIN_PERIPH_ENABLE, LOW);
+    delay(500);
+    digitalWrite(Hardware::PIN_PERIPH_ENABLE, HIGH);
+    delay(500);
     #else
+    Logger::info("Peripherals always on.");
+    #endif
+
+    #ifdef FK_ENABLE_FLASH
     fk_assert(flashStorage.initialize(Hardware::FLASH_PIN_CS));
-    delay(100);
+    #else
+    Logger::info("Flash memory disabled");
     #endif
 
     #ifdef FK_ENABLE_RADIO
     if (!radioService.setup(deviceId)) {
-        loginfof("Core", "Radio service unavailable");
+        Logger::info("Radio service unavailable");
     }
     else {
-        loginfof("Core", "Radio service ready");
+        Logger::info("Radio service ready");
     }
     #else
-    loginfof("Core", "Radio service disabled");
+    Logger::info("Radio service disabled");
     #endif
 
     fk_assert(fileSystem.setup());
@@ -69,9 +84,10 @@ void NaturalistCoreModule::begin() {
 
     clock.begin();
 
+    scheduler.setup();
+
     FormattedTime nowFormatted{ clock.now() };
-    loginfof("Core", "Now: %s", nowFormatted.toString());
-    loginfof("Core", "API: %s", WifiApiUrlIngestionStream);
+    Logger::info("Now: %s", nowFormatted.toString());
 
     state.started();
 
