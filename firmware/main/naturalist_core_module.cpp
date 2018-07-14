@@ -33,18 +33,11 @@ void NaturalistCoreModule::begin() {
     watchdog.setup();
     bus.begin();
     power.setup();
+    clock.begin();
     button.enqueued();
 
     fk_assert(deviceId.initialize(bus));
-
-    SerialNumber serialNumber;
-    Logger::info("Serial(%s)", serialNumber.toString());
-    Logger::info("DeviceId(%s)", deviceId.toString());
-    Logger::info("Hash(%s)", firmware_version_get());
-    Logger::info("Build(%s)", firmware_build_get());
-    Logger::info("API(%s)", WifiApiUrlIngestionStream);
-
-    delay(10);
+    state.setDeviceId(deviceId.toString());
 
     #ifdef FK_CORE_GENERATION_2
     Logger::info("Cycling peripherals.");
@@ -76,20 +69,19 @@ void NaturalistCoreModule::begin() {
 
     fk_assert(fileSystem.setup());
 
-    watchdog.started();
-
-    bus.begin();
-
-    state.setDeviceId(deviceId.toString());
-
-    clock.begin();
-
-    scheduler.setup();
+    SerialNumber serialNumber;
+    Logger::info("Serial(%s)", serialNumber.toString());
+    Logger::info("DeviceId(%s)", deviceId.toString());
+    Logger::info("Hash(%s)", firmware_version_get());
+    Logger::info("Build(%s)", firmware_build_get());
+    Logger::info("API(%s)", WifiApiUrlIngestionStream);
 
     FormattedTime nowFormatted{ clock.now() };
     Logger::info("Now: %s", nowFormatted.toString());
 
+    watchdog.started();
     state.started();
+    scheduler.started();
 
     // NOTE: FkNaturalist Specific:
 
