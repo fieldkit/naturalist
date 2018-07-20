@@ -60,6 +60,8 @@ private:
     SerialPort gpsSerial{ Hardware::gpsUart };
     GpsService gps{ state, gpsSerial };
 
+    LiveDataManager liveData;
+
     // Service collections.
     MainServices mainServices{
         &leds,
@@ -90,7 +92,8 @@ private:
         &discovery,
         &httpConfig,
         &wifi.server(),
-        &appServicer
+        &appServicer,
+        &liveData
     };
 
 public:
