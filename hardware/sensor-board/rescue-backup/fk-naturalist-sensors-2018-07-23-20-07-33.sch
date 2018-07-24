@@ -1,6 +1,39 @@
-EESchema Schematic File Version 4
+EESchema Schematic File Version 2
+LIBS:power
+LIBS:device
+LIBS:switches
+LIBS:relays
+LIBS:motors
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:RocketScreamKicadLibrary
 LIBS:fk-naturalist-sensors-cache
-EELAYER 26 0
+EELAYER 25 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
@@ -15,7 +48,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L conservify:MPL3115A2 U1
+L MPL3115A2 U1
 U 1 1 5B217CDD
 P 3100 4150
 F 0 "U1" H 3100 4150 60  0000 C CNN
@@ -29,7 +62,7 @@ F 6 "mouser" H -6900 2300 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L power1:GND #PWR01
+L GND #PWR01
 U 1 1 5B217CDE
 P 5050 4900
 F 0 "#PWR01" H 5050 4650 50  0001 C CNN
@@ -40,7 +73,7 @@ F 3 "" H 5050 4900 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-naturalist-sensors-rescue:CAPACITOR-CERAMIC C1
+L CAPACITOR-CERAMIC C1
 U 1 1 5B217CDF
 P 4600 4400
 F 0 "C1" V 4450 4350 50  0000 L CNN
@@ -54,7 +87,7 @@ F 6 "mouser" H -6900 2300 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-naturalist-sensors-rescue:CAPACITOR-CERAMIC C3
+L CAPACITOR-CERAMIC C3
 U 1 1 5B217CE0
 P 5050 4400
 F 0 "C3" V 4900 4350 50  0000 L CNN
@@ -68,7 +101,7 @@ F 6 "mouser" H -6900 2300 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-naturalist-sensors-rescue:CAPACITOR-CERAMIC C5
+L CAPACITOR-CERAMIC C5
 U 1 1 5B217CE1
 P 5500 4400
 F 0 "C5" V 5350 4350 50  0000 L CNN
@@ -82,7 +115,7 @@ F 6 "mouser" H -6900 2300 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L conservify:TSL2591 U4
+L TSL2591 U4
 U 1 1 5B217CE2
 P 3750 5850
 F 0 "U4" H 3750 5850 60  0000 C CNN
@@ -96,7 +129,7 @@ F 6 "mouser" H -6100 2250 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L conservify:3V3 #PWR02
+L 3V3 #PWR02
 U 1 1 5B217CE3
 P 5050 3900
 F 0 "#PWR02" H 5050 3750 50  0001 C CNN
@@ -107,7 +140,7 @@ F 3 "" H 5050 3900 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power1:GND #PWR03
+L GND #PWR03
 U 1 1 5B217CE4
 P 5250 6350
 F 0 "#PWR03" H 5250 6100 50  0001 C CNN
@@ -118,7 +151,7 @@ F 3 "" H 5250 6350 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L conservify:3V3 #PWR04
+L 3V3 #PWR04
 U 1 1 5B217CE5
 P 5250 5700
 F 0 "#PWR04" H 5250 5550 50  0001 C CNN
@@ -129,7 +162,7 @@ F 3 "" H 5250 5700 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-naturalist-sensors-rescue:CAPACITOR-CERAMIC C4
+L CAPACITOR-CERAMIC C4
 U 1 1 5B217CE6
 P 5250 6000
 F 0 "C4" V 5100 5950 50  0000 L CNN
@@ -143,7 +176,7 @@ F 6 "mouser" H -6100 2250 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L conservify:SHT31 U2
+L SHT31 U2
 U 1 1 5B217CE7
 P 3400 2750
 F 0 "U2" H 3400 2750 60  0000 C CNN
@@ -157,7 +190,7 @@ F 6 "mouser" H 3400 2750 60  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-naturalist-sensors-rescue:CAPACITOR-CERAMIC C2
+L CAPACITOR-CERAMIC C2
 U 1 1 5B217CE8
 P 4950 2750
 F 0 "C2" V 4800 2700 50  0000 L CNN
@@ -171,7 +204,7 @@ F 6 "mouser" H -6500 -2150 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L power1:GND #PWR05
+L GND #PWR05
 U 1 1 5B217CE9
 P 4950 3050
 F 0 "#PWR05" H 4950 2800 50  0001 C CNN
@@ -182,7 +215,7 @@ F 3 "" H 4950 3050 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L conservify:3V3 #PWR06
+L 3V3 #PWR06
 U 1 1 5B217CEA
 P 4950 2500
 F 0 "#PWR06" H 4950 2350 50  0001 C CNN
@@ -193,7 +226,7 @@ F 3 "" H 4950 2500 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power1:GND #PWR07
+L GND #PWR07
 U 1 1 5B217CFE
 P 2450 3050
 F 0 "#PWR07" H 2450 2800 50  0001 C CNN
@@ -204,7 +237,7 @@ F 3 "" H 2450 3050 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L conservify:SPH0645 U3
+L SPH0645 U3
 U 1 1 5B217DBF
 P 3750 1300
 F 0 "U3" H 3750 1600 60  0000 C CNN
@@ -217,7 +250,7 @@ F 5 "mouser" H 3750 1300 60  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L conservify:RESISTOR R1
+L RESISTOR R1
 U 1 1 5B217DC0
 P 2250 1250
 F 0 "R1" H 2250 1350 60  0000 C CNN
@@ -231,7 +264,7 @@ F 6 "mouser" H -3200 -6050 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L conservify:RESISTOR R2
+L RESISTOR R2
 U 1 1 5B217DC1
 P 4750 1350
 F 0 "R2" H 4750 1450 60  0000 C CNN
@@ -245,7 +278,7 @@ F 6 "mouser" H -700 -5950 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L power1:GND #PWR08
+L GND #PWR08
 U 1 1 5B217DC2
 P 1800 1650
 F 0 "#PWR08" H 1800 1400 50  0001 C CNN
@@ -256,7 +289,7 @@ F 3 "" H 1800 1650 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L conservify:3V3 #PWR09
+L 3V3 #PWR09
 U 1 1 5B217DC3
 P 5550 1150
 F 0 "#PWR09" H 5550 1000 50  0001 C CNN
@@ -267,7 +300,7 @@ F 3 "" H 5550 1150 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-naturalist-sensors-rescue:CAPACITOR-CERAMIC C7
+L CAPACITOR-CERAMIC C7
 U 1 1 5B217DC4
 P 6250 1300
 F 0 "C7" V 6100 1250 50  0000 L CNN
@@ -281,7 +314,7 @@ F 6 "mouser" H -5100 -2450 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-naturalist-sensors-rescue:CAPACITOR-CERAMIC C6
+L CAPACITOR-CERAMIC C6
 U 1 1 5B217DC5
 P 5850 1300
 F 0 "C6" V 5700 1250 50  0000 L CNN
@@ -295,7 +328,7 @@ F 6 "mouser" H -5500 -2450 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L power1:GND #PWR010
+L GND #PWR010
 U 1 1 5B217DC6
 P 6250 1550
 F 0 "#PWR010" H 6250 1300 50  0001 C CNN
@@ -340,19 +373,19 @@ Wire Wire Line
 Wire Wire Line
 	4250 4200 4250 4800
 Wire Wire Line
-	3850 4000 4050 4000
+	3850 4000 5500 4000
 Wire Wire Line
 	3850 4100 4600 4100
 Wire Wire Line
-	4250 4800 4600 4800
+	4250 4800 5500 4800
 Wire Wire Line
 	5500 4800 5500 4550
 Wire Wire Line
 	5500 4000 5500 4250
 Wire Wire Line
-	5050 3900 5050 4000
+	5050 3900 5050 4250
 Wire Wire Line
-	5050 4550 5050 4800
+	5050 4550 5050 4900
 Wire Wire Line
 	4600 4100 4600 4250
 Wire Wire Line
@@ -368,7 +401,7 @@ Wire Wire Line
 Wire Wire Line
 	4400 5750 5250 5750
 Wire Wire Line
-	5250 5700 5250 5750
+	5250 5700 5250 5850
 Wire Wire Line
 	5250 6150 5250 6350
 Wire Wire Line
@@ -378,7 +411,7 @@ Wire Wire Line
 Wire Wire Line
 	2850 5750 3100 5750
 Wire Wire Line
-	4100 2600 4150 2600
+	4100 2600 4950 2600
 Wire Wire Line
 	4100 2700 4150 2700
 Wire Wire Line
@@ -386,9 +419,9 @@ Wire Wire Line
 Wire Wire Line
 	4100 2800 4150 2800
 Wire Wire Line
-	4150 2800 4150 2900
+	4150 2800 4150 3000
 Wire Wire Line
-	4100 2900 4150 2900
+	4100 2900 4950 2900
 Wire Wire Line
 	4950 2900 4950 3050
 Wire Wire Line
@@ -426,7 +459,7 @@ Wire Wire Line
 Wire Wire Line
 	2000 1250 1800 1250
 Wire Wire Line
-	1800 1250 1800 1450
+	1800 1250 1800 1650
 Wire Wire Line
 	4500 1350 4300 1350
 Wire Wire Line
@@ -436,7 +469,7 @@ Wire Wire Line
 Wire Wire Line
 	3200 1450 1800 1450
 Wire Wire Line
-	4300 1150 5550 1150
+	4300 1150 6250 1150
 Wire Wire Line
 	2750 1350 3200 1350
 Wire Wire Line
@@ -472,7 +505,7 @@ NoConn ~ 2350 4000
 NoConn ~ 3100 5950
 NoConn ~ 2700 2800
 $Comp
-L conservify:MOUNT_HOLE M1
+L MOUNT_HOLE M1
 U 1 1 5B21C0EB
 P 7300 1650
 F 0 "M1" H 7300 1800 50  0000 C CNN
@@ -483,7 +516,7 @@ F 3 "" H 7300 1650 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L conservify:MOUNT_HOLE M2
+L MOUNT_HOLE M2
 U 1 1 5B21C22A
 P 7550 1650
 F 0 "M2" H 7550 1800 50  0000 C CNN
@@ -494,7 +527,7 @@ F 3 "" H 7550 1650 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L conservify:MOUNT_HOLE M3
+L MOUNT_HOLE M3
 U 1 1 5B21C271
 P 7800 1650
 F 0 "M3" H 7800 1800 50  0000 C CNN
@@ -505,7 +538,7 @@ F 3 "" H 7800 1650 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L conservify:MOUNT_HOLE M4
+L MOUNT_HOLE M4
 U 1 1 5B21C2BB
 P 8050 1650
 F 0 "M4" H 8050 1800 50  0000 C CNN
@@ -526,7 +559,7 @@ Wire Notes Line
 Text Notes 7050 900  0    180  ~ 36
 MOUNTING
 $Comp
-L fk-naturalist-sensors-rescue:Conn_01x07 J1
+L Conn_01x07 J1
 U 1 1 5B21CD6A
 P 7450 4450
 F 0 "J1" H 7450 4850 50  0000 C CNN
@@ -547,7 +580,7 @@ I2S_WS
 Text Label 7700 4250 0    60   ~ 0
 I2S_DATA
 $Comp
-L conservify:3V3 #PWR011
+L 3V3 #PWR011
 U 1 1 5B21D20F
 P 8250 4150
 F 0 "#PWR011" H 8250 4000 50  0001 C CNN
@@ -558,7 +591,7 @@ F 3 "" H 8250 4150 60  0000 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L power1:GND #PWR012
+L GND #PWR012
 U 1 1 5B21D250
 P 8300 4900
 F 0 "#PWR012" H 8300 4650 50  0001 C CNN
@@ -595,7 +628,7 @@ Wire Notes Line
 Wire Notes Line
 	6900 5100 6900 3400
 $Comp
-L conservify:FIDUCIAL M5
+L FIDUCIAL M5
 U 1 1 5B243ED0
 P 7200 2350
 F 0 "M5" H 7200 2500 60  0000 C CNN
@@ -606,7 +639,7 @@ F 3 "" H 7200 2350 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L conservify:FIDUCIAL M6
+L FIDUCIAL M6
 U 1 1 5B243F25
 P 7700 2350
 F 0 "M6" H 7700 2500 60  0000 C CNN
@@ -617,7 +650,7 @@ F 3 "" H 7700 2350 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L conservify:FIDUCIAL M7
+L FIDUCIAL M7
 U 1 1 5B243F74
 P 8200 2350
 F 0 "M7" H 8200 2500 60  0000 C CNN
@@ -628,7 +661,7 @@ F 3 "" H 8200 2350 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L conservify:FIDUCIAL M8
+L FIDUCIAL M8
 U 1 1 5B33D073
 P 7200 2900
 F 0 "M8" H 7200 3050 60  0000 C CNN
@@ -639,7 +672,7 @@ F 3 "" H 7200 2900 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L conservify:FIDUCIAL M9
+L FIDUCIAL M9
 U 1 1 5B33D079
 P 7700 2900
 F 0 "M9" H 7700 3050 60  0000 C CNN
@@ -650,7 +683,7 @@ F 3 "" H 7700 2900 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L conservify:FIDUCIAL M10
+L FIDUCIAL M10
 U 1 1 5B33D07F
 P 8200 2900
 F 0 "M10" H 8200 3050 60  0000 C CNN
@@ -660,30 +693,4 @@ F 3 "" H 8200 2900 60  0000 C CNN
 	1    8200 2900
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	5050 4000 5500 4000
-Wire Wire Line
-	5050 4000 5050 4250
-Wire Wire Line
-	4600 4800 5050 4800
-Wire Wire Line
-	5050 4800 5050 4900
-Wire Wire Line
-	5050 4800 5500 4800
-Wire Wire Line
-	4050 4000 5050 4000
-Wire Wire Line
-	5250 5750 5250 5850
-Wire Wire Line
-	4150 2600 4950 2600
-Wire Wire Line
-	4150 2900 4150 3000
-Wire Wire Line
-	4150 2900 4950 2900
-Wire Wire Line
-	1800 1450 1800 1650
-Wire Wire Line
-	5550 1150 5850 1150
-Wire Wire Line
-	5850 1150 6250 1150
 $EndSCHEMATC
