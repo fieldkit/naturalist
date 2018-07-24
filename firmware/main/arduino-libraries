@@ -2,11 +2,11 @@
 ../module-protocol
 ../app-protocol
 ../data-protocol
-../fkfs
 ../phylum
 ../simple-lora-comms
 ../arduino-logging
 ../lwstreams
+../lwcron
 https://github.com/nanopb/nanopb.git 2b0db997d7e85b2cc4ae4ee5654e63f6426b18a1
 https://github.com/arduino-libraries/RTCZero.git 618d53117e94c85141b362c121497c0acf07ce29
 https://github.com/adafruit/RTClib.git 82d00a1a15bcf738b001e42bf26a3d1f1a15be32

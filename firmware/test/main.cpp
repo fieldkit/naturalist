@@ -6,6 +6,9 @@
 #include <WiFi101.h>
 #include <I2S.h>
 
+#include <phylum/phylum.h>
+#include <backends/arduino_sd/arduino_sd.h>
+
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BNO055.h>
 #include <Adafruit_TSL2561_U.h>
@@ -14,8 +17,6 @@
 #include <Adafruit_SHT31.h>
 #include <SerialFlash.h>
 #include <RTClib.h>
-
-#include <fkfs.h>
 
 #include "debug.h"
 
@@ -266,14 +267,14 @@ public:
         digitalWrite(PIN_WINC_CS, HIGH);
         digitalWrite(ModuleHardware::PIN_FLASH_CS, HIGH);
 
-        fkfs_t fs = { 0 };
-
-        if (!fkfs_create(&fs)) {
-            debugfln("test: SD FAILED");
+        phylum::Geometry g;
+        phylum::ArduinoSdBackend storage;
+        if (!storage.initialize(g, PIN_SD_CS)) {
+            debugfln("test: SD FAILED (to open)");
             return false;
         }
 
-        if (!sd_raw_initialize(&fs.sd, PIN_SD_CS)) {
+        if (!storage.open()) {
             debugfln("test: SD FAILED");
             return false;
         }

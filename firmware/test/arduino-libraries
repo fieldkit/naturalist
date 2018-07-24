@@ -1,7 +1,7 @@
 ../firmware-common/src
-../fkfs
 ../phylum
 ../arduino-logging
+../lwcron
 https://github.com/nanopb/nanopb.git 2b0db997d7e85b2cc4ae4ee5654e63f6426b18a1
 https://github.com/Conservify/Adafruit_BNO055.git ed1744e1f3f2730e41b202bb6b09906e6df1db30
 https://github.com/adafruit/Adafruit_Sensor.git e985f2253a687ef377cde3dcfb1f788830d1bc09

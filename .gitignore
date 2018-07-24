@@ -11,3 +11,4 @@ firmwaretool.properties
 config.h
 .gdb_history
 firmware/main/seed.h
+.DS_Store

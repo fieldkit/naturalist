@@ -29,6 +29,5 @@ endif(DISABLE_RADIO)
 target_compile_definitions(arduino_zero_firmware-common_src PUBLIC -DFK_NATURALIST -DFK_CORE)
 
 target_compile_options(arduino_zero_Wire PUBLIC -finstrument-functions)
-target_compile_options(arduino_zero_fkfs PUBLIC -finstrument-functions)
 target_compile_options(arduino_zero_WiFi101 PUBLIC -finstrument-functions)
 target_compile_options(fk-naturalist-main PUBLIC -Wall -Werror -finstrument-functions)
