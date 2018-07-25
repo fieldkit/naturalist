@@ -76,12 +76,13 @@ void NaturalistCoreModule::begin() {
     Logger::info("Build(%s)", firmware_build_get());
     Logger::info("API(%s)", WifiApiUrlIngestionStream);
 
-    FormattedTime nowFormatted{ clock.now() };
+    auto now = clock.now();
+    FormattedTime nowFormatted{ now };
     Logger::info("Now: %s", nowFormatted.toString());
 
     watchdog.started();
     state.started();
-    scheduler.started();
+    scheduler.begin(lwcron::DateTime{ now.unixtime() });
 
     // NOTE: FkNaturalist Specific:
 

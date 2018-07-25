@@ -29,17 +29,11 @@ private:
     NaturalistReadings readings{ state };
 
     // Scheduler stuff.
-    PeriodicTask periodics[4] {
-        fk::PeriodicTask{ 20 * 1000,     CoreFsm::deferred<IgnoredState>() },
-        fk::PeriodicTask{ 30 * 1000,     CoreFsm::deferred<IgnoredState>() },
-        fk::PeriodicTask{ 60 * 1000 * 5, CoreFsm::deferred<IgnoredState>() },
-        #ifdef FK_ENABLE_RADIO
-        fk::PeriodicTask{ 60 * 1000,     CoreFsm::deferred<IgnoredState>() },
-        #else
-        fk::PeriodicTask{ 60 * 1000,     CoreFsm::deferred<IgnoredState>() },
-        #endif
+    PeriodicTask noop{ 0, { CoreFsm::deferred<WifiStartup>() } };
+    lwcron::Task *tasks[1] {
+        &noop
     };
-    Scheduler scheduler{clock, periodics};
+    lwcron::Scheduler scheduler{tasks};
 
     // Radio stuff.
     #ifdef FK_ENABLE_RADIO
@@ -52,7 +46,7 @@ private:
         .streamUrl = WifiApiUrlIngestionStream,
     };
     WifiConnection connection;
-    AppServicer appServicer{state, scheduler, fileSystem.getReplies(), connection, moduleCommunications, appPool};
+    AppServicer appServicer{state, fileSystem.getReplies(), connection, moduleCommunications, appPool};
     Wifi wifi{connection};
     Discovery discovery;
 
