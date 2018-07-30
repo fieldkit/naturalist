@@ -7,7 +7,7 @@
 
 #include "platform.h"
 #include "restart_wizard.h"
-#include "core_fsm_states.h"
+#include "initialized.h"
 #include "readings.h"
 
 #include "seed.h"
