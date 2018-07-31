@@ -121,13 +121,14 @@ TaskEval NaturalistReadings::task() {
         (float)audioDbfsMax
     };
     auto time = clock.getTime();
+    auto &module = state->getModule(8);
     for (size_t i = 0; i < sizeof(values) / sizeof(float); ++i) {
         IncomingSensorReading reading{
             (uint8_t)i,
             time,
             values[i],
         };
-        state->merge(0, reading);
+        state->merge(module, reading);
     }
 
     log("Sensors: %fC %f%%, %fC %fpa %f\"/Hg %fm", shtTemperature, shtHumidity, mplTempCelsius, pressurePascals, pressureInchesMercury, altitudeMeters);
