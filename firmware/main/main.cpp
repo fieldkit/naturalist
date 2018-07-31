@@ -15,6 +15,40 @@
 
 extern "C" {
 
+fk::SensorInfo sensors[] = {
+    {"temp_1", "°C",},
+    {"humidity", "%",},
+    {"temp_2", "°C",},
+    {"pressure", "pa",},
+    {"altitude", "m",},
+    {"light_ir", "",},
+    {"light_visible", "",},
+    {"light_lux", "",},
+    {"imu_cal", ""},
+    {"imu_orien_x", ""},
+    {"imu_orien_y", ""},
+    {"imu_orien_z", ""},
+    {"audio_rms_avg", ""},
+    {"audio_rms_min", ""},
+    {"audio_rms_max", ""},
+    {"audio_dbfs_avg", ""},
+    {"audio_dbfs_min", ""},
+    {"audio_dbfs_max", ""},
+};
+
+fk::SensorReading readings[18];
+
+fk::ModuleInfo info = {
+    fk_module_ModuleType_SENSOR,
+    8,
+    18,
+    1,
+    "FkNat",
+    "fk-naturalist",
+    sensors,
+    readings
+};
+
 class ConfigureDevice : public fk::MainServicesState {
 public:
     const char *name() const override {
@@ -38,45 +72,12 @@ public:
 
         state->configure(fk::NetworkSettings{ false, networks });
 
-        state->attachedModules()[0] = fk::ModuleInfo{
-            fk_module_ModuleType_SENSOR,
-            8,
-            18,
-            1,
-            "FkNat",
-            "fk-naturalist",
-            {
-                {"temp_1", "°C",},
-                {"humidity", "%",},
-                {"temp_2", "°C",},
-                {"pressure", "pa",},
-                {"altitude", "m",},
-                {"light_ir", "",},
-                {"light_visible", "",},
-                {"light_lux", "",},
-                {"imu_cal", ""},
-                {"imu_orien_x", ""},
-                {"imu_orien_y", ""},
-                {"imu_orien_z", ""},
-                {"audio_rms_avg", ""},
-                {"audio_rms_min", ""},
-                {"audio_rms_max", ""},
-                {"audio_dbfs_avg", ""},
-                {"audio_dbfs_min", ""},
-                {"audio_dbfs_max", ""},
-            },
-            {
-                {}, {}, {}, {},
-                {}, {}, {}, {},
-                {}, {}, {}, {},
-                {}, {}, {}, {}, {}, {}
-            }
-        };
+        // TODO: Assign ModuleInfo
 
         state->doneScanning();
 
-        fk::NaturalistReadings readings{ *state };
-        readings.setup();
+        fk::NaturalistReadings naturalistReadings{ *state };
+        naturalistReadings.setup();
 
         log("Configured");
 
