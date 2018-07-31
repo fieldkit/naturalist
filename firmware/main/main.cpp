@@ -42,7 +42,9 @@ public:
             fk_module_ModuleType_SENSOR,
             8,
             18,
+            1,
             "FkNat",
+            "fk-naturalist",
             {
                 {"temp_1", "°C",},
                 {"humidity", "%",},
