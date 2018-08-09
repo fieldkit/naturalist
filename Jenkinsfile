@@ -1,7 +1,9 @@
 @Library('conservify') _
 
+conservifyProperties()
+
 timestamps {
     node () {
-        conservifyBuild(name: 'naturalist', repository: 'https://github.com/fieldkit/naturalist.git')
+        conservifyBuild(name: 'naturalist')
     }
 }
