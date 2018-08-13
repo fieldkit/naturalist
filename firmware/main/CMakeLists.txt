@@ -8,6 +8,9 @@ include_directories(${RANDOM_SEED_INCLUDE})
 add_definitions(-DFK_NATURALIST)
 add_definitions(-DFK_CORE)
 
+add_definitions(-DPHYLUM_ENABLE_SERIAL_FLASH -DPHYLUM_ENABLE_SD)
+target_compile_options(arduino_zero_phylum PUBLIC -DPHYLUM_ENABLE_SERIAL_FLASH -DPHYLUM_ENABLE_SD)
+
 file(GLOB SOURCE_FILES *.cpp)
 set(LIBRARIES Wire SPI I2S)
 
@@ -29,6 +32,3 @@ if(FK_DEBUG_INSTRUMENTATION)
   target_compile_options(arduino_zero_WiFi101 PUBLIC -finstrument-functions)
   target_compile_options(fk-naturalist-main PUBLIC -finstrument-functions)
 endif(FK_DEBUG_INSTRUMENTATION)
-
-add_definitions(-DPHYLUM_ENABLE_SERIAL_FLASH)
-target_compile_options(arduino_zero_phylum PUBLIC -DPHYLUM_ENABLE_SERIAL_FLASH)
