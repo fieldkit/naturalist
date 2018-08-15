@@ -11,6 +11,8 @@ add_definitions(-DFK_CORE)
 add_definitions(-DPHYLUM_ENABLE_SERIAL_FLASH -DPHYLUM_ENABLE_SD)
 target_compile_options(arduino_zero_phylum PUBLIC -DPHYLUM_ENABLE_SERIAL_FLASH -DPHYLUM_ENABLE_SD)
 
+set(ARDUINO_BOOTLOADER "${CMAKE_CURRENT_SOURCE_DIR}/samd21x18_bootloader_large.ld")
+
 file(GLOB SOURCE_FILES *.cpp)
 set(LIBRARIES Wire SPI I2S)
 
