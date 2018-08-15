@@ -13,7 +13,7 @@
 #include <AmplitudeAnalyzer.h>
 #include <AudioInI2S.h>
 
-#include "active_object.h"
+#include "task.h"
 #include "core_state.h"
 #include "two_wire.h"
 
