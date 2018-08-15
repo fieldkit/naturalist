@@ -4,6 +4,9 @@ conservifyProperties()
 
 timestamps {
     node () {
-        conservifyBuild(name: 'naturalist')
+        conservifyBuild(name: 'naturalist', archive: true)
+        distributeFirmware()
     }
+
+    refreshDistribution()
 }
