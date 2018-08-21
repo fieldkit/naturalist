@@ -88,8 +88,6 @@ public:
 
 public:
     void takeReading() {
-        auto started = millis();
-
         auto shtTemperature = hw->sht31Sensor.readTemperature();
         auto shtHumidity = hw->sht31Sensor.readHumidity();
 
