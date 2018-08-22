@@ -20,6 +20,8 @@ target_include_directories(fk-naturalist-main PRIVATE ${RANDOM_SEED_INCLUDE})
 
 fk_core_apply_configuration(fk-naturalist-main)
 
+target_compile_options(firmware-common-fk-naturalist-main PUBLIC -DFK_NATURALIST)
+
 find_package(ArduinoSound)
 target_link_libraries(fk-naturalist-main ArduinoSound)
 
@@ -43,5 +45,7 @@ target_link_libraries(fk-naturalist-main Adafruit_SHT31)
 
 find_package(Adafruit_TSL2591)
 target_link_libraries(fk-naturalist-main Adafruit_TSL2591_Library)
+
+fk_write_profile(fk-naturalist-main)
 
 add_arduino_firmware(fk-naturalist-main)
