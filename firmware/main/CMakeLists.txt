@@ -4,52 +4,44 @@ include(RandomSeed)
 
 enable_arduino_toolchain()
 
-find_package(FkCore)
-find_package(I2S)
-find_package(Adafruit_Sensor)
-find_package(Adafruit_BNO055)
-find_package(Adafruit_TSL2561)
-find_package(Adafruit_TSL2591)
-find_package(Adafruit_MPL3115A2)
-find_package(Adafruit_SHT31)
-find_package(ArduinoSound)
-
-include_directories(./)
-include_directories(${RANDOM_SEED_INCLUDE})
-
-add_definitions(-DFK_NATURALIST)
-add_definitions(-DFK_CORE)
-
 file(GLOB sources *.cpp)
 
 add_arduino_library(fk-naturalist-main "${sources}")
 
+add_definitions(-DFK_NATURALIST -DFK_CORE)
+
+find_package(FkCore)
+
+fk_configure_core(fk-naturalist-main)
+
+target_include_directories(fk-naturalist-main PRIVATE ./)
+
+target_include_directories(fk-naturalist-main PRIVATE ${RANDOM_SEED_INCLUDE})
+
+fk_core_apply_configuration(fk-naturalist-main)
+
+find_package(ArduinoSound)
 target_link_libraries(fk-naturalist-main ArduinoSound)
+
+find_package(I2S)
 target_link_libraries(fk-naturalist-main I2S)
+
+find_package(Adafruit_Sensor)
 target_link_libraries(fk-naturalist-main Adafruit_Sensor)
+
+find_package(Adafruit_BNO055)
 target_link_libraries(fk-naturalist-main Adafruit_BNO055)
+
+find_package(Adafruit_TSL2561)
 target_link_libraries(fk-naturalist-main Adafruit_TSL2561)
+
+find_package(Adafruit_MPL3115A2)
 target_link_libraries(fk-naturalist-main Adafruit_MPL3115A2_Library)
+
+find_package(Adafruit_SHT31)
 target_link_libraries(fk-naturalist-main Adafruit_SHT31)
+
+find_package(Adafruit_TSL2591)
 target_link_libraries(fk-naturalist-main Adafruit_TSL2591_Library)
-target_link_libraries(fk-naturalist-main firmware-common)
-target_link_libraries(fk-naturalist-main phylum)
-target_link_libraries(fk-naturalist-main SerialFlash)
-target_link_libraries(fk-naturalist-main Wire)
-target_link_libraries(fk-naturalist-main SPI)
-target_link_libraries(fk-naturalist-main WiFi101)
-target_link_libraries(fk-naturalist-main FuelGauge)
-target_link_libraries(fk-naturalist-main arduino-logging)
-target_link_libraries(fk-naturalist-main RTClib)
-target_link_libraries(fk-naturalist-main RTCZero)
-target_link_libraries(fk-naturalist-main lwcron)
-target_link_libraries(fk-naturalist-main lwstreams)
-target_link_libraries(fk-naturalist-main nanopb)
-target_link_libraries(fk-naturalist-main AtSamd)
-target_link_libraries(fk-naturalist-main arduino-base64)
-target_link_libraries(fk-naturalist-main TinyGPS)
-target_link_libraries(fk-naturalist-main module-protocol)
-target_link_libraries(fk-naturalist-main app-protocol)
-target_link_libraries(fk-naturalist-main data-protocol)
 
 add_arduino_firmware(fk-naturalist-main)
