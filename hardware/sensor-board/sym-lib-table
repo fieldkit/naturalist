@@ -1,6 +1,2 @@
 (sym_lib_table
-  (lib (name fk-naturalist-sensors-rescue)(type Legacy)(uri ${KIPRJMOD}/fk-naturalist-sensors-rescue.lib)(options "")(descr ""))
-  (lib (name power1)(type Legacy)(uri /usr/share/kicad/library/power.lib)(options "")(descr ""))
-  (lib (name 74xx1)(type Legacy)(uri /usr/share/kicad/library/74xx.lib)(options "")(descr ""))
-  (lib (name conservify)(type Legacy)(uri /home/jlewallen/conservify/kicad/conservify.lib)(options "")(descr ""))
 )
