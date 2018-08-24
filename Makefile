@@ -16,8 +16,8 @@ cmake: $(BUILD) gitdeps
 	cd $(BUILD) && cmake ../
 
 gitdeps:
-	simple-deps --config firmware/test/arduino-libraries
-	simple-deps --config firmware/main/arduino-libraries
+	simple-deps --config firmware/test/dependencies.sd
+	simple-deps --config firmware/main/dependencies.sd
 
 clean:
 	rm -rf $(BUILD)
