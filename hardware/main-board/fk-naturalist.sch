@@ -2162,35 +2162,15 @@ F 3 "" H 1100 10050 60  0000 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L conservify:CONN_01x05 J6
-U 1 1 5A5962A1
-P 1550 9450
-F 0 "J6" H 1550 9750 50  0000 C CNN
-F 1 "Conn_01x05" H 1550 9150 50  0000 C CNN
-F 2 "conservify:Molex_CLIK-Mate_502382-0570_1x05_P1.25mm_Vertical" H 1550 9450 50  0001 C CNN
-F 3 "" H 1550 9450 50  0001 C CNN
-F 4 " " H 1550 9850 50  0001 C CNN "Critical"
-F 5 "Molex" H 1550 9850 50  0001 C CNN "MFN"
-F 6 "502382-0570" H 1550 9850 50  0001 C CNN "MFP"
-F 7 " " H 1550 9850 50  0001 C CNN "Notes"
-F 8 " " H 1550 9850 50  0001 C CNN "Package"
-F 9 "ANY" H 1550 9850 50  0001 C CNN "Source"
-F 10 " " H 1550 9850 50  0001 C CNN "Subsystem"
-F 11 "538-502382-0570" H 1550 9450 60  0001 C CNN "spn1"
-F 12 "mouser" H 1550 9450 60  0001 C CNN "supplier1"
-	1    1550 9450
-	1    0    0    -1  
-$EndComp
-$Comp
 L conservify:GND #PWR065
 U 1 1 5A5962A2
-P 1100 9350
-F 0 "#PWR065" H 1100 9100 50  0001 C CNN
-F 1 "GND" H 1100 9200 50  0001 C CNN
-F 2 "" H 1100 9350 60  0000 C CNN
-F 3 "" H 1100 9350 60  0000 C CNN
-	1    1100 9350
-	0    1    1    0   
+P 3000 9950
+F 0 "#PWR065" H 3000 9700 50  0001 C CNN
+F 1 "GND" H 3000 9800 50  0001 C CNN
+F 2 "" H 3000 9950 60  0000 C CNN
+F 3 "" H 3000 9950 60  0000 C CNN
+	1    3000 9950
+	0    -1   -1   0   
 $EndComp
 $Comp
 L conservify:PCF8523 U7
@@ -2558,17 +2538,6 @@ F 11 " " H 7800 15500 50  0001 C CNN "Subsystem"
 F 12 " " H 7800 15500 50  0001 C CNN "Supplier1"
 	1    7800 15300
 	-1   0    0    1   
-$EndComp
-$Comp
-L conservify:VBUS #PWR074
-U 1 1 5B28222B
-P 800 9450
-F 0 "#PWR074" H 800 9300 50  0001 C CNN
-F 1 "VBUS" H 800 9590 50  0000 C CNN
-F 2 "" H 800 9450 60  0000 C CNN
-F 3 "" H 800 9450 60  0000 C CNN
-	1    800  9450
-	1    0    0    -1  
 $EndComp
 $Comp
 L conservify:FIDUCIAL M2
@@ -3591,8 +3560,6 @@ Text Label 4550 3000 0    50   ~ 0
 MOSI
 Text Label 4550 2900 0    50   ~ 0
 SCK
-Text Label 4550 3400 0    50   ~ 0
-A5
 Text Label 4550 4000 0    50   ~ 0
 USB+
 Text Label 4550 3900 0    50   ~ 0
@@ -3787,9 +3754,9 @@ Text Label 1100 10200 0    50   ~ 0
 D31
 Text Label 1100 10300 0    50   ~ 0
 D30
-Text Label 1200 9650 0    50   ~ 0
+Text Label 2850 9550 0    50   ~ 0
 SDA
-Text Label 1200 9550 0    50   ~ 0
+Text Label 2850 9450 0    50   ~ 0
 SCL
 Text Notes 13400 8650 0    180  ~ 36
 NOTES
@@ -3867,17 +3834,17 @@ Text Label 15700 14850 0    50   ~ 0
 D1_RADIO_D1
 Text Label 15700 14950 0    50   ~ 0
 D0_RADIO_D2
-Text Label 2000 3100 0    50   ~ 0
+Text Label 4850 3500 0    50   ~ 0
 D1_RADIO_D1
-Text Label 2000 3200 0    50   ~ 0
+Text Label 4850 3600 0    50   ~ 0
 D0_RADIO_D2
-Text Label 2000 2800 0    50   ~ 0
+Text Label 4550 3400 0    50   ~ 0
 D9_MODULE_EN
 Text Label 16650 3450 0    50   ~ 0
 D9_MODULE_EN
 Text Label 20350 3350 0    60   ~ 0
 MODULE_3V3
-Text Label 800  9250 0    60   ~ 0
+Text Label 2850 9150 0    60   ~ 0
 MODULE_3V3
 Text Label 21500 3450 0    60   ~ 0
 MODULE_3V3
@@ -4584,12 +4551,6 @@ Wire Wire Line
 Wire Wire Line
 	1100 10300 1350 10300
 Wire Wire Line
-	1100 9350 1350 9350
-Wire Wire Line
-	1200 9550 1350 9550
-Wire Wire Line
-	1200 9650 1350 9650
-Wire Wire Line
 	12700 5600 12700 5800
 Wire Wire Line
 	12700 5800 12850 5800
@@ -4701,8 +4662,6 @@ Wire Wire Line
 	4550 3300 5100 3300
 Wire Wire Line
 	800  14300 1600 14300
-Wire Wire Line
-	1350 9450 800  9450
 Wire Wire Line
 	10950 6550 11050 6550
 Wire Wire Line
@@ -5064,8 +5023,6 @@ Wire Wire Line
 Wire Wire Line
 	20250 3350 20900 3350
 Wire Wire Line
-	800  9250 1350 9250
-Wire Wire Line
 	21500 3350 21800 3350
 Wire Wire Line
 	21800 3350 21800 3200
@@ -5205,9 +5162,6 @@ NoConn ~ 10950 6650
 NoConn ~ 8700 1000
 NoConn ~ 8700 1600
 NoConn ~ 16550 5650
-NoConn ~ 5100 3400
-NoConn ~ 2000 2900
-NoConn ~ 2000 3000
 $Comp
 L conservify:5V0 #PWR0115
 U 1 1 5BE76D5B
@@ -5386,4 +5340,49 @@ Wire Wire Line
 	4550 2800 5100 2800
 Wire Wire Line
 	4550 2700 5100 2700
+$Comp
+L conservify:CONN_01x09 J6
+U 1 1 5B99BF77
+P 2600 9550
+F 0 "J6" H 2600 9050 50  0000 L CNN
+F 1 "CONN_01x09" V 2700 9350 50  0000 L CNN
+F 2 "conservify:Molex_CLIK-Mate_502382-0970_1x09_P1.25mm_Vertical" H 2600 9550 50  0001 C CNN
+F 3 "" H 2600 9550 50  0001 C CNN
+	1    2600 9550
+	-1   0    0    1   
+$EndComp
+Text Label 2850 9250 0    50   ~ 0
+SCL2
+Text Label 2850 9350 0    50   ~ 0
+SDA2
+Text Label 2850 9650 0    50   ~ 0
+I2S_DATA
+Text Label 2850 9750 0    50   ~ 0
+I2S_WS
+Text Label 2850 9850 0    50   ~ 0
+I2S_BCLK
+Wire Wire Line
+	2800 9150 3450 9150
+Wire Wire Line
+	3450 9250 2800 9250
+Wire Wire Line
+	2800 9350 3450 9350
+Wire Wire Line
+	3450 9450 2800 9450
+Wire Wire Line
+	2800 9550 3450 9550
+Wire Wire Line
+	3450 9650 2800 9650
+Wire Wire Line
+	2800 9750 3450 9750
+Wire Wire Line
+	3450 9850 2800 9850
+Wire Wire Line
+	2800 9950 3000 9950
+Text Label 2000 2800 0    50   ~ 0
+I2S_DATA
+Text Label 2000 3200 0    50   ~ 0
+I2S_WS
+Text Label 2000 3100 0    50   ~ 0
+I2S_BCLK
 $EndSCHEMATC
