@@ -29,7 +29,7 @@ F 6 "mouser" H -6900 2300 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L power1:GND #PWR01
+L conservify:GND #PWR01
 U 1 1 5B217CDE
 P 5050 4900
 F 0 "#PWR01" H 5050 4650 50  0001 C CNN
@@ -40,7 +40,7 @@ F 3 "" H 5050 4900 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-naturalist-sensors-rescue:CAPACITOR-CERAMIC C1
+L conservify:CAPACITOR_CERAMIC C1
 U 1 1 5B217CDF
 P 4600 4400
 F 0 "C1" V 4450 4350 50  0000 L CNN
@@ -54,7 +54,7 @@ F 6 "mouser" H -6900 2300 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-naturalist-sensors-rescue:CAPACITOR-CERAMIC C3
+L conservify:CAPACITOR_CERAMIC C3
 U 1 1 5B217CE0
 P 5050 4400
 F 0 "C3" V 4900 4350 50  0000 L CNN
@@ -68,7 +68,7 @@ F 6 "mouser" H -6900 2300 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-naturalist-sensors-rescue:CAPACITOR-CERAMIC C5
+L conservify:CAPACITOR_CERAMIC C5
 U 1 1 5B217CE1
 P 5500 4400
 F 0 "C5" V 5350 4350 50  0000 L CNN
@@ -107,7 +107,7 @@ F 3 "" H 5050 3900 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power1:GND #PWR03
+L conservify:GND #PWR03
 U 1 1 5B217CE4
 P 5250 6350
 F 0 "#PWR03" H 5250 6100 50  0001 C CNN
@@ -129,7 +129,7 @@ F 3 "" H 5250 5700 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-naturalist-sensors-rescue:CAPACITOR-CERAMIC C4
+L conservify:CAPACITOR_CERAMIC C4
 U 1 1 5B217CE6
 P 5250 6000
 F 0 "C4" V 5100 5950 50  0000 L CNN
@@ -157,7 +157,7 @@ F 6 "mouser" H 3400 2750 60  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L fk-naturalist-sensors-rescue:CAPACITOR-CERAMIC C2
+L conservify:CAPACITOR_CERAMIC C2
 U 1 1 5B217CE8
 P 4950 2750
 F 0 "C2" V 4800 2700 50  0000 L CNN
@@ -171,7 +171,7 @@ F 6 "mouser" H -6500 -2150 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L power1:GND #PWR05
+L conservify:GND #PWR05
 U 1 1 5B217CE9
 P 4950 3050
 F 0 "#PWR05" H 4950 2800 50  0001 C CNN
@@ -193,7 +193,7 @@ F 3 "" H 4950 2500 60  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power1:GND #PWR07
+L conservify:GND #PWR07
 U 1 1 5B217CFE
 P 2450 3050
 F 0 "#PWR07" H 2450 2800 50  0001 C CNN
@@ -245,7 +245,7 @@ F 6 "mouser" H -700 -5950 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L power1:GND #PWR08
+L conservify:GND #PWR08
 U 1 1 5B217DC2
 P 1800 1650
 F 0 "#PWR08" H 1800 1400 50  0001 C CNN
@@ -295,7 +295,7 @@ F 6 "mouser" H -5500 -2450 50  0001 C CNN "supplier1"
 	1    0    0    -1  
 $EndComp
 $Comp
-L power1:GND #PWR010
+L conservify:GND #PWR010
 U 1 1 5B217DC6
 P 6250 1550
 F 0 "#PWR010" H 6250 1300 50  0001 C CNN
@@ -558,7 +558,7 @@ F 3 "" H 8250 4150 60  0000 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L power1:GND #PWR012
+L conservify:GND #PWR012
 U 1 1 5B21D250
 P 8300 4900
 F 0 "#PWR012" H 8300 4650 50  0001 C CNN
@@ -686,4 +686,58 @@ Wire Wire Line
 	5550 1150 5850 1150
 Wire Wire Line
 	5850 1150 6250 1150
+NoConn ~ 8200 2500
+NoConn ~ 7700 2500
+NoConn ~ 7200 2500
+NoConn ~ 7200 3050
+NoConn ~ 7700 3050
+NoConn ~ 8200 3050
+$Comp
+L conservify:3V3 #PWR0101
+U 1 1 5DA3D54E
+P 7200 5700
+F 0 "#PWR0101" H 7200 5550 50  0001 C CNN
+F 1 "3V3" H 7200 5840 50  0000 C CNN
+F 2 "" H 7200 5700 60  0000 C CNN
+F 3 "" H 7200 5700 60  0000 C CNN
+	1    7200 5700
+	1    0    0    -1  
+$EndComp
+$Comp
+L conservify:GND #PWR0102
+U 1 1 5DA3D721
+P 7600 5700
+F 0 "#PWR0102" H 7600 5450 50  0001 C CNN
+F 1 "GND" H 7600 5550 50  0001 C CNN
+F 2 "" H 7600 5700 60  0000 C CNN
+F 3 "" H 7600 5700 60  0000 C CNN
+	1    7600 5700
+	-1   0    0    1   
+$EndComp
+$Comp
+L conservify:PWR_FLAG #FLG0101
+U 1 1 5DA418D8
+P 7200 5850
+F 0 "#FLG0101" H 7200 5925 50  0001 C CNN
+F 1 "PWR_FLAG" H 7200 6000 50  0000 C CNN
+F 2 "" H 7200 5850 50  0001 C CNN
+F 3 "~" H 7200 5850 50  0001 C CNN
+	1    7200 5850
+	-1   0    0    1   
+$EndComp
+$Comp
+L conservify:PWR_FLAG #FLG0102
+U 1 1 5DA4194A
+P 7600 5850
+F 0 "#FLG0102" H 7600 5925 50  0001 C CNN
+F 1 "PWR_FLAG" H 7600 6000 50  0000 C CNN
+F 2 "" H 7600 5850 50  0001 C CNN
+F 3 "~" H 7600 5850 50  0001 C CNN
+	1    7600 5850
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	7600 5700 7600 5850
+Wire Wire Line
+	7200 5850 7200 5700
 $EndSCHEMATC
