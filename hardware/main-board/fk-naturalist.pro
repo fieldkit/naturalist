@@ -1,4 +1,4 @@
-update=Mon 23 Jul 2018 08:07:17 PM PDT
+update=Wed 25 Jul 2018 09:59:02 AM PDT
 version=1
 last_client=kicad
 [cvpcb]
@@ -9,7 +9,7 @@ version=1
 [pcbnew]
 version=1
 PageLayoutDescrFile=SchematicLayout.kicad_wks
-LastNetListRead=fk-core.net
+LastNetListRead=fk-naturalist.net
 PadDrill=0
 PadDrillOvalY=0
 PadSizeH=0.75
