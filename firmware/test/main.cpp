@@ -42,6 +42,13 @@ void platformSerial2Begin(int32_t baud) {
     pinPeripheral(11, PIO_SERCOM);
 }
 
+static void debugfln(const char *f, ...) {
+    va_list args;
+    va_start(args, f);
+    valogf(LogLevels::TRACE, "Check", f, args);
+    va_end(args);
+}
+
 class ModuleHardware {
 public:
     static constexpr uint8_t PIN_FLASH_CS = (26u); // PIN_LED_TXL;
@@ -241,10 +248,8 @@ public:
             while (hw->serialFlash.ready() == false) {
                 if (millis() - dotMillis > 1000) {
                     dotMillis = dotMillis + 1000;
-                    debugf(".");
                     periods++;
                     if (periods >= 60) {
-                        debugfln("");
                         periods = 0;
                     }
                 }

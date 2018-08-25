@@ -4,7 +4,7 @@ enable_arduino_toolchain()
 
 include_directories(./)
 
-set(sources main.cpp debug.cpp)
+set(sources main.cpp)
 
 add_arduino_library(fk-naturalist-test "${sources}")
 
