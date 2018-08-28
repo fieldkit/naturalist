@@ -10,7 +10,7 @@ https://github.com/Conservify/lwcron.git *
 https://github.com/nanopb/nanopb.git 66eba33227d75bec02b7163874d40989b7b919b2
 https://github.com/arduino-libraries/RTCZero.git 618d53117e94c85141b362c121497c0acf07ce29
 https://github.com/adafruit/RTClib.git 82d00a1a15bcf738b001e42bf26a3d1f1a15be32
-https://github.com/Conservify/WiFi101.git 3d1280655ef8e663a909d5d6f27e596bc171125f
+https://github.com/Conservify/WiFi101.git af0ac6cde94c114d8692f0c12b809709386fe730
 https://github.com/adafruit/Adafruit_ASFcore.git 99f9be5465caad6e368102b5465b30aa9b07a26e
 https://github.com/Conservify/Adafruit_BNO055.git ed1744e1f3f2730e41b202bb6b09906e6df1db30
 https://github.com/adafruit/Adafruit_Sensor.git e985f2253a687ef377cde3dcfb1f788830d1bc09
@@ -25,3 +25,4 @@ https://github.com/mikalhart/TinyGPS.git db4ef9c97af767e7345f5ccb277ac3bd1a2eb81
 https://github.com/adamvr/arduino-base64.git 999595783185a0afcba156d7276dfeaa9cb5382f
 https://github.com/Conservify/RadioHead.git 1af5fd0bfa32389d1348114d93e88211f39f4f6c
 https://github.com/arduino-libraries/ArduinoSound.git 80f7202303598749162372bc2a65c2130474e73a
+https://github.com/adafruit/Adafruit_NeoPixel.git ec3c77e28e84b221dc159b48358929cb24ba97bd
