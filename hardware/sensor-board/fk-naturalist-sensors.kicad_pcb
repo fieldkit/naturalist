@@ -17,7 +17,7 @@
     (33 F.Adhes user)
     (34 B.Paste user)
     (35 F.Paste user)
-    (36 B.SilkS user hide)
+    (36 B.SilkS user)
     (37 F.SilkS user)
     (38 B.Mask user)
     (39 F.Mask user)
@@ -34,7 +34,7 @@
   )
 
   (setup
-    (last_trace_width 0.254)
+    (last_trace_width 0.25)
     (user_trace_width 0.254)
     (user_trace_width 0.381)
     (trace_clearance 0.2)
@@ -63,7 +63,7 @@
     (aux_axis_origin 0 0)
     (visible_elements FFFFFF7F)
     (pcbplotparams
-      (layerselection 0x010fc_80000001)
+      (layerselection 0x010fc_ffffffff)
       (usegerberextensions false)
       (usegerberattributes false)
       (usegerberadvancedattributes false)
@@ -434,11 +434,11 @@
   )
 
   (module conservify:conservify_text_negative_4000 (layer B.Cu) (tedit 0) (tstamp 5B2AEC02)
-    (at 223.56064 116.11356 90)
-    (fp_text reference G*** (at 0 0 90) (layer B.SilkS) hide
+    (at 230.9114 113.3602 270)
+    (fp_text reference G*** (at 0 0 270) (layer B.SilkS) hide
       (effects (font (size 1.524 1.524) (thickness 0.3)) (justify mirror))
     )
-    (fp_text value LOGO (at 0.75 0 90) (layer B.SilkS) hide
+    (fp_text value LOGO (at 0.75 0 270) (layer B.SilkS) hide
       (effects (font (size 1.524 1.524) (thickness 0.3)) (justify mirror))
     )
     (fp_poly (pts (xy -6.461691 2.523967) (xy -6.405813 2.523371) (xy -6.357701 2.522153) (xy -6.314888 2.520129)
@@ -1423,11 +1423,11 @@
       (net 25 "Net-(R5-Pad1)"))
   )
 
-  (module conservify:BNO055 (layer F.Cu) (tedit 56AC3471) (tstamp 5B80A00B)
+  (module conservify:BNO055 (layer F.Cu) (tedit 5B8492AD) (tstamp 5B80A00B)
     (at 229.1588 107.2896)
     (descr https://ae-bst.resource.bosch.com/media/products/dokumente/bno055/BST_BNO055_DS000_13.pdf)
     (path /59784302)
-    (fp_text reference U5 (at 0 0) (layer F.SilkS)
+    (fp_text reference U5 (at 0 0) (layer F.SilkS) hide
       (effects (font (size 1 1) (thickness 0.15)))
     )
     (fp_text value BNO055 (at 0 0) (layer F.Fab)
@@ -1510,13 +1510,13 @@
       (net 22 "Net-(C11-Pad1)"))
   )
 
-  (module conservify:Molex_CLIK-Mate_502382-0970_1x09_P1.25mm_Vertical (layer B.Cu) (tedit 5B808ABA) (tstamp 5B80A15D)
+  (module conservify:Molex_CLIK-Mate_502382-0970_1x09_P1.25mm_Vertical (layer B.Cu) (tedit 5B8492D4) (tstamp 5B80A15D)
     (at 223.1644 115.5192 90)
     (descr "JST CLIK-Mate series connector, 502382-0970 (http://www.molex.com/pdm_docs/sd/5023820270_sd.pdf), generated with kicad-footprint-generator")
     (tags "connector Molex CLIK-Mate side entry")
     (path /5B927369)
     (attr smd)
-    (fp_text reference J1 (at 0 4.7 90) (layer B.SilkS)
+    (fp_text reference J1 (at 0 4.7 90) (layer B.SilkS) hide
       (effects (font (size 1 1) (thickness 0.15)) (justify mirror))
     )
     (fp_text value CONN_01x09 (at 0 -4 90) (layer B.Fab)
@@ -1779,7 +1779,7 @@
   (segment (start 226.6096 111.7692) (end 232.7402 105.6386) (width 0.254) (layer B.Cu) (net 31))
   (segment (start 221.2144 111.7692) (end 226.6096 111.7692) (width 0.254) (layer B.Cu) (net 31))
 
-  (zone (net 2) (net_name GND) (layer B.Cu) (tstamp 0) (hatch edge 0.508)
+  (zone (net 2) (net_name GND) (layer B.Cu) (tstamp 5B8494FD) (hatch edge 0.508)
     (connect_pads (clearance 0.3))
     (min_thickness 0.2032)
     (fill yes (arc_segments 32) (thermal_gap 0.3) (thermal_bridge_width 0.254))
@@ -1865,7 +1865,7 @@
       )
     )
   )
-  (zone (net 2) (net_name GND) (layer F.Cu) (tstamp 5B33BE94) (hatch edge 0.508)
+  (zone (net 2) (net_name GND) (layer F.Cu) (tstamp 5B8494FA) (hatch edge 0.508)
     (connect_pads (clearance 0.2032))
     (min_thickness 0.2032)
     (fill yes (arc_segments 32) (thermal_gap 0.254) (thermal_bridge_width 0.254))
