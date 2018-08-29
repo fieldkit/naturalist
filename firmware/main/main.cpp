@@ -71,9 +71,7 @@ public:
         auto state = services().state;
 
         state->configure(fk::NetworkSettings{ false, networks });
-
-        // TODO: Assign ModuleInfo
-
+        state->configure(info);
         state->doneScanning();
 
         fk::NaturalistReadings naturalistReadings{ *state };
