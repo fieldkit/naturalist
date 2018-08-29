@@ -38,7 +38,7 @@ fk::SensorInfo sensors[] = {
 
 fk::SensorReading readings[18];
 
-fk::ModuleInfo info = {
+fk::ModuleInfo module = {
     fk_module_ModuleType_SENSOR,
     8,
     18,
@@ -71,7 +71,7 @@ public:
         auto state = services().state;
 
         state->configure(fk::NetworkSettings{ false, networks });
-        state->configure(info);
+        state->configure(module);
         state->doneScanning();
 
         fk::NaturalistReadings naturalistReadings{ *state };
