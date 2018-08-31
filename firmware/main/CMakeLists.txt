@@ -8,7 +8,7 @@ file(GLOB sources *.cpp)
 
 add_arduino_library(fk-naturalist-main "${sources}")
 
-add_definitions(-DFK_NATURALIST -DFK_CORE)
+add_definitions(-DFK_NATURALIST)
 
 find_package(FkCore)
 
@@ -24,6 +24,7 @@ target_compile_options(firmware-common-fk-naturalist-main PUBLIC -DFK_NATURALIST
 
 find_package(ArduinoSound)
 target_link_libraries(fk-naturalist-main ArduinoSound)
+target_link_libraries(firmware-common-fk-naturalist-main ArduinoSound)
 
 find_package(I2S)
 target_link_libraries(fk-naturalist-main I2S)

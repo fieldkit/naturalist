@@ -8,7 +8,7 @@ set(sources main.cpp)
 
 add_arduino_library(fk-naturalist-test "${sources}")
 
-add_definitions(-DFK_NATURALIST -DFK_CORE)
+add_definitions(-DFK_NATURALIST)
 
 find_package(FkCore)
 
@@ -23,6 +23,7 @@ fk_core_apply_configuration(fk-naturalist-test)
 
 find_package(ArduinoSound)
 target_link_libraries(fk-naturalist-test ArduinoSound)
+target_link_libraries(firmware-common-fk-naturalist-test ArduinoSound)
 
 find_package(I2S)
 target_link_libraries(fk-naturalist-test I2S)
