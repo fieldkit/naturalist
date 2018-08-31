@@ -20,6 +20,8 @@ fk_core_apply_configuration(fk-naturalist-standard)
 
 target_compile_options(firmware-common-fk-naturalist-standard PUBLIC -DFK_NATURALIST)
 
+target_compile_options(firmware-common-fk-naturalist-standard PUBLIC -DFK_WIFI_STARTUP_ONLY)
+
 find_package(ArduinoSound)
 target_link_libraries(fk-naturalist-standard ArduinoSound)
 target_link_libraries(firmware-common-fk-naturalist-standard ArduinoSound)
