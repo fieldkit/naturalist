@@ -13,11 +13,24 @@
 #include <AmplitudeAnalyzer.h>
 #include <AudioInI2S.h>
 
+#include "state_services.h"
+
 #include "task.h"
 #include "core_state.h"
 #include "two_wire.h"
 
 namespace fk {
+
+class TakeNaturalistReadings : public MainServicesState {
+public:
+    const char *name() const override {
+        return "TakeNaturalistReadings";
+    }
+
+public:
+    void task() override;
+
+};
 
 class NaturalistReadings : public Task {
 private:

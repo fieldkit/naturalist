@@ -4,6 +4,20 @@
 
 namespace fk {
 
+void TakeNaturalistReadings::task() {
+    NaturalistReadings readings(*services().state);
+
+    readings.setup();
+
+    readings.enqueued();
+
+    while (simple_task_run(readings)) {
+        services().alive();
+    }
+
+    back();
+}
+
 void NaturalistReadings::setup() {
     if (!amplitudeAnalyzer.input(AudioInI2S)) {
         log("Amplitude Analyzer failed");
@@ -45,39 +59,42 @@ void NaturalistReadings::enqueued() {
 TaskEval NaturalistReadings::task() {
     constexpr uint32_t AudioSamplingDuration = 2000;
 
-    log("Ready, listening...");
-
     auto numberOfSamples = 0;
     auto audioRmsMin = 0.0f;
     auto audioRmsMax = 0.0f;
     auto total = 0.0f;
-    auto start = fk_uptime();
-    while (fk_uptime() - start < AudioSamplingDuration) {
-        if (amplitudeAnalyzer.available()) {
-            auto amplitude = amplitudeAnalyzer.read();
-            if (amplitude > 0) {
-                if (numberOfSamples == 0) {
-                    audioRmsMin = amplitude;
-                    audioRmsMax = amplitude;
-                }
-                else {
-                    if (audioRmsMax < amplitude) {
+    if (hasAudioAnalyzer) {
+        auto start = fk_uptime();
+
+        log("Ready, listening...");
+
+        while (fk_uptime() - start < AudioSamplingDuration) {
+            if (amplitudeAnalyzer.available()) {
+                auto amplitude = amplitudeAnalyzer.read();
+                if (amplitude > 0) {
+                    if (numberOfSamples == 0) {
+                        audioRmsMin = amplitude;
                         audioRmsMax = amplitude;
                     }
-                    if (audioRmsMin > amplitude) {
-                        audioRmsMin = amplitude;
+                    else {
+                        if (audioRmsMax < amplitude) {
+                            audioRmsMax = amplitude;
+                        }
+                        if (audioRmsMin > amplitude) {
+                            audioRmsMin = amplitude;
+                        }
                     }
+                    total += amplitude;
+                    numberOfSamples++;
                 }
-                total += amplitude;
-                numberOfSamples++;
             }
         }
     }
 
-    auto audioRmsAvg = total / (float)numberOfSamples;
-    auto audioDbfsAvg = 20.0f * log10(audioRmsAvg);
-    auto audioDbfsMin = 20.0f * log10(audioRmsMin);
-    auto audioDbfsMax = 20.0f * log10(audioRmsMax);
+    auto audioRmsAvg = numberOfSamples > 0 ? total / (float)numberOfSamples : 0.0f;
+    auto audioDbfsAvg = numberOfSamples > 0 ? 20.0f * log10(audioRmsAvg) : 0.0f;
+    auto audioDbfsMin = numberOfSamples > 0 ? 20.0f * log10(audioRmsMin) : 0.0f;
+    auto audioDbfsMax = numberOfSamples > 0 ? 20.0f * log10(audioRmsMax) : 0.0f;
 
     auto shtTemperature = sht31Sensor.readTemperature();
     auto shtHumidity = sht31Sensor.readHumidity();
@@ -120,6 +137,7 @@ TaskEval NaturalistReadings::task() {
         (float)audioDbfsMin,
         (float)audioDbfsMax
     };
+
     auto time = clock.getTime();
     auto module = state->getModule(8);
     for (size_t i = 0; i < sizeof(values) / sizeof(float); ++i) {

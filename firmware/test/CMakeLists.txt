@@ -1,4 +1,6 @@
 include(Arduino)
+include(BuildInfo)
+include(RandomSeed)
 
 enable_arduino_toolchain()
 
