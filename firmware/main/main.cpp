@@ -74,9 +74,6 @@ public:
         state->configure(module);
         state->doneScanning();
 
-        fk::NaturalistReadings naturalistReadings{ *state };
-        naturalistReadings.setup();
-
         log("Configured");
 
         transit<fk::Initialized>();

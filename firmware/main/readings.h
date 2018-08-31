@@ -21,20 +21,8 @@
 
 namespace fk {
 
-class TakeNaturalistReadings : public MainServicesState {
-public:
-    const char *name() const override {
-        return "TakeNaturalistReadings";
-    }
-
-public:
-    void task() override;
-
-};
-
-class NaturalistReadings : public Task {
+class NaturalistReadings {
 private:
-    CoreState *state;
     TwoWireBus bno055Wire{ Wire4and3 };
     Adafruit_SHT31 sht31Sensor;
     Adafruit_MPL3115A2 mpl3115a2Sensor;
@@ -43,15 +31,25 @@ private:
     AmplitudeAnalyzer amplitudeAnalyzer;
     bool hasBno055{ false };
     bool hasAudioAnalyzer{ false };
-
-public:
-    NaturalistReadings(CoreState &state) : Task("Naturalist"), state(&state) {
-    }
+    bool initialized{ false };
 
 public:
     void setup();
-    void enqueued() override;
-    TaskEval task() override;
+    TaskEval task(CoreState &state);
+
+};
+
+class TakeNaturalistReadings : public MainServicesState {
+private:
+    NaturalistReadings readings_;
+
+public:
+    const char *name() const override {
+        return "TakeNaturalistReadings";
+    }
+
+public:
+    void task() override;
 
 };
 

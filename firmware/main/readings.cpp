@@ -4,14 +4,14 @@
 
 namespace fk {
 
+constexpr const char Log[] = "Naturalist";
+
+using Logger = SimpleLog<Log>;
+
 void TakeNaturalistReadings::task() {
-    NaturalistReadings readings(*services().state);
+    readings_.setup();
 
-    readings.setup();
-
-    readings.enqueued();
-
-    while (simple_task_run(readings)) {
+    while (is_task_running(readings_.task(*services().state))) {
         services().alive();
     }
 
@@ -19,33 +19,39 @@ void TakeNaturalistReadings::task() {
 }
 
 void NaturalistReadings::setup() {
+    if (initialized) {
+        return;
+    }
+
+    initialized = true;
+
     if (!amplitudeAnalyzer.input(AudioInI2S)) {
-        log("Amplitude Analyzer failed");
+        Logger::info("Amplitude Analyzer failed");
     }
     else {
-        log("Amplitude Analyzer ready.");
+        Logger::info("Amplitude Analyzer ready.");
         hasAudioAnalyzer = true;
     }
 
     Wire.begin();
 
     if (!sht31Sensor.begin()) {
-        log("SHT31 FAILED");
+        Logger::info("SHT31 FAILED");
     }
     if (!mpl3115a2Sensor.begin()) {
-        log("MPL3115A2 FAILED");
+        Logger::info("MPL3115A2 FAILED");
     }
 
     if (!tsl2591Sensor.begin()) {
-        log("TSL25911FN FAILED");
+        Logger::info("TSL25911FN FAILED");
     }
 
     if (!bno055Wire.begin()) {
-        log("BNO055 FAILED");
+        Logger::info("BNO055 FAILED");
     }
     else {
         if (!bnoSensor.begin()) {
-            log("BNO055 FAILED");
+            Logger::info("BNO055 FAILED");
         } else {
             hasBno055 = true;
             bnoSensor.setExtCrystalUse(true);
@@ -53,10 +59,7 @@ void NaturalistReadings::setup() {
     }
 }
 
-void NaturalistReadings::enqueued() {
-}
-
-TaskEval NaturalistReadings::task() {
+TaskEval NaturalistReadings::task(CoreState &state) {
     constexpr uint32_t AudioSamplingDuration = 2000;
 
     auto numberOfSamples = 0;
@@ -66,7 +69,7 @@ TaskEval NaturalistReadings::task() {
     if (hasAudioAnalyzer) {
         auto start = fk_uptime();
 
-        log("Ready, listening...");
+        Logger::info("Ready, listening...");
 
         while (fk_uptime() - start < AudioSamplingDuration) {
             if (amplitudeAnalyzer.available()) {
@@ -139,21 +142,21 @@ TaskEval NaturalistReadings::task() {
     };
 
     auto time = clock.getTime();
-    auto module = state->getModule(8);
+    auto module = state.getModule(8);
     for (size_t i = 0; i < sizeof(values) / sizeof(float); ++i) {
         IncomingSensorReading reading{
             (uint8_t)i,
             time,
             values[i],
         };
-        state->merge(*module, reading);
+        state.merge(*module, reading);
     }
 
-    log("Sensors: %fC %f%%, %fC %fpa %f\"/Hg %fm", shtTemperature, shtHumidity, mplTempCelsius, pressurePascals, pressureInchesMercury, altitudeMeters);
-    log("Sensors: ir(%lu) full(%lu) visible(%lu) lux(%f)", ir, full, full - ir, lux);
-    log("Sensors: cal(%d, %d, %d, %d) xyz(%f, %f, %f)", system, gyro, accel, mag, event.orientation.x, event.orientation.y, event.orientation.z);
-    log("Sensors: RMS: min=%f max=%f avg=%f range=%f (%d samples)", audioRmsMin, audioRmsMax, audioRmsMax - audioRmsMin, audioRmsAvg, numberOfSamples);
-    log("Sensors: dbfs: min=%f max=%f avg=%f", audioDbfsMin, audioDbfsMax, audioDbfsAvg);
+    Logger::info("Sensors: %fC %f%%, %fC %fpa %f\"/Hg %fm", shtTemperature, shtHumidity, mplTempCelsius, pressurePascals, pressureInchesMercury, altitudeMeters);
+    Logger::info("Sensors: ir(%lu) full(%lu) visible(%lu) lux(%f)", ir, full, full - ir, lux);
+    Logger::info("Sensors: cal(%d, %d, %d, %d) xyz(%f, %f, %f)", system, gyro, accel, mag, event.orientation.x, event.orientation.y, event.orientation.z);
+    Logger::info("Sensors: RMS: min=%f max=%f avg=%f range=%f (%d samples)", audioRmsMin, audioRmsMax, audioRmsMax - audioRmsMin, audioRmsAvg, numberOfSamples);
+    Logger::info("Sensors: dbfs: min=%f max=%f avg=%f", audioDbfsMin, audioDbfsMax, audioDbfsAvg);
 
     return TaskEval::done();
 }
