@@ -8,15 +8,13 @@ file(GLOB sources *.cpp)
 
 add_arduino_library(fk-naturalist-main "${sources}")
 
+target_include_directories(fk-naturalist-main PRIVATE ${RANDOM_SEED_INCLUDE})
+
 add_definitions(-DFK_NATURALIST)
 
 find_package(FkCore)
 
 fk_configure_core(fk-naturalist-main)
-
-target_include_directories(fk-naturalist-main PRIVATE ./)
-
-target_include_directories(fk-naturalist-main PRIVATE ${RANDOM_SEED_INCLUDE})
 
 fk_core_apply_configuration(fk-naturalist-main)
 

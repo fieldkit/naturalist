@@ -85,7 +85,6 @@ public:
 
 static void setup_serial();
 static void setup_env();
-static void dump_configuration();
 
 void setup() {
     #ifdef FK_DEBUG_MTB_ENABLE
@@ -96,11 +95,12 @@ void setup() {
 
     setup_serial();
     setup_env();
-    dump_configuration();
+
+    fk::restartWizard.startup();
 }
 
 void loop() {
-    fk::CoreModule coreModule;
+    fk::CoreModule coreModule(fk::CoreFsm::deferred<fk::TakeNaturalistReadings>());
     coreModule.run(fk::CoreFsm::deferred<ConfigureDevice>());
 }
 
@@ -131,44 +131,7 @@ static void setup_env() {
     randomSeed(RANDOM_SEED);
     firmware_version_set(FIRMWARE_GIT_HASH);
     firmware_build_set(FIRMWARE_BUILD);
-}
-
-static void dump_configuration() {
-    loginfof("Core", "Starting");
-
-    #ifdef FK_DEBUG_UART_FALLBACK
-    loginfof("Core", "FK_DEBUG_UART_FALLBACK");
-    #endif
-
-    #ifdef FK_DEBUG_MTB_ENABLE
-    loginfof("Core", "FK_DEBUG_MTB_ENABLE");
-    #else
-    loginfof("Core", "FK_DEBUG_MTB_DISABLE");
-    #endif
-
-    #if defined(FK_NATURALIST)
-    loginfof("Core", "FK_NATURALIST");
-    #elif defined(FK_CORE_GENERATION_2)
-    loginfof("Core", "FK_CORE_GENERATION_2");
-    #elif defined(FK_CORE_GENERATION_1)
-    loginfof("Core", "FK_CORE_GENERATION_1");
-    #endif
-
-    #ifdef FK_CORE_REQUIRE_MODULES
-    loginfof("Core", "FK_CORE_REQUIRE_MODULES");
-    #endif
-
-    #ifdef FK_WIFI_STARTUP_ONLY
-    loginfof("Core", "FK_WIFI_STARTUP_ONLY");
-    #endif
-
-    #ifdef FK_WIFI_ALWAYS_ON
-    loginfof("Core", "FK_WIFI_ALWAYS_ON");
-    #endif
-
-    #ifdef FK_PROFILE_AMAZON
-    loginfof("Core", "FK_PROFILE_AMAZON");
-    #endif
+    firmware_compiled_set(DateTime(__DATE__, __TIME__).unixtime());
 }
 
 #ifdef FK_DEBUG_MTB_ENABLE
