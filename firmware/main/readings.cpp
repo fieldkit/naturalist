@@ -8,6 +8,10 @@ constexpr const char Log[] = "Naturalist";
 
 using Logger = SimpleLog<Log>;
 
+void TakeNaturalistReadings::setup() {
+    readings_.setup();
+}
+
 void TakeNaturalistReadings::task() {
     readings_.setup();
 
@@ -25,6 +29,8 @@ void NaturalistReadings::setup() {
 
     initialized_ = true;
 
+    Wire.begin();
+
     if (!amplitudeAnalyzer_.input(AudioInI2S)) {
         Logger::info("Amplitude Analyzer failed");
     }
@@ -32,8 +38,6 @@ void NaturalistReadings::setup() {
         Logger::info("Amplitude Analyzer ready.");
         hasAudioAnalyzer_ = true;
     }
-
-    Wire.begin();
 
     if (!sht31Sensor_.begin()) {
         Logger::info("SHT31 FAILED");
@@ -63,15 +67,15 @@ void NaturalistReadings::setup() {
 TaskEval NaturalistReadings::task(CoreState &state) {
     constexpr uint32_t AudioSamplingDuration = 2000;
 
+    auto numberOfDroppedSamples = 0;
     auto numberOfSamples = 0;
     auto audioRmsMin = 0.0f;
     auto audioRmsMax = 0.0f;
     auto total = 0.0f;
     if (hasAudioAnalyzer_) {
+        Logger::info("Ready, listening for %lums", AudioSamplingDuration);
+
         auto start = fk_uptime();
-
-        Logger::info("Ready, listening...");
-
         while (fk_uptime() - start < AudioSamplingDuration) {
             if (amplitudeAnalyzer_.available()) {
                 auto amplitude = amplitudeAnalyzer_.read();
@@ -90,6 +94,9 @@ TaskEval NaturalistReadings::task(CoreState &state) {
                     }
                     total += amplitude;
                     numberOfSamples++;
+                }
+                else {
+                    numberOfDroppedSamples++;
                 }
             }
         }
@@ -156,7 +163,7 @@ TaskEval NaturalistReadings::task(CoreState &state) {
     Logger::info("Sensors: %fC %f%%, %fC %fpa %f\"/Hg %fm", shtTemperature, shtHumidity, mplTempCelsius, pressurePascals, pressureInchesMercury, altitudeMeters);
     Logger::info("Sensors: ir(%lu) full(%lu) visible(%lu) lux(%f)", ir, full, full - ir, lux);
     Logger::info("Sensors: cal(%d, %d, %d, %d) xyz(%f, %f, %f)", system, gyro, accel, mag, event.orientation.x, event.orientation.y, event.orientation.z);
-    Logger::info("Sensors: RMS: min=%f max=%f avg=%f range=%f (%d samples)", audioRmsMin, audioRmsMax, audioRmsMax - audioRmsMin, audioRmsAvg, numberOfSamples);
+    Logger::info("Sensors: RMS: min=%f max=%f avg=%f range=%f (%d samples, %d dropped)", audioRmsMin, audioRmsMax, audioRmsMax - audioRmsMin, audioRmsAvg, numberOfSamples, numberOfDroppedSamples);
     Logger::info("Sensors: dbfs: min=%f max=%f avg=%f", audioDbfsMin, audioDbfsMax, audioDbfsAvg);
 
     return TaskEval::done();

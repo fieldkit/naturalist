@@ -49,6 +49,7 @@ public:
     }
 
 public:
+    void setup();
     void task() override;
 
 };

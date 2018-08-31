@@ -74,6 +74,8 @@ public:
         state->configure(module);
         state->doneScanning();
 
+        fk::CoreFsm::state<fk::TakeNaturalistReadings>().setup();
+
         log("Configured");
 
         transit<fk::Initialized>();
