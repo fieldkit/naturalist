@@ -16,24 +16,24 @@
 extern "C" {
 
 fk::SensorInfo sensors[] = {
-    {"temp_1", "°C",},
-    {"humidity", "%",},
-    {"temp_2", "°C",},
-    {"pressure", "pa",},
-    {"altitude", "m",},
-    {"light_ir", "",},
-    {"light_visible", "",},
-    {"light_lux", "",},
-    {"imu_cal", ""},
-    {"imu_orien_x", ""},
-    {"imu_orien_y", ""},
-    {"imu_orien_z", ""},
-    {"audio_rms_avg", ""},
-    {"audio_rms_min", ""},
-    {"audio_rms_max", ""},
-    {"audio_dbfs_avg", ""},
-    {"audio_dbfs_min", ""},
-    {"audio_dbfs_max", ""},
+    { "temp_1", "°C" },
+    { "humidity", "%" },
+    { "temp_2", "°C" },
+    { "pressure", "pa" },
+    { "altitude", "m" },
+    { "light_ir", "" },
+    { "light_visible", "" },
+    { "light_lux", "" },
+    { "imu_cal", "" },
+    { "imu_orien_x", "" },
+    { "imu_orien_y", "" },
+    { "imu_orien_z", "" },
+    { "audio_rms_avg", "" },
+    { "audio_rms_min", "" },
+    { "audio_rms_max", "" },
+    { "audio_dbfs_avg", "" },
+    { "audio_dbfs_min", "" },
+    { "audio_dbfs_max", "" },
 };
 
 fk::SensorReading readings[18];
@@ -87,8 +87,8 @@ static void setup_env();
 
 void setup() {
     #ifdef FK_DEBUG_MTB_ENABLE
-    REG_MTB_POSITION = ((uint32_t) (mtb - REG_MTB_BASE)) & 0xFFFFFFF8;
-    REG_MTB_FLOW = ((uint32_t) mtb + DEBUG_MTB_SIZE * sizeof(uint32_t)) & 0xFFFFFFF8;
+    REG_MTB_POSITION = ((uint32_t)(mtb - REG_MTB_BASE)) & 0xFFFFFFF8;
+    REG_MTB_FLOW = ((uint32_t)mtb + DEBUG_MTB_SIZE * sizeof(uint32_t)) & 0xFFFFFFF8;
     REG_MTB_MASTER = 0x80000000 + 6;
     #endif
 
