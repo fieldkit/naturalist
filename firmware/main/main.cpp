@@ -56,7 +56,7 @@ public:
     }
 
 public:
-    void entry() override {
+    void task() override {
         fk::NetworkInfo networks[2] = {
             {
                 FK_CONFIG_WIFI_1_SSID,
