@@ -23,15 +23,15 @@ namespace fk {
 
 class NaturalistReadings {
 private:
-    TwoWireBus bno055Wire{ Wire4and3 };
-    Adafruit_SHT31 sht31Sensor;
-    Adafruit_MPL3115A2 mpl3115a2Sensor;
-    Adafruit_TSL2591 tsl2591Sensor{ 2591 };
-    Adafruit_BNO055 bnoSensor{ 55, BNO055_ADDRESS_A, &Wire4and3 };
-    AmplitudeAnalyzer amplitudeAnalyzer;
-    bool hasBno055{ false };
-    bool hasAudioAnalyzer{ false };
-    bool initialized{ false };
+    TwoWireBus bno055Wire_{ Wire4and3 };
+    Adafruit_SHT31 sht31Sensor_;
+    Adafruit_MPL3115A2 mpl3115a2Sensor_;
+    Adafruit_TSL2591 tsl2591Sensor_{ 2591 };
+    Adafruit_BNO055 bnoSensor_{ 55, BNO055_ADDRESS_A, &Wire4and3 };
+    AmplitudeAnalyzer amplitudeAnalyzer_;
+    bool hasBno055_{ false };
+    bool hasAudioAnalyzer_{ false };
+    bool initialized_{ false };
 
 public:
     void setup();

@@ -19,42 +19,43 @@ void TakeNaturalistReadings::task() {
 }
 
 void NaturalistReadings::setup() {
-    if (initialized) {
+    if (initialized_) {
         return;
     }
 
-    initialized = true;
+    initialized_ = true;
 
-    if (!amplitudeAnalyzer.input(AudioInI2S)) {
+    if (!amplitudeAnalyzer_.input(AudioInI2S)) {
         Logger::info("Amplitude Analyzer failed");
     }
     else {
         Logger::info("Amplitude Analyzer ready.");
-        hasAudioAnalyzer = true;
+        hasAudioAnalyzer_ = true;
     }
 
     Wire.begin();
 
-    if (!sht31Sensor.begin()) {
+    if (!sht31Sensor_.begin()) {
         Logger::info("SHT31 FAILED");
     }
-    if (!mpl3115a2Sensor.begin()) {
+
+    if (!mpl3115a2Sensor_.begin()) {
         Logger::info("MPL3115A2 FAILED");
     }
 
-    if (!tsl2591Sensor.begin()) {
+    if (!tsl2591Sensor_.begin()) {
         Logger::info("TSL25911FN FAILED");
     }
 
-    if (!bno055Wire.begin()) {
+    if (!bno055Wire_.begin()) {
         Logger::info("BNO055 FAILED");
     }
     else {
-        if (!bnoSensor.begin()) {
+        if (!bnoSensor_.begin()) {
             Logger::info("BNO055 FAILED");
         } else {
-            hasBno055 = true;
-            bnoSensor.setExtCrystalUse(true);
+            hasBno055_ = true;
+            bnoSensor_.setExtCrystalUse(true);
         }
     }
 }
@@ -66,14 +67,14 @@ TaskEval NaturalistReadings::task(CoreState &state) {
     auto audioRmsMin = 0.0f;
     auto audioRmsMax = 0.0f;
     auto total = 0.0f;
-    if (hasAudioAnalyzer) {
+    if (hasAudioAnalyzer_) {
         auto start = fk_uptime();
 
         Logger::info("Ready, listening...");
 
         while (fk_uptime() - start < AudioSamplingDuration) {
-            if (amplitudeAnalyzer.available()) {
-                auto amplitude = amplitudeAnalyzer.read();
+            if (amplitudeAnalyzer_.available()) {
+                auto amplitude = amplitudeAnalyzer_.read();
                 if (amplitude > 0) {
                     if (numberOfSamples == 0) {
                         audioRmsMin = amplitude;
@@ -99,25 +100,25 @@ TaskEval NaturalistReadings::task(CoreState &state) {
     auto audioDbfsMin = numberOfSamples > 0 ? 20.0f * log10(audioRmsMin) : 0.0f;
     auto audioDbfsMax = numberOfSamples > 0 ? 20.0f * log10(audioRmsMax) : 0.0f;
 
-    auto shtTemperature = sht31Sensor.readTemperature();
-    auto shtHumidity = sht31Sensor.readHumidity();
+    auto shtTemperature = sht31Sensor_.readTemperature();
+    auto shtHumidity = sht31Sensor_.readHumidity();
 
-    auto pressurePascals = mpl3115a2Sensor.getPressure();
-    auto altitudeMeters = mpl3115a2Sensor.getAltitude();
-    auto mplTempCelsius = mpl3115a2Sensor.getTemperature();
+    auto pressurePascals = mpl3115a2Sensor_.getPressure();
+    auto altitudeMeters = mpl3115a2Sensor_.getAltitude();
+    auto mplTempCelsius = mpl3115a2Sensor_.getTemperature();
     auto pressureInchesMercury = pressurePascals / 3377.0;
 
-    auto fullLuminosity = tsl2591Sensor.getFullLuminosity();
+    auto fullLuminosity = tsl2591Sensor_.getFullLuminosity();
     auto ir = fullLuminosity >> 16;
     auto full = fullLuminosity & 0xFFFF;
-    auto lux = tsl2591Sensor.calculateLux(full, ir);
+    auto lux = tsl2591Sensor_.calculateLux(full, ir);
 
     uint8_t system = 0, gyro = 0, accel = 0, mag = 0;
     sensors_event_t event;
     memset(&event, 0, sizeof(sensors_event_t));
-    if (hasBno055) {
-        bnoSensor.getCalibration(&system, &gyro, &accel, &mag);
-        bnoSensor.getEvent(&event);
+    if (hasBno055_) {
+        bnoSensor_.getCalibration(&system, &gyro, &accel, &mag);
+        bnoSensor_.getEvent(&event);
     }
 
     float values[] = {
