@@ -4,8 +4,9 @@ conservifyProperties()
 
 timestamps {
     node () {
-        conservifyBuild(name: 'naturalist', archive: true)
-        distributeFirmware()
+        conservifyBuild(name: 'naturalist', archive: "build/firmware/main/*.bin")
+
+        distributeFirmware(module: 'fk-naturalist', directory: "build/firmware/main")
     }
 
     refreshDistribution()
