@@ -99,8 +99,12 @@ void setup() {
 }
 
 void loop() {
-    fk::CoreModule coreModule(fk::CoreFsm::deferred<fk::TakeNaturalistReadings>());
-    coreModule.run(fk::CoreFsm::deferred<ConfigureDevice>());
+    fk::ConfigurableStates states{
+        fk::CoreFsm::deferred<ConfigureDevice>(),
+        fk::CoreFsm::deferred<fk::TakeNaturalistReadings>()
+    };
+    fk::CoreModule coreModule(states);
+    coreModule.run();
 }
 
 static void setup_serial() {

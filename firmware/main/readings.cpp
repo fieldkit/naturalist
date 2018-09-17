@@ -19,7 +19,7 @@ void TakeNaturalistReadings::task() {
         services().alive();
     }
 
-    back();
+    resume();
 }
 
 void NaturalistReadings::setup() {
