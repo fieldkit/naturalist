@@ -3974,9 +3974,9 @@ Text Notes 8700 13500 0    180  ~ 36
 PERIPHERALS
 Text Label 16450 6150 0    60   ~ 0
 GPS_3V3
-Text Label 22200 6100 2    50   ~ 0
+Text Label 21950 6000 2    50   ~ 0
 GPS_TX
-Text Label 22200 6000 2    50   ~ 0
+Text Label 21950 6100 2    50   ~ 0
 GPS_RX
 Text Label 22200 6200 2    60   ~ 0
 BAT_BACKUP
