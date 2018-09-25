@@ -4,7 +4,7 @@
 #include <cstdarg>
 #include <FuelGauge.h>
 #include <WiFi101.h>
-#include <I2S.h>
+#include <../src/I2S.h>
 
 #include <phylum/phylum.h>
 #include <backends/arduino_sd/arduino_sd.h>
