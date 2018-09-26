@@ -7,13 +7,13 @@ https://github.com/Conservify/simple-lora-comms.git *
 https://github.com/Conservify/arduino-logging.git *
 https://github.com/Conservify/lwstreams.git *
 https://github.com/Conservify/lwcron.git *
-https://github.com/nanopb/nanopb.git 66eba33227d75bec02b7163874d40989b7b919b2
+https://github.com/nanopb/nanopb.git 3db85603e7f094e09b31b234b694348f48deddf5
 https://github.com/arduino-libraries/RTCZero.git 618d53117e94c85141b362c121497c0acf07ce29
-https://github.com/adafruit/RTClib.git 82d00a1a15bcf738b001e42bf26a3d1f1a15be32
-https://github.com/Conservify/WiFi101.git af0ac6cde94c114d8692f0c12b809709386fe730
+https://github.com/adafruit/RTClib.git c0d5a1691da66f2334837b0689714b24146f9dde
+https://github.com/Conservify/WiFi101.git d7f6ff8cd645f7601f5b9df7b6900601b2224f2b
 https://github.com/adafruit/Adafruit_ASFcore.git 99f9be5465caad6e368102b5465b30aa9b07a26e
 https://github.com/Conservify/Adafruit_BNO055.git ed1744e1f3f2730e41b202bb6b09906e6df1db30
-https://github.com/adafruit/Adafruit_Sensor.git e985f2253a687ef377cde3dcfb1f788830d1bc09
+https://github.com/adafruit/Adafruit_Sensor.git a78507261d6854ff5514604a4b17183758e8c146
 https://github.com/adafruit/Adafruit_TSL2561.git c913785d70a63774f7881bb1cbd072cb191eb94f
 https://github.com/adafruit/Adafruit_MPL3115A2_Library.git cc2ad8ef2f932e13c79a75f85c6bb8233a74d543
 https://github.com/adafruit/Adafruit_TSL2591_Library.git 608b3a2460f8f0c6e2c206f2116303c0568214f6
@@ -25,4 +25,4 @@ https://github.com/mikalhart/TinyGPS.git db4ef9c97af767e7345f5ccb277ac3bd1a2eb81
 https://github.com/adamvr/arduino-base64.git 999595783185a0afcba156d7276dfeaa9cb5382f
 https://github.com/Conservify/RadioHead.git 1af5fd0bfa32389d1348114d93e88211f39f4f6c
 https://github.com/arduino-libraries/ArduinoSound.git 80f7202303598749162372bc2a65c2130474e73a
-https://github.com/adafruit/Adafruit_NeoPixel.git ec3c77e28e84b221dc159b48358929cb24ba97bd
+https://github.com/adafruit/Adafruit_NeoPixel.git 7057dd26210870a422c7d6fd5e5d4f45b18857bd
