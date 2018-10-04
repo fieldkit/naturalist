@@ -14,10 +14,11 @@ add_definitions(-DFK_NATURALIST)
 
 find_package(FkCore)
 
-find_package(phylum)
-target_link_libraries(fk-naturalist-test phylum)
-
 fk_configure_core(fk-naturalist-test)
+
+find_package(phylum)
+
+target_link_libraries(fk-naturalist-test phylum)
 
 target_compile_options(fk-naturalist-test PRIVATE -Wall -Werror)
 
