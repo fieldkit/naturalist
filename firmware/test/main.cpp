@@ -1,3 +1,5 @@
+#include <fk-core.h>
+
 #include <Wire.h>
 #include <SPI.h>
 #include <wiring_private.h>
@@ -18,8 +20,6 @@
 #include <SerialFlash.h>
 #include <RTClib.h>
 
-#include "debug.h"
-
 const uint8_t PIN_SD_CS = 12;
 const uint8_t PIN_WINC_CS = 7;
 const uint8_t PIN_WINC_IRQ = 16;
@@ -27,32 +27,18 @@ const uint8_t PIN_WINC_RST = 15;
 const uint8_t PIN_WINC_EN = 38;
 const uint8_t PIN_WINC_WAKE = 8;
 
-Uart Serial2(&sercom1, 11, 10, SERCOM_RX_PAD_0, UART_TX_PAD_2);
+constexpr const char LogName[] = "Check";
 
-void SERCOM1_Handler()
-{
-    Serial2.IrqHandler();
-}
+using Log = SimpleLog<LogName>;
 
-void platformSerial2Begin(int32_t baud) {
-    Serial2.begin(baud);
-
-    // Order is very important here. This has to happen after the call to begin.
-    pinPeripheral(10, PIO_SERCOM);
-    pinPeripheral(11, PIO_SERCOM);
-}
-
-static void debugfln(const char *f, ...) {
-    va_list args;
-    va_start(args, f);
-    valogf(LogLevels::TRACE, "Check", f, args);
-    va_end(args);
-}
+Uart& gpsSerial = fk::Serial2;
 
 class ModuleHardware {
 public:
     static constexpr uint8_t PIN_FLASH_CS = (26u); // PIN_LED_TXL;
     static constexpr uint8_t PIN_PERIPH_ENABLE = (25u); // PIN_LED_RXL;
+    static constexpr uint8_t PIN_MODULES_ENABLE = (9);
+    static constexpr uint8_t PIN_GPS_ENABLE = A4;
 
 public:
     TwoWire bno055Wire{ &sercom2, 4, 3 };
@@ -71,16 +57,6 @@ public:
 
         pinPeripheral(4, PIO_SERCOM_ALT);
         pinPeripheral(3, PIO_SERCOM_ALT);
-
-        pinMode(A3, OUTPUT);
-        pinMode(A4, OUTPUT);
-        pinMode(A5, OUTPUT);
-    }
-
-    void leds(bool on) {
-        digitalWrite(A3, on ? HIGH : LOW);
-        digitalWrite(A4, on ? HIGH : LOW);
-        digitalWrite(A5, on ? HIGH : LOW);
     }
 
 };
@@ -114,9 +90,9 @@ public:
         sensors_event_t event;
         hw->bnoSensor.getEvent(&event);
 
-        debugfln("sensors: %fC %f%%, %fC %fpa %f\"/Hg %fm", shtTemperature, shtHumidity, mplTempCelsius, pressurePascals, pressureInchesMercury, altitudeMeters);
-        debugfln("sensors: ir(%d) full(%d) visible(%d) lux(%d)", ir, full, full - ir, lux);
-        debugfln("sensors: cal(%d, %d, %d, %d) xyz(%f, %f, %f)", system, gyro, accel, mag, event.orientation.x, event.orientation.y, event.orientation.z);
+        Log::info("sensors: %fC %f%%, %fC %fpa %f\"/Hg %fm", shtTemperature, shtHumidity, mplTempCelsius, pressurePascals, pressureInchesMercury, altitudeMeters);
+        Log::info("sensors: ir(%lu) full(%lu) visible(%lu) lux(%f)", ir, full, full - ir, lux);
+        Log::info("sensors: cal(%d, %d, %d, %d) xyz(%f, %f, %f)", system, gyro, accel, mag, event.orientation.x, event.orientation.y, event.orientation.z);
     }
 };
 
@@ -155,117 +131,109 @@ public:
 public:
     bool sht31() {
         if (!hw->sht31Sensor.begin()) {
-            debugfln("test: SHT31 FAILED");
+            Log::info("SHT31 FAILED");
             return false;
         }
 
-        debugfln("test: SHT31 PASSED");
+        Log::info("SHT31 PASSED");
         return true;
     }
 
     bool mpl3115a2() {
         if (!hw->mpl3115a2Sensor.begin()) {
-            debugfln("test: MPL3115A2 FAILED");
+            Log::info("MPL3115A2 FAILED");
             return false;
         }
 
-        debugfln("test: MPL3115A2 PASSED");
+        Log::info("MPL3115A2 PASSED");
         return true;
     }
 
     bool tsl2591() {
         if (!hw->tsl2591Sensor.begin()) {
-            debugfln("test: TSL25911FN FAILED");
+            Log::info("TSL25911FN FAILED");
             return false;
         }
 
-        debugfln("test: TSL25911FN PASSED");
+        Log::info("TSL25911FN PASSED");
         return true;
     }
 
     bool bno055() {
-        debugfln("test: BNO055 Checking...");
+        Log::info("BNO055 Checking...");
 
         if (!hw->bnoSensor.begin()) {
-            debugfln("test: BNO055 FAILED");
+            Log::info("BNO055 FAILED");
             return false;
         }
 
         hw->bnoSensor.setExtCrystalUse(true);
 
-        debugfln("test: BNO055 PASSED");
+        Log::info("BNO055 PASSED");
         return true;
     }
 
     bool sph0645() {
-        debugfln("test: SPH0645 Checking...");
+        Log::info("SPH0645 Checking...");
 
         if (!I2S.begin(I2S_PHILIPS_MODE, 16000, 32)) {
-            debugfln("test: SPH0645 FAILED");
+            Log::info("SPH0645 FAILED");
             return false;
         }
 
-        debugfln("test: SPH0645 PASSED");
+        Log::info("SPH0645 PASSED");
         return true;
     }
 
     bool flashMemory() {
         #ifdef PIN_LED_TXL
-        debugfln("test: Please undefine PIN_LED_TXL in variant.h, otherwise SerialFlash and other SPI devices may work incorrectly.");
+        Log::info("Please undefine PIN_LED_TXL in variant.h, otherwise SerialFlash and other SPI devices may work incorrectly.");
         #else
-        debugfln("test: PIN_LED_TXL is undefined. Good!");
+        Log::info("PIN_LED_TXL is undefined. Good!");
         #endif
 
-        debugfln("test: Checking flash memory (%d)...", ModuleHardware::PIN_FLASH_CS);
+        Log::info("Checking flash memory (%d)...", ModuleHardware::PIN_FLASH_CS);
 
         if (!hw->serialFlash.begin(ModuleHardware::PIN_FLASH_CS)) {
-            debugfln("test: Flash memory FAILED");
+            Log::info("Flash memory FAILED");
             return false;
         }
 
         uint8_t buffer[256] = { 0 };
         hw->serialFlash.readID(buffer);
         if (buffer[0] == 0) {
-            debugfln("test: Flash memory FAILED");
+            Log::info("Flash memory FAILED");
             return false;
         }
 
         uint32_t chipSize = hw->serialFlash.capacity(buffer);
         if (chipSize == 0) {
-            debugfln("test: Flash memory FAILED");
+            Log::info("Flash memory FAILED");
             return false;
         }
 
         if (chipSize > 0) {
-            debugfln("test: Erasing ALL Flash Memory (%lu)", chipSize);
+            Log::info("Erasing ALL Flash Memory (%lu)", chipSize);
 
             hw->serialFlash.eraseAll();
 
             delay(1000);
 
             uint32_t dotMillis = millis();
-            uint32_t periods = 0;
             while (hw->serialFlash.ready() == false) {
                 if (millis() - dotMillis > 1000) {
                     dotMillis = dotMillis + 1000;
-                    periods++;
-                    if (periods >= 60) {
-                        periods = 0;
-                    }
                 }
             }
-            if (periods > 0) {
-                debugfln("");
-            }
-            debugfln("test: Erase completed");
+            Log::info("Erase completed");
         }
 
-        debugfln("test: Flash memory PASSED");
+        Log::info("Flash memory PASSED");
         return true;
     }
 
     bool sdCard() {
-        debugfln("test: Checking SD...");
+        Log::info("Checking SD...");
         digitalWrite(PIN_SD_CS, HIGH);
         digitalWrite(PIN_WINC_CS, HIGH);
         digitalWrite(ModuleHardware::PIN_FLASH_CS, HIGH);
@@ -273,49 +241,50 @@ public:
         phylum::Geometry g;
         phylum::ArduinoSdBackend storage;
         if (!storage.initialize(g, PIN_SD_CS)) {
-            debugfln("test: SD FAILED (to open)");
+            Log::info("SD FAILED (to open)");
             return false;
         }
 
         if (!storage.open()) {
-            debugfln("test: SD FAILED");
+            Log::info("SD FAILED");
             return false;
         }
 
         digitalWrite(PIN_SD_CS, HIGH);
-        debugfln("test: SD PASSED");
+        Log::info("SD PASSED");
 
         return true;
     }
 
     bool gps() {
-        debugfln("test: Checking gps...");
+        Log::info("Checking gps...");
 
-        platformSerial2Begin(9600);
+        fk::SerialPort gpsPort{ gpsSerial };
+        gpsPort.begin(9600);
 
         uint32_t charactersRead = 0;
         uint32_t start = millis();
         while (millis() - start < 5 * 1000 && charactersRead < 100)  {
-            while (Serial2.available()) {
-                Serial.print((char)Serial2.read());
+            while (gpsSerial.available()) {
+                Serial.print((char)gpsSerial.read());
                 charactersRead++;
             }
         }
 
-        debugfln("");
-
         if (charactersRead < 100) {
-            debugfln("test: GPS FAILED");
+            Log::info("GPS FAILED");
             return false;
         }
 
-        debugfln("test: GPS PASSED");
+        Serial.println();
+
+        Log::info("GPS PASSED");
         return true;
     }
 
 
     bool wifi() {
-        debugfln("test: Checking wifi...");
+        Log::info("Checking wifi...");
 
         delay(500);
 
@@ -331,27 +300,36 @@ public:
         delay(50);
 
         if (WiFi.status() == WL_NO_SHIELD) {
-            debugfln("test: Wifi FAILED");
+            Log::info("Wifi FAILED");
             return false;
         }
 
-        debugfln("test: Wifi firmware version: ");
+        Log::info("Wifi firmware version: ");
         auto fv = WiFi.firmwareVersion();
-        debugfln("test: Wifi version: %s", fv);
-        debugfln("test: Wifi PASSED");
+        Log::info("Wifi version: %s", fv);
+        Log::info("Wifi PASSED");
 
         return true;
     }
 
     bool check() {
         #ifdef PIN_LED_RXL
-        debugfln("test: Please undefine PIN_LED_RXL in variant.h.");
+        Log::info("Please undefine PIN_LED_RXL in variant.h.");
         #else
-        debugfln("test: PIN_LED_RXL is undefined. Good!");
+        Log::info("PIN_LED_RXL is undefined. Good!");
         #endif
 
+        Log::info("Enabling peripherals!");
         pinMode(ModuleHardware::PIN_PERIPH_ENABLE, OUTPUT);
+        pinMode(ModuleHardware::PIN_MODULES_ENABLE, OUTPUT);
+        pinMode(ModuleHardware::PIN_GPS_ENABLE, OUTPUT);
+        digitalWrite(ModuleHardware::PIN_PERIPH_ENABLE, LOW);
+        digitalWrite(ModuleHardware::PIN_MODULES_ENABLE, LOW);
+        digitalWrite(ModuleHardware::PIN_GPS_ENABLE, LOW);
+        delay(500);
         digitalWrite(ModuleHardware::PIN_PERIPH_ENABLE, HIGH);
+        digitalWrite(ModuleHardware::PIN_MODULES_ENABLE, HIGH);
+        digitalWrite(ModuleHardware::PIN_GPS_ENABLE, HIGH);
 
         auto failures = false;
         if (!macEeprom()) {
@@ -391,8 +369,6 @@ public:
             failures = true;
         }
 
-        hw->leds(true);
-
         return !failures;
     }
 
@@ -402,21 +378,21 @@ public:
         gauge.powerOn();
 
         if (gauge.version() != 3) {
-            debugfln("test: Gauge FAILED");
+            Log::info("Gauge FAILED");
             return true;
         }
 
-        debugfln("test: Gauge PASSED");
+        Log::info("Gauge PASSED");
         return true;
     }
 
     bool rtc() {
         RTC_PCF8523 rtc;
         if (!rtc.begin()) {
-            debugfln("test: RTC FAILED");
+            Log::info("RTC FAILED");
             return false;
         }
-        debugfln("test: RTC PASSED");
+        Log::info("RTC PASSED");
         return true;
     }
 
@@ -424,25 +400,25 @@ public:
         MacEeprom macEeprom;
         uint8_t id[8] = { 0 };
 
+        Log::info("READING");
+
         auto success = macEeprom.read128bMac(id);
         if (!success) {
-            debugfln("test: 128bMAC FAILED");
+            Log::info("128bMAC FAILED");
             return false;
         }
 
-        debugfln("test: 128bMAC: %02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x", id[0], id[1], id[2], id[3], id[4], id[5], id[6], id[7]);
+        Log::info("128bMAC: %02x:%02x:%02x:%02x:%02x:%02x:%02x:%02x", id[0], id[1], id[2], id[3], id[4], id[5], id[6], id[7]);
 
-        debugfln("test: 128bMAC PASSED");
+        Log::info("128bMAC PASSED");
 
         return success;
     }
 
-
     void failed() {
         while (true) {
-            hw->leds(false);
+            Serial.print(".");
             delay(100);
-            hw->leds(true);
             delay(100);
         }
     }
@@ -456,19 +432,19 @@ void setup() {
         delay(100);
     }
 
-    debugfln("test: Setup");
+    Log::info("Setup");
 
     ModuleHardware hw;
     hw.setup();
 
-    debugfln("test: Begin");
+    Log::info("Begin");
 
     Check check(hw);
     if (!check.check()) {
         check.failed();
     }
 
-    debugfln("test: Done");
+    Log::info("Done");
 
     Sensors sensors(hw);
 
