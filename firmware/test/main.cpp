@@ -20,13 +20,6 @@
 #include <SerialFlash.h>
 #include <RTClib.h>
 
-const uint8_t PIN_SD_CS = 12;
-const uint8_t PIN_WINC_CS = 7;
-const uint8_t PIN_WINC_IRQ = 16;
-const uint8_t PIN_WINC_RST = 15;
-const uint8_t PIN_WINC_EN = 38;
-const uint8_t PIN_WINC_WAKE = 8;
-
 constexpr const char LogName[] = "Check";
 
 using Log = SimpleLog<LogName>;
@@ -35,28 +28,53 @@ Uart& gpsSerial = fk::Serial2;
 
 class ModuleHardware {
 public:
+    static constexpr uint8_t PIN_RADIO_CS = 5;
+    static constexpr uint8_t PIN_SD_CS = 12;
+    static constexpr uint8_t PIN_WINC_CS = 7;
+    static constexpr uint8_t PIN_WINC_IRQ = 16;
+    static constexpr uint8_t PIN_WINC_RST = 15;
+    static constexpr uint8_t PIN_WINC_EN = 38;
+    static constexpr uint8_t PIN_WINC_WAKE = 8;
+
     static constexpr uint8_t PIN_FLASH_CS = (26u); // PIN_LED_TXL;
     static constexpr uint8_t PIN_PERIPH_ENABLE = (25u); // PIN_LED_RXL;
     static constexpr uint8_t PIN_MODULES_ENABLE = (9);
     static constexpr uint8_t PIN_GPS_ENABLE = A4;
 
 public:
-    TwoWire bno055Wire{ &sercom2, 4, 3 };
+    fk::TwoWireBus bno055Wire{ fk::Wire4and3 };
     Adafruit_SHT31 sht31Sensor;
     Adafruit_MPL3115A2 mpl3115a2Sensor;
     Adafruit_TSL2591 tsl2591Sensor{ 2591 };
-    Adafruit_BNO055 bnoSensor{ 55, BNO055_ADDRESS_A, &bno055Wire };
+    Adafruit_BNO055 bnoSensor{ 55, BNO055_ADDRESS_A, bno055Wire.twoWire() };
     SerialFlashChip serialFlash;
 
 public:
     void setup() {
+        pinMode(PIN_FLASH_CS, INPUT_PULLUP);
+        pinMode(PIN_RADIO_CS, INPUT_PULLUP);
+        pinMode(PIN_SD_CS, INPUT_PULLUP);
+        pinMode(PIN_WINC_CS, INPUT_PULLUP);
+
+        pinMode(PIN_WINC_EN, OUTPUT);
+        digitalWrite(PIN_WINC_EN, LOW);
+
+        pinMode(PIN_WINC_RST, OUTPUT);
+        digitalWrite(PIN_WINC_RST, LOW);
+
+        pinMode(PIN_FLASH_CS, OUTPUT);
+        pinMode(PIN_RADIO_CS, OUTPUT);
+        pinMode(PIN_SD_CS, OUTPUT);
+        pinMode(PIN_WINC_CS, OUTPUT);
+
+        digitalWrite(PIN_FLASH_CS, HIGH);
+        digitalWrite(PIN_RADIO_CS, HIGH);
+        digitalWrite(PIN_SD_CS, HIGH);
+        digitalWrite(PIN_WINC_CS, HIGH);
+
         SPI.begin();
         Wire.begin();
-
         bno055Wire.begin();
-
-        pinPeripheral(4, PIO_SERCOM_ALT);
-        pinPeripheral(3, PIO_SERCOM_ALT);
     }
 
 };
@@ -74,25 +92,31 @@ public:
         auto shtTemperature = hw->sht31Sensor.readTemperature();
         auto shtHumidity = hw->sht31Sensor.readHumidity();
 
+        Log::info("sensors: %fC %f%%", shtTemperature, shtHumidity);
+
         auto pressurePascals = hw->mpl3115a2Sensor.getPressure();
         auto altitudeMeters = hw->mpl3115a2Sensor.getAltitude();
         auto mplTempCelsius = hw->mpl3115a2Sensor.getTemperature();
         auto pressureInchesMercury = pressurePascals / 3377.0;
+
+        Log::info("sensors: %fC %fpa %f\"/Hg %fm", mplTempCelsius, pressurePascals, pressureInchesMercury, altitudeMeters);
 
         auto fullLuminosity = hw->tsl2591Sensor.getFullLuminosity();
         auto ir = fullLuminosity >> 16;
         auto full = fullLuminosity & 0xFFFF;
         auto lux = hw->tsl2591Sensor.calculateLux(full, ir);
 
+        Log::info("sensors: ir(%lu) full(%lu) visible(%lu) lux(%f)", ir, full, full - ir, lux);
+
+        #if defined(FK_ENABLE_BNO05)
         uint8_t system = 0, gyro = 0, accel = 0, mag = 0;
         hw->bnoSensor.getCalibration(&system, &gyro, &accel, &mag);
 
         sensors_event_t event;
         hw->bnoSensor.getEvent(&event);
 
-        Log::info("sensors: %fC %f%%, %fC %fpa %f\"/Hg %fm", shtTemperature, shtHumidity, mplTempCelsius, pressurePascals, pressureInchesMercury, altitudeMeters);
-        Log::info("sensors: ir(%lu) full(%lu) visible(%lu) lux(%f)", ir, full, full - ir, lux);
         Log::info("sensors: cal(%d, %d, %d, %d) xyz(%f, %f, %f)", system, gyro, accel, mag, event.orientation.x, event.orientation.y, event.orientation.z);
+        #endif
     }
 };
 
@@ -135,6 +159,9 @@ public:
             return false;
         }
 
+        auto shtTemperature = hw->sht31Sensor.readTemperature();
+        Log::info("SHT31 %f", shtTemperature);
+
         Log::info("SHT31 PASSED");
         return true;
     }
@@ -144,6 +171,9 @@ public:
             Log::info("MPL3115A2 FAILED");
             return false;
         }
+
+        auto pressurePascals = hw->mpl3115a2Sensor.getPressure();
+        Log::info("MPL3115A2 %f", pressurePascals);
 
         Log::info("MPL3115A2 PASSED");
         return true;
@@ -186,12 +216,6 @@ public:
     }
 
     bool flashMemory() {
-        #ifdef PIN_LED_TXL
-        Log::info("Please undefine PIN_LED_TXL in variant.h, otherwise SerialFlash and other SPI devices may work incorrectly.");
-        #else
-        Log::info("PIN_LED_TXL is undefined. Good!");
-        #endif
-
         Log::info("Checking flash memory (%d)...", ModuleHardware::PIN_FLASH_CS);
 
         if (!hw->serialFlash.begin(ModuleHardware::PIN_FLASH_CS)) {
@@ -212,20 +236,22 @@ public:
             return false;
         }
 
-        if (chipSize > 0) {
-            Log::info("Erasing ALL Flash Memory (%lu)", chipSize);
+        if (false) {
+            if (chipSize > 0) {
+                Log::info("Erasing ALL Flash Memory (%lu)", chipSize);
 
-            hw->serialFlash.eraseAll();
+                hw->serialFlash.eraseAll();
 
-            delay(1000);
+                delay(1000);
 
-            uint32_t dotMillis = millis();
-            while (hw->serialFlash.ready() == false) {
-                if (millis() - dotMillis > 1000) {
-                    dotMillis = dotMillis + 1000;
+                uint32_t dotMillis = millis();
+                while (hw->serialFlash.ready() == false) {
+                    if (millis() - dotMillis > 1000) {
+                        dotMillis = dotMillis + 1000;
+                    }
                 }
+                Log::info("Erase completed");
             }
-            Log::info("Erase completed");
         }
 
         Log::info("Flash memory PASSED");
@@ -234,23 +260,18 @@ public:
 
     bool sdCard() {
         Log::info("Checking SD...");
-        digitalWrite(PIN_SD_CS, HIGH);
-        digitalWrite(PIN_WINC_CS, HIGH);
-        digitalWrite(ModuleHardware::PIN_FLASH_CS, HIGH);
-
         phylum::Geometry g;
         phylum::ArduinoSdBackend storage;
-        if (!storage.initialize(g, PIN_SD_CS)) {
-            Log::info("SD FAILED (to open)");
+        if (!storage.initialize(g, ModuleHardware::PIN_SD_CS)) {
+            Log::info("SD FAILED (to initialize)");
             return false;
         }
 
         if (!storage.open()) {
-            Log::info("SD FAILED");
+            Log::info("SD FAILED (to open)");
             return false;
         }
 
-        digitalWrite(PIN_SD_CS, HIGH);
         Log::info("SD PASSED");
 
         return true;
@@ -288,14 +309,14 @@ public:
 
         delay(500);
 
-        digitalWrite(PIN_WINC_RST, HIGH);
+        digitalWrite(ModuleHardware::PIN_WINC_RST, HIGH);
 
-        WiFi.setPins(PIN_WINC_CS, PIN_WINC_IRQ, PIN_WINC_RST);
+        WiFi.setPins(ModuleHardware::PIN_WINC_CS, ModuleHardware::PIN_WINC_IRQ, ModuleHardware::PIN_WINC_RST);
 
-        digitalWrite(PIN_WINC_EN, LOW);
+        digitalWrite(ModuleHardware::PIN_WINC_EN, LOW);
         delay(50);
 
-        digitalWrite(PIN_WINC_EN, HIGH);
+        digitalWrite(ModuleHardware::PIN_WINC_EN, HIGH);
 
         delay(50);
 
@@ -317,6 +338,12 @@ public:
         Log::info("Please undefine PIN_LED_RXL in variant.h.");
         #else
         Log::info("PIN_LED_RXL is undefined. Good!");
+        #endif
+
+        #ifdef PIN_LED_TXL
+        Log::info("Please undefine PIN_LED_TXL in variant.h, otherwise SerialFlash and other SPI devices may work incorrectly.");
+        #else
+        Log::info("PIN_LED_TXL is undefined. Good!");
         #endif
 
         Log::info("Enabling peripherals!");
@@ -353,9 +380,11 @@ public:
         if (!sph0645()) {
             failures = true;
         }
+        #if defined(FK_ENABLE_BNO05)
         if (!bno055()) {
             failures = true;
         }
+        #endif
         if (!gps()) {
             failures = true;
         }
@@ -415,14 +444,6 @@ public:
         return success;
     }
 
-    void failed() {
-        while (true) {
-            Serial.print(".");
-            delay(100);
-            delay(100);
-        }
-    }
-
 };
 
 void setup() {
@@ -439,17 +460,26 @@ void setup() {
 
     Log::info("Begin");
 
+    fk::Leds leds;
+    leds.setup();
+
     Check check(hw);
-    if (!check.check()) {
-        check.failed();
+    auto success = check.check();
+    if (success) {
+        leds.notifyHappy();
+    }
+    else {
+        leds.notifyFatal();
     }
 
     Log::info("Done");
 
     Sensors sensors(hw);
-
     while (true) {
-        sensors.takeReading();
+        leds.task();
+        if (success) {
+            sensors.takeReading();
+        }
     }
 
     delay(100);
