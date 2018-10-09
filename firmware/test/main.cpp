@@ -38,7 +38,7 @@ public:
 
     static constexpr uint8_t PIN_FLASH_CS = (26u); // PIN_LED_TXL;
     static constexpr uint8_t PIN_PERIPH_ENABLE = (25u); // PIN_LED_RXL;
-    static constexpr uint8_t PIN_MODULES_ENABLE = (9);
+    static constexpr uint8_t PIN_MODULES_ENABLE = (A5);
     static constexpr uint8_t PIN_GPS_ENABLE = A4;
 
 public:

@@ -3989,7 +3989,7 @@ D1_RADIO_D1
 Text Label 4850 3600 0    50   ~ 0
 D0_RADIO_D2
 Text Label 4550 3400 0    50   ~ 0
-D9_MODULE_EN
+A5_MODULE_EN
 Text Label 16650 3450 0    50   ~ 0
 D9_MODULE_EN
 Text Label 20350 3350 0    60   ~ 0
