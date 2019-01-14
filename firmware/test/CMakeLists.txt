@@ -6,9 +6,11 @@ enable_arduino_toolchain()
 
 include_directories(./)
 
-set(sources main.cpp)
+file(GLOB sources *.cpp ../common/*.cpp)
 
 add_arduino_library(fk-naturalist-test "${sources}")
+
+target_include_directories(fk-naturalist-test PRIVATE "../common")
 
 add_definitions(-DFK_NATURALIST)
 

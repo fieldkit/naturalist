@@ -4,9 +4,11 @@ include(RandomSeed)
 
 enable_arduino_toolchain()
 
-file(GLOB sources *.cpp)
+file(GLOB sources *.cpp ../common/*.cpp)
 
 add_arduino_library(fk-naturalist-standard "${sources}")
+
+target_include_directories(fk-naturalist-standard PRIVATE "../common")
 
 target_include_directories(fk-naturalist-standard PRIVATE ${RANDOM_SEED_INCLUDE})
 
