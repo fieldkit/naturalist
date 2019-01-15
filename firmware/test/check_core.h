@@ -8,11 +8,29 @@ namespace fk {
 
 class CheckCore {
 private:
-    fk::Leds leds_;
+    Leds leds_;
+    BatteryGauge gauge_;
+    uint32_t checked_{ 0 };
+    uint32_t toggled_{ 0 };
+    float previous_{ 0.0f };
+    bool enabled_{ true };
+    bool success_{ false };
 
 public:
-    fk::Leds& leds() {
+    Leds& leds() {
         return leds_;
+    }
+
+    bool success() {
+        return success_;
+    }
+
+    bool enabled() {
+        return enabled_;
+    }
+
+    virtual bool toggle_peripherals() {
+        return true;
     }
 
 public:
@@ -29,6 +47,7 @@ public:
 public:
     virtual bool check();
     virtual void task();
+    virtual void sample();
 
 private:
     const char *id2chip(const unsigned char *id);

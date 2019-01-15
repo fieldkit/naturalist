@@ -1,12 +1,5 @@
 #include <../src/I2S.h>
 
-#include <Adafruit_Sensor.h>
-#include <Adafruit_BNO055.h>
-#include <Adafruit_TSL2561_U.h>
-#include <Adafruit_MPL3115A2.h>
-#include <Adafruit_TSL2591.h>
-#include <Adafruit_SHT31.h>
-
 #include "check_naturalist.h"
 
 namespace fk {
@@ -48,14 +41,12 @@ bool CheckNaturalist::check() {
 }
 
 bool CheckNaturalist::sht31() {
-    Adafruit_SHT31 sht31Sensor;
-
-    if (!sht31Sensor.begin()) {
+    if (!sht31Sensor_.begin()) {
         Log::info("SHT31 FAILED");
         return false;
     }
 
-    auto shtTemperature = sht31Sensor.readTemperature();
+    auto shtTemperature = sht31Sensor_.readTemperature();
     Log::info("SHT31 %f", shtTemperature);
     Log::info("SHT31 PASSED");
 
@@ -63,14 +54,12 @@ bool CheckNaturalist::sht31() {
 }
 
 bool CheckNaturalist::mpl3115a2() {
-    Adafruit_MPL3115A2 mpl3115a2Sensor;
-
-    if (!mpl3115a2Sensor.begin()) {
+    if (!mpl3115a2Sensor_.begin()) {
         Log::info("MPL3115A2 FAILED");
         return false;
     }
 
-    auto pressurePascals = mpl3115a2Sensor.getPressure();
+    auto pressurePascals = mpl3115a2Sensor_.getPressure();
     Log::info("MPL3115A2 %f", pressurePascals);
     Log::info("MPL3115A2 PASSED");
 
@@ -78,9 +67,7 @@ bool CheckNaturalist::mpl3115a2() {
 }
 
 bool CheckNaturalist::tsl2591() {
-    Adafruit_TSL2591 tsl2591Sensor{ 2591 };
-
-    if (!tsl2591Sensor.begin()) {
+    if (!tsl2591Sensor_.begin()) {
         Log::info("TSL25911FN FAILED");
         return false;
     }
@@ -93,15 +80,12 @@ bool CheckNaturalist::tsl2591() {
 bool CheckNaturalist::bno055() {
     Log::info("BNO055 Checking...");
 
-    TwoWireBus bno055Wire{ Wire4and3 };
-    Adafruit_BNO055 bnoSensor{ 55, BNO055_ADDRESS_A, bno055Wire.twoWire() };
-
-    if (!bnoSensor.begin()) {
+    if (!bnoSensor_.begin()) {
         Log::info("BNO055 FAILED");
         return false;
     }
 
-    bnoSensor.setExtCrystalUse(true);
+    bnoSensor_.setExtCrystalUse(true);
 
     Log::info("BNO055 PASSED");
 
@@ -119,6 +103,41 @@ bool CheckNaturalist::sph0645() {
     Log::info("SPH0645 PASSED");
 
     return true;
+}
+
+void CheckNaturalist::sample() {
+    CheckCore::sample();
+
+    if (enabled()) {
+        auto shtTemperature = sht31Sensor_.readTemperature();
+        auto shtHumidity = sht31Sensor_.readHumidity();
+
+        Log::info("sensors: %fC %f%%", shtTemperature, shtHumidity);
+
+        auto pressurePascals = mpl3115a2Sensor_.getPressure();
+        auto altitudeMeters = mpl3115a2Sensor_.getAltitude();
+        auto mplTempCelsius = mpl3115a2Sensor_.getTemperature();
+        auto pressureInchesMercury = pressurePascals / 3377.0;
+
+        Log::info("sensors: %fC %fpa %f\"/Hg %fm", mplTempCelsius, pressurePascals, pressureInchesMercury, altitudeMeters);
+
+        auto fullLuminosity = tsl2591Sensor_.getFullLuminosity();
+        auto ir = fullLuminosity >> 16;
+        auto full = fullLuminosity & 0xFFFF;
+        auto lux = tsl2591Sensor_.calculateLux(full, ir);
+
+        Log::info("sensors: ir(%lu) full(%lu) visible(%lu) lux(%f)", ir, full, full - ir, lux);
+
+        #if defined(FK_ENABLE_BNO05)
+        uint8_t system = 0, gyro = 0, accel = 0, mag = 0;
+        bnoSensor.getCalibration(&system, &gyro, &accel, &mag);
+
+        sensors_event_t event;
+        bnoSensor.getEvent(&event);
+
+        Log::info("sensors: cal(%d, %d, %d, %d) xyz(%f, %f, %f)", system, gyro, accel, mag, event.orientation.x, event.orientation.y, event.orientation.z);
+        #endif
+    }
 }
 
 }
