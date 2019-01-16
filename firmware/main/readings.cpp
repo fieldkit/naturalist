@@ -51,6 +51,7 @@ void NaturalistReadings::setup() {
         Logger::info("TSL25911FN FAILED");
     }
 
+    #if defined(FK_ENABLE_BNO05)
     if (!bno055Wire_.begin()) {
         Logger::info("BNO055 FAILED");
     }
@@ -62,6 +63,7 @@ void NaturalistReadings::setup() {
             bnoSensor_.setExtCrystalUse(true);
         }
     }
+    #endif
 }
 
 TaskEval NaturalistReadings::task(CoreState &state) {
