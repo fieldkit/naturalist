@@ -15,7 +15,9 @@
 
 extern "C" {
 
-fk::SensorInfo sensors[] = {
+namespace fk {
+
+SensorInfo sensors[] = {
     { "temp_1", "°C" },
     { "humidity", "%" },
     { "temp_2", "°C" },
@@ -36,9 +38,9 @@ fk::SensorInfo sensors[] = {
     { "audio_dbfs_max", "" },
 };
 
-fk::SensorReading readings[18];
+SensorReading readings[18];
 
-fk::ModuleInfo module = {
+ModuleInfo module = {
     fk_module_ModuleType_SENSOR,
     8,
     18,
@@ -57,7 +59,7 @@ public:
 
 public:
     void task() override {
-        fk::NetworkInfo networks[2] = {
+        NetworkInfo networks[2] = {
             {
                 FK_CONFIG_WIFI_1_SSID,
                 FK_CONFIG_WIFI_1_PASSWORD,
@@ -70,17 +72,19 @@ public:
 
         auto state = services().state;
 
-        state->configure(fk::NetworkSettings{ false, networks });
+        state->configure(NetworkSettings{ false, networks });
         state->configure(module);
         state->doneScanning();
 
-        fk::CoreFsm::state<fk::TakeNaturalistReadings>().setup();
+        CoreFsm::state<TakeNaturalistReadings>().setup();
 
         log("Configured");
 
-        transit<fk::Initialized>();
+        transit<Initialized>();
     }
 };
+
+}
 
 static void setup_serial();
 static void setup_env();
@@ -100,7 +104,7 @@ void setup() {
 
 void loop() {
     fk::ConfigurableStates states{
-        fk::CoreFsm::deferred<ConfigureDevice>(),
+        fk::CoreFsm::deferred<fk::ConfigureDevice>(),
         fk::CoreFsm::deferred<fk::TakeNaturalistReadings>()
     };
     fk::CoreModule coreModule(states);
