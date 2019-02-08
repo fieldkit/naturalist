@@ -51,7 +51,7 @@ ModuleInfo module = {
     readings
 };
 
-class ConfigureDevice : public fk::MainServicesState {
+class ConfigureDevice : public MainServicesState {
 public:
     const char *name() const override {
         return "ConfigureDevice";
