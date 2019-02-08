@@ -3,8 +3,11 @@ SHELL := /bin/bash
 
 default: all
 
-$(BUILD):
+$(BUILD): firmware/test/config.h firmware/main/config.h
 	mkdir -p $(BUILD)
+
+firmware/test/config.h:
+	cp firmware/test/config.h.template firmware/test/config.h
 
 firmware/main/config.h:
 	cp firmware/main/config.h.template firmware/main/config.h
