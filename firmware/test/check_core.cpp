@@ -1,5 +1,6 @@
 #include "check_core.h"
 #include "board_definition.h"
+#include "config.h"
 
 #include <RH_RF95.h>
 
@@ -64,6 +65,7 @@ bool CheckCore::fuelGauge() {
 
     if (!gauge.available()) {
         Log::info("Gauge FAILED");
+        success_enough_to_sample_ = false;
         return false;
     }
 
@@ -267,11 +269,17 @@ bool CheckCore::macEeprom() {
 
 bool CheckCore::check() {
     success_ = true;
+    success_ignoring_sd_card_ = true;
+    success_enough_to_sample_ = true;
+    caution_ = false;
 
-    success_ = flashMemory() && success_;
-    success_ = fuelGauge() && success_;
+    if (!fuelGauge()) {
+        success_enough_to_sample_ = false;
+        success_ = false;
+    }
     success_ = macEeprom() && success_;
     success_ = rtc() && success_;
+    success_ = flashMemory() && success_;
 
     if (success_) {
         Log::info("Top PASSED");
@@ -283,8 +291,25 @@ bool CheckCore::check() {
     Log::info("Radio disabled");
     #endif
     success_ = gps() && success_;
-    success_ = sdCard() && success_;
+    if (!sdCard()) {
+        if (success_) {
+            success_ignoring_sd_card_ = true;
+        }
+        success_ = false;
+    }
     success_ = wifi() && success_;
+
+    if (success_) {
+        leds().notifyHappy();
+    }
+    else {
+        if (success_ignoring_sd_card_) {
+            leds().notifyCaution();
+        }
+        else {
+            leds().notifyFatal();
+        }
+    }
 
     return success_;
 }
@@ -292,7 +317,7 @@ bool CheckCore::check() {
 void CheckCore::task() {
     leds_.task();
 
-    if (success()) {
+    if (success_enough_to_sample()) {
         if (toggle_peripherals()) {
             if (fk_uptime() - toggled_ > 20000) {
                 enabled_ = !enabled_;
