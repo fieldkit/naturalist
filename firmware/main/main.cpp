@@ -59,6 +59,9 @@ public:
 
 public:
     void task() override {
+        auto state = services().state;
+
+        #if defined(FK_CONFIG_WIFI_1_SSID) && defined(FK_CONFIG_WIFI_2_SSID)
         NetworkInfo networks[2] = {
             {
                 FK_CONFIG_WIFI_1_SSID,
@@ -70,9 +73,10 @@ public:
             }
         };
 
-        auto state = services().state;
-
         state->configure(NetworkSettings{ false, networks });
+        log("Configured compile time networks.");
+        #endif
+
         state->configure(module);
         state->doneScanning();
 
