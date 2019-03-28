@@ -32,9 +32,10 @@ private:
     bool hasBno055_{ false };
     bool hasAudioAnalyzer_{ false };
     bool initialized_{ false };
+    Leds *leds_;
 
 public:
-    void setup();
+    void setup(Leds *leds);
     TaskEval task(CoreState &state);
 
 };

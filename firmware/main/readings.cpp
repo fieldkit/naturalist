@@ -9,20 +9,26 @@ constexpr const char Log[] = "Naturalist";
 using Logger = SimpleLog<Log>;
 
 void TakeNaturalistReadings::setup() {
-    readings_.setup();
+    readings_.setup(services().leds);
 }
 
 void TakeNaturalistReadings::task() {
-    readings_.setup();
+    readings_.setup(services().leds);
+
+    services().leds->notifyReadingsBegin();
 
     while (is_task_running(readings_.task(*services().state))) {
         services().alive();
     }
 
+    services().leds->notifyReadingsDone();
+
     resume();
 }
 
-void NaturalistReadings::setup() {
+void NaturalistReadings::setup(Leds *leds) {
+    leds_ = leds;
+
     if (initialized_) {
         return;
     }
@@ -106,6 +112,8 @@ TaskEval NaturalistReadings::task(CoreState &state) {
                     numberOfDroppedSamples++;
                 }
             }
+
+            leds_->task();
         }
     }
 
