@@ -1,0 +1,40 @@
+#!/bin/bash
+
+set -e
+
+PORT=$1
+
+if [ -z "$PORT" ]; then
+    exit 2
+fi
+
+PATH=~/tools/JLink_Linux_V640b_x86_64:$PATH
+BOOTLOADER=../bootloaders/build/zero/fk-bootloaders-samd21large.bin
+TEST=build/firmware/test/fk-naturalist-test.bin
+
+pushd build
+# NOTE: This is temporary!
+cmake ../ -DFK_ENABLE_LOW_POWER_SLEEP=OFF -DFK_ENABLE_FUEL_GAUGE=OFF
+make -j2
+popd
+
+echo Writing bootloader firmware...
+
+JLinkExe -if SWD -device ATSAMD21G18 -speed 4000 -autoconnect 1 <<EOF
+exitonerror 1
+connect
+sleep 100
+r
+sleep 100
+loadfile $BOOTLOADER
+sleep 100
+loadfile $TEST,0x8000
+r
+q
+EOF
+
+sleep 1
+
+echo Tailing...
+
+flasher --tail -tail-trigger-stop DONE --port $PORT

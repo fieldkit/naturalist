@@ -1,0 +1,5 @@
+#!/bin/bash
+
+set -xe
+
+flasher --port $1 --binary build/firmware/main/fk-naturalist-standard.bin --tail
