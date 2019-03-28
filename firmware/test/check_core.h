@@ -15,8 +15,7 @@ private:
     float previous_{ 0.0f };
     bool enabled_{ true };
     bool success_{ false };
-    bool success_enough_to_sample_{ true };
-    bool success_ignoring_sd_card_{ true };
+    bool sampling_{ false };
     bool caution_{ false };
 
 public:
@@ -28,12 +27,8 @@ public:
         return success_;
     }
 
-    bool success_enough_to_sample() {
-        return success_enough_to_sample_;
-    }
-
-    bool success_ignoring_sd_card() {
-        return success_ignoring_sd_card_;
+    bool sampling() {
+        return sampling_;
     }
 
     bool enabled() {

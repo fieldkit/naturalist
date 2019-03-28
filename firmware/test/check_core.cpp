@@ -64,14 +64,27 @@ bool CheckCore::fuelGauge() {
     BatteryGauge gauge;
 
     if (!gauge.available()) {
-        Log::info("Gauge FAILED");
-        success_enough_to_sample_ = false;
+        Log::info("Gauge FAILED (MISSING)");
         return false;
     }
 
-    Log::info("Gauge PASSED");
+    for (auto i = 0; i < 10; ++i) {
+        auto reading = gauge_.read();
 
-    return true;
+        Log::info("Battery: v=%fmv i=%fmA cc=%fmAh (%fmAh) c=%d",
+                  reading.voltage, reading.ma, reading.coulombs,
+                  reading.coulombs - previous_, reading.counter);
+
+        if (reading.voltage > 2500.0f) {
+            Log::info("Gauge PASSED");
+            return true;
+        }
+
+        delay(500);
+    }
+
+    Log::info("Gauge FAILED (VOLTAGE)");
+    return false;
 }
 
 bool CheckCore::flashMemory() {
@@ -90,34 +103,41 @@ bool CheckCore::flashMemory() {
         return false;
     }
 
-    uint32_t chipSize = SerialFlash.capacity(buffer);
+    auto chipSize = SerialFlash.capacity(buffer);
     if (chipSize == 0) {
         Log::info("Flash memory FAILED");
         return false;
     }
 
+    auto blockSize = SerialFlash.blockSize();
+
     Log::info("Read Chip Identification:");
     Log::info("  JEDEC ID:     %x %x %x", buffer[0], buffer[1], buffer[2]);
     Log::info("  Part Nummber: %s", id2chip(buffer));
-    Log::info("  Memory Size:  %lu bytes Block Size: %lu bytes", chipSize, SerialFlash.blockSize());
+    Log::info("  Memory Size:  %lu bytes Block Size: %lu bytes", chipSize, blockSize);
     Log::info("Flash memory PASSED");
 
-    if (false) {
-        if (chipSize > 0) {
+    if (chipSize > 0) {
+        if (false) {
             Log::info("Erasing ALL Flash Memory (%lu)", chipSize);
 
             SerialFlash.eraseAll();
 
-            delay(1000);
-
-            uint32_t dotMillis = millis();
+            auto started = millis();
             while (SerialFlash.ready() == false) {
-                if (millis() - dotMillis > 1000) {
-                    dotMillis = dotMillis + 1000;
+                if (millis() - started > 1000) {
+                    started = millis();
                 }
             }
-            Log::info("Erase completed");
         }
+        else {
+            for (auto i = 0; i < 10; ++i) {
+                Log::info("Erasing block %d (%lu)", i, i * blockSize);
+                SerialFlash.eraseBlock(i * blockSize);
+            }
+        }
+
+        Log::info("Erase completed");
     }
 
     return true;
@@ -233,8 +253,6 @@ bool CheckCore::wifi() {
     Log::info("Skipping connection test, no config.");
     #endif
 
-    Log::info("DONE");
-
     return true;
 }
 
@@ -268,21 +286,34 @@ bool CheckCore::macEeprom() {
 }
 
 bool CheckCore::check() {
-    success_ = true;
-    success_ignoring_sd_card_ = true;
-    success_enough_to_sample_ = true;
-    caution_ = false;
+    auto have_gauge = false;
+    auto have_sd = false;
 
+    success_ = true;
+    caution_ = false;
+    sampling_ = true;
+
+    #if defined(FK_ENABLE_FUEL_GAUGE)
     if (!fuelGauge()) {
-        success_enough_to_sample_ = false;
+        have_gauge = false;
         success_ = false;
+        sampling_ = false;
     }
+    #else
+    Log::info("Fuel gauge disabled.");
+    #endif
     success_ = macEeprom() && success_;
     success_ = rtc() && success_;
     success_ = flashMemory() && success_;
 
     if (success_) {
         Log::info("Top PASSED");
+        leds().notifyCaution();
+        leds().task();
+    }
+    else {
+        leds().notifyFatal();
+        leds().task();
     }
 
     #if defined(FK_ENABLE_RADIO)
@@ -292,21 +323,28 @@ bool CheckCore::check() {
     #endif
     success_ = gps() && success_;
     if (!sdCard()) {
-        if (success_) {
-            success_ignoring_sd_card_ = true;
-        }
+        have_sd = false;
         success_ = false;
     }
     success_ = wifi() && success_;
 
+    leds().off();
+
     if (success_) {
+        Log::info("test: SUCCESS");
         leds().notifyHappy();
     }
     else {
-        if (success_ignoring_sd_card_) {
+        if (!have_gauge) {
+            Log::info("test: FATAL");
+            leds().notifyFatal();
+        }
+        else if (!have_sd) {
+            Log::info("test: PARTIAL SUCCESS (SD)");
             leds().notifyCaution();
         }
         else {
+            Log::info("test: FATAL");
             leds().notifyFatal();
         }
     }
@@ -317,7 +355,7 @@ bool CheckCore::check() {
 void CheckCore::task() {
     leds_.task();
 
-    if (success_enough_to_sample()) {
+    if (sampling()) {
         if (toggle_peripherals()) {
             if (fk_uptime() - toggled_ > 20000) {
                 enabled_ = !enabled_;
