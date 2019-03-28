@@ -43,8 +43,13 @@ void NaturalistReadings::setup() {
         Logger::info("SHT31 FAILED");
     }
 
-    if (!mpl3115a2Sensor_.begin()) {
-        Logger::info("MPL3115A2 FAILED");
+    for (auto i = 0; i < 3; ++i) {
+        if (!mpl3115a2Sensor_.begin()) {
+            Logger::info("MPL3115A2 FAILED");
+        }
+        else {
+            break;
+        }
     }
 
     if (!tsl2591Sensor_.begin()) {
@@ -75,7 +80,7 @@ TaskEval NaturalistReadings::task(CoreState &state) {
     auto audioRmsMax = 0.0f;
     auto total = 0.0f;
     if (hasAudioAnalyzer_) {
-        Logger::info("Ready, listening for %lums", AudioSamplingDuration);
+        Logger::info("Ready, listening for %lums...", AudioSamplingDuration);
 
         auto start = fk_uptime();
         while (fk_uptime() - start < AudioSamplingDuration) {
@@ -104,13 +109,26 @@ TaskEval NaturalistReadings::task(CoreState &state) {
         }
     }
 
+    Logger::info("Taking readings...");
+
     auto audioRmsAvg = numberOfSamples > 0 ? total / (float)numberOfSamples : 0.0f;
     auto audioDbfsAvg = numberOfSamples > 0 ? 20.0f * log10(audioRmsAvg) : 0.0f;
     auto audioDbfsMin = numberOfSamples > 0 ? 20.0f * log10(audioRmsMin) : 0.0f;
     auto audioDbfsMax = numberOfSamples > 0 ? 20.0f * log10(audioRmsMax) : 0.0f;
 
-    auto shtTemperature = sht31Sensor_.readTemperature();
-    auto shtHumidity = sht31Sensor_.readHumidity();
+    auto shtTemperature = 0.0f;
+    auto shtHumidity = 0.0f;
+
+    for (auto i = 0; i < 3; ++i) {
+        shtTemperature = sht31Sensor_.readTemperature();
+        shtHumidity = sht31Sensor_.readHumidity();
+
+        Logger::info("SHT31: %f", shtTemperature);
+
+        if (!isnan(shtTemperature)) {
+            break;
+        }
+    }
 
     auto pressurePascals = mpl3115a2Sensor_.getPressure();
     auto altitudeMeters = mpl3115a2Sensor_.getAltitude();
