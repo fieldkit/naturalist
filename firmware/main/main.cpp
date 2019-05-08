@@ -131,7 +131,7 @@ static void setup_serial() {
     #ifdef FK_DEBUG_UART_FALLBACK
     if (!Serial) {
         // The call to end here seems to free up some memory.
-        Serial.end();
+        // Serial.end();
         Serial5.begin(115200);
         log_uart_set(Serial5);
     }
