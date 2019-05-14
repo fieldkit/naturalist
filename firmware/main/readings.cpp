@@ -1,5 +1,6 @@
 #include <math.h>
 
+#include "hardware.h"
 #include "readings.h"
 
 namespace fk {
@@ -33,9 +34,17 @@ void NaturalistReadings::setup(Leds *leds) {
         return;
     }
 
+    Hardware::enableModules();
+    delay(10);
+
     initialized_ = true;
 
     Wire.begin();
+
+    Logger::log("Initialize I2S...");
+    if (!AudioInI2S.begin(8000, 32)) {
+        Logger::info("I2S failed");
+    }
 
     if (!amplitudeAnalyzer_.input(AudioInI2S)) {
         Logger::info("Amplitude Analyzer failed");
