@@ -331,7 +331,7 @@ bool CheckCore::check() {
     leds().off();
 
     if (success_) {
-        Log::info("test: SUCCESS");
+        Log::info("test: SUCCESS (Core Only)");
         leds().notifyHappy();
     }
     else {

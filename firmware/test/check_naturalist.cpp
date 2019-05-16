@@ -35,7 +35,12 @@ bool CheckNaturalist::check() {
 
     if (!CheckCore::check()) {
         success = false;
+        leds().notifyFatal();
     }
+
+    Log::info("test: SUCCESS (Naturalist)");
+
+    leds().notifyHappy();
 
     return success;
 }
@@ -47,8 +52,13 @@ bool CheckNaturalist::sht31() {
     }
 
     auto shtTemperature = sht31Sensor_.readTemperature();
-    Log::info("SHT31 %f", shtTemperature);
-    Log::info("SHT31 PASSED");
+
+    if ((uint32_t)shtTemperature > 1000) {
+        Log::info("SHT31 FAILED (%f)", shtTemperature);
+        return false;
+    }
+
+    Log::info("SHT31 PASSED (%f)", shtTemperature);
 
     return true;
 }
@@ -60,8 +70,7 @@ bool CheckNaturalist::mpl3115a2() {
     }
 
     auto pressurePascals = mpl3115a2Sensor_.getPressure();
-    Log::info("MPL3115A2 %f", pressurePascals);
-    Log::info("MPL3115A2 PASSED");
+    Log::info("MPL3115A2 PASSED (%f)", pressurePascals);
 
     return true;
 }
@@ -72,7 +81,9 @@ bool CheckNaturalist::tsl2591() {
         return false;
     }
 
-    Log::info("TSL25911FN PASSED");
+    auto fullLuminosity = tsl2591Sensor_.getFullLuminosity();
+
+    Log::info("TSL25911FN PASSED (%lu)", fullLuminosity);
 
     return true;
 }
