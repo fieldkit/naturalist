@@ -27,22 +27,6 @@ r
 sleep 100
 loadfile $BOOTLOADER
 sleep 100
-loadfile $TEST,0x8000
-r
-q
-EOF
-
-sleep 1
-
-echo Tailing...
-
-flasher --tail --tail-trigger-pass "SUCCESS" --tail-trigger-fail "FATAL" --port $PORT
-
-JLinkExe -if SWD -device ATSAMD21G18 -speed 4000 -autoconnect 1 <<EOF
-exitonerror 1
-connect
-r
-sleep 100
 loadfile $MAIN,0x8000
 r
 q

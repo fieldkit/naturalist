@@ -13,8 +13,7 @@ BOOTLOADER=../bootloaders/build/zero/fk-bootloaders-samd21large.bin
 TEST=build/firmware/test/fk-naturalist-test.bin
 
 pushd build
-# NOTE: This is temporary!
-cmake ../ -DFK_ENABLE_LOW_POWER_SLEEP=OFF -DFK_ENABLE_FUEL_GAUGE=OFF
+cmake ../
 make -j2
 popd
 
