@@ -32,8 +32,6 @@ r
 q
 EOF
 
-sleep 1
-
 echo Tailing...
 
 flasher --tail -tail-trigger-stop DONE --port $PORT

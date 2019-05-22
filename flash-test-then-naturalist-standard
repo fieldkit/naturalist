@@ -32,8 +32,6 @@ r
 q
 EOF
 
-sleep 1
-
 echo Tailing...
 
 flasher --tail --tail-trigger-pass "SUCCESS" --tail-trigger-fail "FATAL" --port $PORT
