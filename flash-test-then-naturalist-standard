@@ -9,7 +9,7 @@ if [ -z "$PORT" ]; then
 fi
 
 PATH=~/tools/JLink_Linux_V640b_x86_64:$PATH
-BOOTLOADER=../bootloaders/build/zero/fk-bootloaders-samd21large.bin
+BOOTLOADER=../bootloaders/build/m0/zero/fk-bootloaders-samd21large.bin
 TEST=build/firmware/test/fk-naturalist-test.bin
 MAIN=build/firmware/main/fk-naturalist-standard.bin
 
