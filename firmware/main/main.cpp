@@ -9,6 +9,7 @@
 #include "restart_wizard.h"
 #include "initialized.h"
 #include "readings.h"
+#include "alogging/../printf.h"
 
 #include "seed.h"
 #include "config.h"
@@ -93,6 +94,28 @@ public:
 static void setup_serial();
 static void setup_env();
 
+static size_t write_log(const LogMessage *m, const char *fstring, va_list args) {
+    char message_buffer[256];
+
+    auto uart = log_uart_get();
+    auto level = alog_get_log_level((LogLevels)m->level);
+    auto f = "%08" PRIu32 " %-6s %s" ": ";
+    alogging_snprintf(message_buffer, sizeof(message_buffer), f, m->uptime, level, m->facility);
+    uart->print(message_buffer);
+
+    auto n = alogging_vsnprintf(message_buffer, sizeof(message_buffer), fstring, args);
+    auto s = message_buffer + std::min((size_t)n, sizeof(message_buffer) - 1);
+    for ( ; s > message_buffer; s--) {
+        if (*s == '\n') {
+            *s = 0;
+            break;
+        }
+    }
+    uart->println(message_buffer);
+
+    return true;
+}
+
 void setup() {
     #ifdef FK_DEBUG_MTB_ENABLE
     REG_MTB_POSITION = ((uint32_t)(mtb - REG_MTB_BASE)) & 0xFFFFFFF8;
@@ -102,6 +125,8 @@ void setup() {
 
     setup_serial();
     setup_env();
+
+    log_configure_writer(write_log);
 
     fk::restartWizard.startup();
 }
