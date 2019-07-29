@@ -137,7 +137,9 @@ void setup() {
 
     log_configure_writer(write_log);
 
-    fk::restartWizard.startup();
+    if (false) {
+        fk::restartWizard.startup();
+    }
 }
 
 void loop() {
