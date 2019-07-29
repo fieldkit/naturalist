@@ -1,6 +1,7 @@
 include(Arduino)
 include(BuildInfo)
 include(RandomSeed)
+include(./dependencies.cmake)
 
 enable_arduino_toolchain()
 
@@ -23,6 +24,9 @@ fk_core_apply_configuration(fk-naturalist-standard)
 target_compile_options(firmware-common-fk-naturalist-standard PUBLIC -DFK_NATURALIST)
 
 target_compile_options(firmware-common-fk-naturalist-standard PUBLIC -DFK_WIFI_STARTUP_ONLY)
+
+# target_compile_options(phylum PUBLIC -DPHYLUM_DEBUG=10)
+# target_compile_options(firmware-common-fk-naturalist-standard PUBLIC -DPHYLUM_DEBUG=10)
 
 find_package(ArduinoSound)
 target_link_libraries(fk-naturalist-standard ArduinoSound)

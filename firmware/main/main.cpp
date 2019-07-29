@@ -2,6 +2,7 @@
  * @file
  */
 #include <Arduino.h>
+#include <SEGGER_RTT.h>
 
 #include <fk-core.h>
 
@@ -113,6 +114,11 @@ static size_t write_log(const LogMessage *m, const char *fstring, va_list args) 
     }
     uart->println(message_buffer);
 
+    SEGGER_RTT_LOCK();
+    SEGGER_RTT_WriteString(0, message_buffer);
+    SEGGER_RTT_WriteString(0, "\n");
+    SEGGER_RTT_UNLOCK();
+
     return true;
 }
 
@@ -122,6 +128,9 @@ void setup() {
     REG_MTB_FLOW = ((uint32_t)mtb + DEBUG_MTB_SIZE * sizeof(uint32_t)) & 0xFFFFFFF8;
     REG_MTB_MASTER = 0x80000000 + 6;
     #endif
+
+    SEGGER_RTT_Init();
+    SEGGER_RTT_SetFlagsUpBuffer(0, SEGGER_RTT_MODE_NO_BLOCK_SKIP);
 
     setup_serial();
     setup_env();
