@@ -98,11 +98,15 @@ static void setup_env();
 static size_t write_log(const LogMessage *m, const char *fstring, va_list args) {
     char message_buffer[256];
 
+    SEGGER_RTT_LOCK();
+
     auto uart = log_uart_get();
     auto level = alog_get_log_level((LogLevels)m->level);
     auto f = "%08" PRIu32 " %-6s %s" ": ";
     alogging_snprintf(message_buffer, sizeof(message_buffer), f, m->uptime, level, m->facility);
     uart->print(message_buffer);
+
+    SEGGER_RTT_WriteString(0, message_buffer);
 
     auto n = alogging_vsnprintf(message_buffer, sizeof(message_buffer), fstring, args);
     auto s = message_buffer + std::min((size_t)n, sizeof(message_buffer) - 1);
@@ -114,7 +118,6 @@ static size_t write_log(const LogMessage *m, const char *fstring, va_list args) 
     }
     uart->println(message_buffer);
 
-    SEGGER_RTT_LOCK();
     SEGGER_RTT_WriteString(0, message_buffer);
     SEGGER_RTT_WriteString(0, "\n");
     SEGGER_RTT_UNLOCK();
